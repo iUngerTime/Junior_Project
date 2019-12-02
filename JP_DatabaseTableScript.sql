@@ -1,4 +1,4 @@
---LAST DATE EDITED: November 26, 2019
+--LAST DATE EDITED: December 2, 2019
 --LAST EDITED BY: Brenton Unger
 
 --Use SPECIFIC database
@@ -9,6 +9,9 @@ GO
 ----------------------------------------------------------------------------------------------
 --DROP TABLES SHOULD NOT BE USED WHEN WE HAVE IMPORTANT DATA IN TABLES ALTER SHOULD BE USED.--
 ----------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS PANTRY_INGREDIENTS
+GO
+
 DROP TABLE IF EXISTS PANTRY
 GO
 
@@ -35,13 +38,18 @@ CREATE TABLE INGREDIENT(
 	CommonName VARCHAR(50) NOT NULL
 );
 
----------------------------------------------------------------------------------
---PANTRY is a many -> one relationship of (many users have one pantry per user)--
----------------------------------------------------------------------------------
+-----------------------------------------------------------
+--PANTRY has multiple ingredients to multiple ingredients--
+-----------------------------------------------------------
 CREATE TABLE PANTRY(
-	UserID INT FOREIGN KEY REFERENCES PERSON(UserID),
-	IngredientID INT FOREIGN KEY REFERENCES INGREDIENT(IngredientID),
-	Number INT DEFAULT 1,
-	CommonName VARCHAR(50) NOT NULL,
-	CONSTRAINT PkPantry PRIMARY KEY (UserID, IngredientID)
+	PantryID INT IDENTITY(1,1) PRIMARY KEY,
+	UserID INT FOREIGN KEY REFERENCES PERSON(UserID)
+);
+
+----------------------------------------------------------------
+--PantryItems has multiple ingredients to multiple ingredients--
+----------------------------------------------------------------
+CREATE TABLE PANTRY_INGREDIENTS(
+	PantryID INT FOREIGN KEY REFERENCES PANTRY(PantryID),
+	IngredientID INT FOREIGN KEY REFERENCES INGREDIENT(IngredientID)
 );
