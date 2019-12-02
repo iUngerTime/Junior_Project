@@ -51,5 +51,7 @@ CREATE TABLE PANTRY(
 ----------------------------------------------------------------
 CREATE TABLE PANTRY_INGREDIENTS(
 	PantryID INT FOREIGN KEY REFERENCES PANTRY(PantryID),
-	IngredientID INT FOREIGN KEY REFERENCES INGREDIENT(IngredientID)
+	IngredientID INT FOREIGN KEY REFERENCES INGREDIENT(IngredientID),
+	CommonName VARCHAR(50) NOT NULL,
+	Number INT DEFAULT(1)
 );
