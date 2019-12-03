@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PantryAid.DemoPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="Increment" x:Name="IncrButton" Clicked="IncrButton_Clicked"  FontSize="Body"/>
+            <Label Text="0" x:Name="IncrLabel" FontSize="Header" HorizontalTextAlignment="Center"/>
+            <Button Text="Decrement" x:Name="DecrButton" Clicked="DecrButton_Clicked"  FontSize="Body"/>
+            <Button Text="Connection Button" x:Name="ConButton" FontSize="Large" Clicked="ConButton_Clicked"/>
+            <Label Text="GameTitle" x:Name="resultLabel" FontSize="Title" HorizontalTextAlignment="Center"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
