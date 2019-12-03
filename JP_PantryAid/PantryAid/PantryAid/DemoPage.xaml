@@ -11,7 +11,7 @@
             <Label Text="0" x:Name="IncrLabel" FontSize="Header" HorizontalTextAlignment="Center"/>
             <Button Text="Decrement" x:Name="DecrButton" Clicked="DecrButton_Clicked"  FontSize="Body"/>
             <Button Text="Connection Button" x:Name="ConButton" FontSize="Large" Clicked="ConButton_Clicked"/>
-            <Label Text="GameTitle" x:Name="resultLabel" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="IngredientName" x:Name="resultLabel" FontSize="Title" HorizontalTextAlignment="Center"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
