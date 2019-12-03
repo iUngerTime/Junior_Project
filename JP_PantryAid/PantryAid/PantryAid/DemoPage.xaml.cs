@@ -52,7 +52,7 @@ namespace PantryAid
             }
             catch (Exception)
             {
-                await DisplayAlert("NOT YEET", "Successfully failed!", "NO");
+                await DisplayAlert("Failed", "Successfully failed!", "NO");
             }
         }
     }
