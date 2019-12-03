@@ -8,10 +8,9 @@
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" VerticalOptions="Center">
             <!-- Place new controls here -->
-            <Label Text="Welcome to Xamarin.Forms!"/>
             <StackLayout Orientation="Horizontal" Padding="5">
                 <Label Text="Email:" FontSize="Large"/>
-                <Entry x:Name="emailBox" Placeholder="Email goes here" FontSize="Large"/>
+                <Entry x:Name="emailBox" Placeholder="Email goes here" FontSize="Large" />
             </StackLayout>
             <Button Text="Log in" FontSize="Large" Clicked="LogInClick"/>
         </StackLayout>
