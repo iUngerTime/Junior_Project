@@ -6,10 +6,10 @@
              mc:Ignorable="d"
              x:Class="PantryAid.LogInPage">
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
+        <StackLayout Orientation="Vertical" VerticalOptions="Center">
             <!-- Place new controls here -->
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalOptions="Center"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+            <Label Text="Welcome to Xamarin.Forms!"/>
+            <StackLayout Orientation="Horizontal" Padding="5">
                 <Label Text="Email:" FontSize="Large"/>
                 <Entry x:Name="emailBox" Placeholder="Email goes here" FontSize="Large"/>
             </StackLayout>
