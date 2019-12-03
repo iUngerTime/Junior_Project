@@ -46,7 +46,7 @@ namespace PantryAid
                 SqlDataReader read = comm.ExecuteReader();
                 if (read.Read())
                     resultLabel.Text = read.GetValue(0).ToString();
-                await DisplayAlert("YEET", "Successfully connected!", "YES");
+                await DisplayAlert("Connected", "Successfully connected!", "YES");
 
                 con.Close();
             }
