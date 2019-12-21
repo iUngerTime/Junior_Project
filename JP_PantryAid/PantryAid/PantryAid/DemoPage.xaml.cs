@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Data.SqlClient;
+using Database_Helpers;
 
 namespace PantryAid
 {
@@ -34,10 +35,9 @@ namespace PantryAid
 
         private async void ConButton_Clicked(object sender, EventArgs e)
         {
-            string ConnectionString = "server=aura.cset.oit.edu, 5433; database=iUngerTime; UID=iUngerTime; password=iUngerTime";
             string query = "SELECT CommonName FROM INGREDIENT;";
 
-            SqlConnection con = new SqlConnection(ConnectionString);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             SqlCommand comm = new SqlCommand(query, con);
             try
             {

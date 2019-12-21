@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Database_Helpers;
 
 namespace PantryAid
 {
@@ -42,11 +44,11 @@ namespace PantryAid
             bool auth = false;
 
             //Run SQL command to get user's email
-            string ConnectionString = "server=aura.cset.oit.edu, 5433; database=iUngerTime; UID=iUngerTime; password=iUngerTime";
             string query = "SELECT UserID, Email FROM Person WHERE LOWER(Email) = '" + emailBox.Text + "';";
-
-            SqlConnection con = new SqlConnection(ConnectionString);
+            
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             SqlCommand comm = new SqlCommand(query, con);
+            
 
             try
             {
