@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Database_Helpers\Database_Helpers.csproj" />
+    <ProjectReference Include="..\..\ViewModels\ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
