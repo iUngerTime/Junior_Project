@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Database_Helpers\Database_Helpers.csproj" />
-    <ProjectReference Include="..\..\ViewModels\ViewModels.csproj" />
+    <ProjectReference Include="..\..\ViewModels\Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>

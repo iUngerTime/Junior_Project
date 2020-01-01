@@ -9,7 +9,7 @@ namespace ViewModels
     /// <summary>
     /// View Model for modeling an ingredient from the database of ingredients
     /// </summary>
-    public class IngredientViewModel
+    public class IngredientModel
     {
         public int IngredientID { get; set; }
         public string CommonName { get; set; }

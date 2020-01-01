@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database_Helpers", "Databas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database_HelpersTests", "Database_HelpersTests\Database_HelpersTests.csproj", "{F40C85AC-3B95-4377-ACA8-EDDE59ACA359}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModels", "ViewModels\ViewModels.csproj", "{14CB30E3-A621-44F8-89F7-92EB8F3B8FBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "ViewModels\Models.csproj", "{14CB30E3-A621-44F8-89F7-92EB8F3B8FBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
