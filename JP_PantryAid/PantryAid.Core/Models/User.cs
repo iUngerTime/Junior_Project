@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PantryAid.Core.Models
 {
-    class User
+    public class User
     {
     }
 }
