@@ -38,10 +38,10 @@ INSERT INTO PANTRY_INGREDIENTS
 	(IngredientID, PantryID, Number, CommonName)
 VALUES
 	(1, 1, 2, 'Milk'),
-	(1, 1, 2, 'Eggs'),
-	(2, 2, 2, 'Cookies'),
-	(2, 2, 2, 'Jolly Ranchers'),
-	(3, 3, 2, 'Milk'),
-	(3, 3, 2, 'Eggs'),
-	(4, 4, 2, 'Cookies'),
+	(2, 1, 2, 'Eggs'),
+	(3, 2, 2, 'Cookies'),
+	(4, 2, 2, 'Jolly Ranchers'),
+	(1, 3, 2, 'Milk'),
+	(2, 3, 2, 'Eggs'),
+	(3, 4, 2, 'Cookies'),
 	(4, 4, 2, 'Jolly Ranchers');
