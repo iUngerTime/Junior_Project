@@ -14,23 +14,22 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Database_Helpers\Database_Helpers.csproj" />
     <ProjectReference Include="..\..\PantryAid.Core\PantryAid.Core.csproj" />
-    <ProjectReference Include="..\..\ViewModels\ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="DemoPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="GroceryList.xaml">
+    <EmbeddedResource Update="Views\GroceryList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="LogInPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="PantryPage.xaml">
+    <EmbeddedResource Update="Views\PantryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="RecipePage.xaml">
+    <EmbeddedResource Update="Views\RecipePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

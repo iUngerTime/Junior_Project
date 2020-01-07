@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ViewModels;
 using Database_Helpers;
+using PantryAid.Core.Models;
 
 namespace PantryAid
 {
     public class PantryIngredient
     {
-        public IngredientViewModel _ingredient;
+        public Ingredient _ingredient;
         public int _quantity;
 
-        public PantryIngredient(IngredientViewModel ingr, int quantity)
+        public PantryIngredient(Ingredient ingr, int quantity)
         {
             _ingredient = ingr;
             _quantity = quantity;
@@ -78,7 +78,7 @@ namespace PantryAid
 
                 while (read.Read())
                 {
-                    PantryIngredient p = new PantryIngredient(new IngredientViewModel(read.GetInt32(0), read.GetString(1)), read.GetInt32(2));
+                    PantryIngredient p = new PantryIngredient(new Ingredient(read.GetInt32(0), read.GetString(1)), read.GetInt32(2));
                     _list.Add(p); 
                 }
             }
@@ -178,7 +178,7 @@ namespace PantryAid
             else
             {
                 query = String.Format("INSERT INTO PANTRY_INGREDIENTS VALUES({0}, {1}, '{2}', {3});", SqlHelper.UserID, ingrid, ingrname, 1);
-                PantryIngredient p = new PantryIngredient(new IngredientViewModel(ingrid, ingrname), 1);
+                PantryIngredient p = new PantryIngredient(new Ingredient(ingrid, ingrname), 1);
                 _list.Add(p);
             }
 
