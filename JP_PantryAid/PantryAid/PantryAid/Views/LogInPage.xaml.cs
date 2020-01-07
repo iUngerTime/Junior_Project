@@ -57,7 +57,10 @@ namespace PantryAid
                 SqlDataReader read = comm.ExecuteReader();
 
                 if (read.Read())
+                {
                     auth = true;
+                    SqlHelper.UserID = read.GetInt32(0);
+                }
 
                 con.Close();
             }

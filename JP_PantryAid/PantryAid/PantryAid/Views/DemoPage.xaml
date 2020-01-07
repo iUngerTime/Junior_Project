@@ -7,9 +7,12 @@
              x:Class="PantryAid.DemoPage">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="Increment" x:Name="IncrButton" Clicked="IncrButton_Clicked"  FontSize="Body"/>
+            <!--<Button Text="Increment" x:Name="IncrButton" Clicked="IncrButton_Clicked"  FontSize="Body"/>
             <Label Text="0" x:Name="IncrLabel" FontSize="Header" HorizontalTextAlignment="Center"/>
-            <Button Text="Decrement" x:Name="DecrButton" Clicked="DecrButton_Clicked"  FontSize="Body"/>
+            <Button Text="Decrement" x:Name="DecrButton" Clicked="DecrButton_Clicked"  FontSize="Body"/>-->
+            <Button x:Name="GListButton" Text="Go to Grocery List" Clicked="GListButton_Clicked"/>
+            <Button x:Name="PantryButton" Text="Go to Pantry" Clicked="PantryButton_Clicked"/>
+            <Button x:Name="RecipeFinderButton" Text="Go to Recipe Finder" Clicked="RecipeFinderButton_Clicked"/>
             <Button Text="Connection Button" x:Name="ConButton" FontSize="Large" Clicked="ConButton_Clicked"/>
             <Label Text="IngredientName1" x:Name="resultLabel1" FontSize="Title" HorizontalTextAlignment="Center"/>
             <Label Text="IngredientName2" x:Name="resultLabel2" FontSize="Title" HorizontalTextAlignment="Center"/>
