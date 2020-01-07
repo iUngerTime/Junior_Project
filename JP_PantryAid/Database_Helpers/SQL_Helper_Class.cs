@@ -25,6 +25,8 @@ namespace Database_Helpers
         private static string _serverUsername = "iUngerTime";
         private static string _serverPassword = "iUngerTime";
 
+        private static int _curuserid;
+
 
         /// <summary>
         ///     Returns The connection string for the database
@@ -76,6 +78,14 @@ namespace Database_Helpers
             { return _serverPassword; }
             set
             { _serverPassword = value; }
+        }
+
+        public static int UserID
+        {
+            get
+            { return _curuserid; }
+            set
+            { _curuserid = value; }
         }
 
     }

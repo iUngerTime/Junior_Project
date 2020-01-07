@@ -13,18 +13,24 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Database_Helpers\Database_Helpers.csproj" />
+    <ProjectReference Include="..\..\ViewModels\ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\DemoPage.xaml">
+    <EmbeddedResource Update="DemoPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\LogInPage.xaml">
+    <EmbeddedResource Update="GroceryList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <EmbeddedResource Update="LogInPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PantryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="RecipePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

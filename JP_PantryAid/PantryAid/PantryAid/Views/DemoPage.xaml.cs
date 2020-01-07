@@ -19,19 +19,19 @@ namespace PantryAid
             InitializeComponent();
         }
 
-        private void IncrButton_Clicked(object sender, EventArgs e)
-        {
-            int i = Convert.ToInt32(IncrLabel.Text);
-            ++i;
-            IncrLabel.Text = i.ToString();
-        }
+        //private void IncrButton_Clicked(object sender, EventArgs e)
+        //{
+        //    int i = Convert.ToInt32(IncrLabel.Text);
+        //    ++i;
+        //    IncrLabel.Text = i.ToString();
+        //}
 
-        private void DecrButton_Clicked(object sender, EventArgs e)
-        {
-            int i = Convert.ToInt32(IncrLabel.Text);
-            --i;
-            IncrLabel.Text = i.ToString();
-        }
+        //private void DecrButton_Clicked(object sender, EventArgs e)
+        //{
+        //    int i = Convert.ToInt32(IncrLabel.Text);
+        //    --i;
+        //    IncrLabel.Text = i.ToString();
+        //}
 
         private async void ConButton_Clicked(object sender, EventArgs e)
         {
@@ -61,6 +61,21 @@ namespace PantryAid
             {
                 await DisplayAlert("Failed", "Successfully failed!", "NO");
             }
+        }
+
+        private void GListButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new GroceryList());
+        }
+
+        private void PantryButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new PantryPage());
+        }
+
+        private void RecipeFinderButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new RecipePage());
         }
     }
 }
