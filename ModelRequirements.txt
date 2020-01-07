@@ -1,0 +1,19 @@
+Design Model - 20 Min
+Implement/Code Model - 30 Min
+Review Model with team - 15 min
+
+User
+Recipe
+	Name
+	List<RecipieInstruction> Instructions
+	
+RecipieInstruction
+	int minutes
+	int 
+Ingredient
+	Name
+	List<String> Categories
+	
+IngredientQuantity
+	Ingredient
+	quantity
