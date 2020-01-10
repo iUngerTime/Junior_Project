@@ -9,9 +9,11 @@ namespace PantryAid.Core.Models
         public Ingredient(int id, string name)
         {
             IngredientID = id;
-            CommonName = name;
+            Name = name;
         }
         public int IngredientID { get; set; }
-        public string CommonName { get; set; }
+        public string Name { get; set; }
+        public string LongDesc { get; set; }
+        public List<FoodLabels> FoodGroups { get; set; }
     }
 }

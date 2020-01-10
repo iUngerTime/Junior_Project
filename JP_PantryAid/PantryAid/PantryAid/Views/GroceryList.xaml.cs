@@ -43,8 +43,8 @@ namespace PantryAid
         //The below setters and getters are required for the datagrid to see the ingredient variables
         public string Name
         {
-            get { return _ingredient.CommonName; }
-            set { _ingredient.CommonName = value; }
+            get { return _ingredient.Name; }
+            set { _ingredient.Name = value; }
         }
 
         public int ID
@@ -117,7 +117,7 @@ namespace PantryAid
                     GroceryItem G = new GroceryItem(new Ingredient(read.GetInt32(0), read.GetString(1)), SqlHelper.UserID);
                     _list.Add(G);
 
-                    File.AppendAllText(FilePath, String.Format("{0}-{1}\n", G._ingredient.IngredientID.ToString(), G._ingredient.CommonName));
+                    File.AppendAllText(FilePath, String.Format("{0}-{1}\n", G._ingredient.IngredientID.ToString(), G._ingredient.Name));
                 }
                 else
                 {
