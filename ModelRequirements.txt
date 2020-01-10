@@ -3,17 +3,33 @@ Implement/Code Model - 30 Min
 Review Model with team - 15 min
 
 User
+	string Full Name
+	string Email
+	list<ingredients> Alergies
+	list<recipe> Favorited Recipes
+	list<recipe> Disliked Recipes
+
 Recipe
 	Name
-	List<RecipieInstruction> Instructions
-	
-RecipieInstruction
-	int minutes
-	int 
+	List<IngredientItem> ingredients
+	List<String> Instructions
+	List<FoodLabels> labels
+
 Ingredient
-	Name
-	List<String> Categories
+	int id
+	string Name
+	string long desc
+	List<FoodLabels> FoodGroup
 	
-IngredientQuantity
-	Ingredient
-	quantity
+IngredientItem
+	Ingredient ingredient
+	float quantity
+	Enum measurement
+
+Enum Measurement
+	Pinch
+	ounces
+	gallons
+
+Enum FoodLabels
+	Vegan
