@@ -25,8 +25,8 @@ namespace PantryAid
         //The below setters and getters are required for the datagrid to see the ingredient variables
         public string Name
         {
-            get { return _ingredient.CommonName; }
-            set { _ingredient.CommonName = value; }
+            get { return _ingredient.Name; }
+            set { _ingredient.Name = value; }
         }
 
         public int ID
