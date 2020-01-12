@@ -29,38 +29,14 @@ ex.
 */
 namespace PantryAid
 {
-    public class GroceryItem
-    {
-        public Ingredient _ingredient;
-        public int _userid;
-
-        public GroceryItem(Ingredient ingr, int uid)
-        {
-            _ingredient = ingr;
-            _userid = uid;
-        }
-
-        //The below setters and getters are required for the datagrid to see the ingredient variables
-        public string Name
-        {
-            get { return _ingredient.Name; }
-            set { _ingredient.Name = value; }
-        }
-
-        public int ID
-        {
-            get { return _ingredient.IngredientID; }
-            set { _ingredient.IngredientID = value; }
-        }
-    }
-
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GroceryList : ContentPage
     {
         string FilePath;
         string FileName = "GroceryList";
 
-        ListViewModel<GroceryItem> _list = new ListViewModel<GroceryItem>();
+        ListViewModel<IngredientItem> _list = new ListViewModel<IngredientItem>();
+        //Currently the grocery list does not show a quantity or a longdesc or anything like that. If we decide to show them later then this form will need to be updated
         public GroceryList()
         {
             InitializeComponent();
@@ -68,6 +44,7 @@ namespace PantryAid
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             FilePath = path + FileName;
 
+            File.Delete(FilePath); //This needs to be removed later, but for test purposes this will reset the file when you reopen the page
             if (!File.Exists(FilePath))
             {
                 File.WriteAllText(FilePath, "67-Butter\n43-Cheese\n98-Noodles\n"); //Creates the file and adds test data
@@ -79,13 +56,15 @@ namespace PantryAid
 
         public void FillGrid()
         {
+            _list.ListView.Clear();
+
             string[] contents = File.ReadAllLines(FilePath);
 
             foreach (string line in contents)
             {
                 string[] temp = line.Split('-'); //temp should always have only two strings contained after this point, the ID and the Name
 
-                GroceryItem G = new GroceryItem(new Ingredient(Convert.ToInt32(temp[0]), temp[1]), SqlHelper.UserID);
+                IngredientItem G = new IngredientItem(new Ingredient(Convert.ToInt32(temp[0]), temp[1], ""), 0.0f, Measurements.Serving);
                 _list.Add(G);
             }
         }
@@ -114,10 +93,10 @@ namespace PantryAid
                 //This section assumes that no Ingredients have duplicate CommonNames
                 if (read.Read())
                 {
-                    GroceryItem G = new GroceryItem(new Ingredient(read.GetInt32(0), read.GetString(1)), SqlHelper.UserID);
+                    IngredientItem G = new IngredientItem(new Ingredient(read.GetInt32(0), read.GetString(1), ""), 0.0f, Measurements.Serving);
                     _list.Add(G);
 
-                    File.AppendAllText(FilePath, String.Format("{0}-{1}\n", G._ingredient.IngredientID.ToString(), G._ingredient.Name));
+                    File.AppendAllText(FilePath, String.Format("{0}-{1}\n", G.ID.ToString(), G.Name));
                 }
                 else
                 {
@@ -133,7 +112,35 @@ namespace PantryAid
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Warning", "This button currently does absolutely nothing", "OK");
+            string[] contents = File.ReadAllLines(FilePath);
+            List<string> newcontents = new List<string>();
+            string selecteditem = IngredientEntry.Text;
+
+            //Find index of item to remove
+            int i = 0;
+            foreach (string line in contents)
+            {
+                string[] temp = line.Split('-');
+
+                if (selecteditem == temp[1])
+                {
+                    break;
+                }
+                ++i;
+            }
+
+            //Create a new array of all contents except for the one at index i
+            foreach (string line in contents)
+            {
+                if (line != contents[i])
+                {
+                    newcontents.Add(line);
+                }
+            }
+
+            File.WriteAllLines(FilePath, newcontents.ToArray());
+
+            FillGrid();
         }
     }
 }
