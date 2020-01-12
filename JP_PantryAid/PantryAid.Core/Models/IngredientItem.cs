@@ -9,6 +9,24 @@ namespace PantryAid.Core.Models
 		public Ingredient Ingredient { get; set; }
 		public float Quantity { get; set; }
 		public Measurements MeasurementType { get; set; }
+
+		public IngredientItem(Ingredient ingr, float amount, Measurements measure)
+		{
+			Ingredient = ingr;
+			Quantity = amount;
+			MeasurementType = measure;
+		}
+
+		//These two getters are needed for the gridview
+		public string Name
+		{
+			get { return Ingredient.Name; }
+		}
+
+		public int ID
+		{
+			get { return Ingredient.IngredientID; }
+		}
 	}
 
 	/// <summary>
@@ -18,7 +36,7 @@ namespace PantryAid.Core.Models
 	{
 		Teaspoon,
 		Tablespoon,
-		FuildOunce,
+		FluidOunce,
 		Gill,
 		Cup,
 		Pint,
@@ -35,6 +53,7 @@ namespace PantryAid.Core.Models
 		Millimeter,
 		Centimeter,
 		Meter,
-		Inch
+		Inch,
+		Serving //I'm going to classify all things in the pantry and grocery list by this until we get a better idea of how we'll handle it
 	}
 }

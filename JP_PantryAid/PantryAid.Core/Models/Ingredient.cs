@@ -6,10 +6,12 @@ namespace PantryAid.Core.Models
 {
     public class Ingredient
     {
-        public Ingredient(int id, string name)
+        public Ingredient(int id, string name, string ldesc, List<FoodLabels> groups = null)
         {
             IngredientID = id;
             Name = name;
+            LongDesc = ldesc;
+            FoodGroups = groups;
         }
         public int IngredientID { get; set; }
         public string Name { get; set; }

@@ -11,41 +11,10 @@ using PantryAid.Core.Models;
 
 namespace PantryAid
 {
-    public class PantryIngredient
-    {
-        public Ingredient _ingredient;
-        public int _quantity;
-
-        public PantryIngredient(Ingredient ingr, int quantity)
-        {
-            _ingredient = ingr;
-            _quantity = quantity;
-        }
-
-        //The below setters and getters are required for the datagrid to see the ingredient variables
-        public string Name
-        {
-            get { return _ingredient.Name; }
-            set { _ingredient.Name = value; }
-        }
-
-        public int ID
-        {
-            get { return _ingredient.IngredientID; }
-            set { _ingredient.IngredientID = value; }
-        }
-
-        public int Quantity
-        {
-            get { return _quantity; }
-            set { _quantity = value; }
-        }
-    }
-
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PantryPage : ContentPage
     {
-        ListViewModel<PantryIngredient> _list = new ListViewModel<PantryIngredient>();
+        ListViewModel<IngredientItem> _list = new ListViewModel<IngredientItem>();
         public PantryPage()
         {
             InitializeComponent();
@@ -57,7 +26,9 @@ namespace PantryAid
         async public void FillGrid()
         {
             string ConnectionString = SqlHelper.GetConnectionString();
-            //Below query assumes that UserIDs and PantryIDs are equivalent
+            //Below querys assumes that UserIDs and PantryIDs are equivalent
+            //Commented query below will be used when more columns are added to INGREDIENT
+            //string query = String.Format("SELECT ING.IngredientID, ING.CommonName, ING.LongDesc, Quantity FROM PANTRY_INGREDIENTS AS PING JOIN INGREDIENT AS ING ON PING.IngredientID = ING.IngredientID WHERE PantryID = {0};", SqlHelper.UserID);
             string query = String.Format("SELECT IngredientID, CommonName, Quantity FROM PANTRY_INGREDIENTS WHERE PantryID={0};", SqlHelper.UserID);
 
             SqlConnection con = new SqlConnection(ConnectionString);
@@ -78,7 +49,7 @@ namespace PantryAid
 
                 while (read.Read())
                 {
-                    PantryIngredient p = new PantryIngredient(new Ingredient(read.GetInt32(0), read.GetString(1)), read.GetInt32(2));
+                    IngredientItem p = new IngredientItem(new Ingredient(read.GetInt32(0), read.GetString(1), ""), read.GetInt32(2), Measurements.Serving);
                     _list.Add(p); 
                 }
             }
@@ -167,7 +138,7 @@ namespace PantryAid
             if (alreadyexists)
             {
                 query = String.Format("UPDATE PANTRY_INGREDIENTS SET Quantity={0} WHERE PantryID={1} AND IngredientID={2};", count, SqlHelper.UserID, ingrid);
-                PantryIngredient p = _list.ListView.Single(x => x.ID == ingrid); //Finds the ingredient in the ListView that matches the user input
+                IngredientItem p = _list.ListView.Single(x => x.ID == ingrid); //Finds the ingredient in the ListView that matches the user input
                 
                 //The quantity didn't update unless I removed it first
                 int index = _list.ListView.IndexOf(p);
@@ -178,7 +149,8 @@ namespace PantryAid
             else
             {
                 query = String.Format("INSERT INTO PANTRY_INGREDIENTS VALUES({0}, {1}, '{2}', {3});", SqlHelper.UserID, ingrid, ingrname, 1);
-                PantryIngredient p = new PantryIngredient(new Ingredient(ingrid, ingrname), 1);
+                IngredientItem p = new IngredientItem(new Ingredient(ingrid, ingrname, ""), 1.0f, Measurements.Serving);
+
                 _list.Add(p);
             }
 
@@ -190,7 +162,94 @@ namespace PantryAid
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Warning", "This button currently does absolutely nothing", "OK");
+            string ConnectionString = SqlHelper.GetConnectionString();
+            string query = String.Format("SELECT IngredientID, CommonName FROM INGREDIENT WHERE CommonName='{0}'", IngredientEntry.Text);
+
+            SqlConnection con = new SqlConnection(ConnectionString);
+            SqlCommand comm = new SqlCommand(query, con);
+
+            int ingrid = -1;
+            int count = 0;
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                await DisplayAlert("Failed", "Could not connect", "OK");
+                return;
+            }
+
+            try
+            {
+                SqlDataReader read = comm.ExecuteReader();
+
+                if (!read.Read())
+                {
+                    con.Close();
+                    read.Close();
+                    await DisplayAlert("Error", "The specified ingredient does not exist", "OK");
+                    return;
+                }
+                else
+                {
+                    ingrid = read.GetInt32(0);
+                }
+                read.Close();
+            }
+            catch (Exception)
+            {
+                await DisplayAlert("Error", "Exception thrown while reading from database", "OK");
+                return;
+            }
+
+            query = String.Format("SELECT Quantity FROM PANTRY_INGREDIENTS WHERE IngredientID={0} AND PantryID={1}", ingrid, SqlHelper.UserID);
+            comm = new SqlCommand(query, con);
+
+            try
+            {
+                SqlDataReader read = comm.ExecuteReader();
+
+                if (read.Read())
+                {
+                    count = read.GetInt32(0);
+                }
+                else
+                {
+                    await DisplayAlert("Error", "That ingredient is not in your pantry", "OK");
+                }
+                read.Close();
+            }
+            catch (Exception)
+            {
+                await DisplayAlert("Error", "Exception thrown while reading from database", "OK");
+                return;
+            }
+
+            if (count == 1)
+            {
+                query = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE IngredientID={0} AND PantryID={1}", ingrid, SqlHelper.UserID);
+                IngredientItem p = _list.ListView.Single(x => x.ID == ingrid); //Finds the ingredient in the ListView that matches the user input
+                _list.ListView.Remove(p);
+            }
+            else
+            {
+                query = String.Format("UPDATE PANTRY_INGREDIENTS SET Quantity={0} WHERE IngredientID={1} AND PantryID={2};", count-1, ingrid, SqlHelper.UserID);
+
+                IngredientItem p = _list.ListView.Single(x => x.ID == ingrid); //Finds the ingredient in the ListView that matches the user input
+
+                //The quantity didn't update unless I removed it first
+                int index = _list.ListView.IndexOf(p);
+                _list.ListView.RemoveAt(index);
+                p.Quantity -= 1;
+                _list.ListView.Insert(index, p);
+            }
+
+            comm = new SqlCommand(query, con);
+            comm.ExecuteNonQuery();
+
+            con.Close();
         }
     }
 }
