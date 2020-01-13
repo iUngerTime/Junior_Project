@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Data.SqlClient;
 using Database_Helpers;
+using PantryAid.Core.Models;
+
+
 
 namespace PantryAid
 {
@@ -42,24 +44,30 @@ namespace PantryAid
             try
             {
                 con.Open();
-                
+
+                SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
+                List<Recipe> recipes = api.RecipeSearch("Turkey");
+
                 SqlDataReader read = comm.ExecuteReader();
                 read.Read();
                 resultLabel1.Text = read.GetValue(0).ToString();
                 read.Read();
                 resultLabel2.Text = read.GetValue(0).ToString();
-                read.Read();
-                resultLabel3.Text = read.GetValue(0).ToString();
-                read.Read();
-                resultLabel4.Text = read.GetValue(0).ToString();
+                resultLabel3.Text = recipes[0].Name;
+                resultLabel4.Text = recipes[0].Instructions[0];
+                //read.Read();
+                //resultLabel3.Text = read.GetValue(0).ToString();
+                //read.Read();
+                //resultLabel4.Text = read.GetValue(0).ToString();
 
                 await DisplayAlert("Connected", "Successfully connected!", "YES");
 
                 con.Close();
             }
-            catch (Exception)
+            catch (Exception x)
             {
-                await DisplayAlert("Failed", "Successfully failed!", "NO");
+
+                await DisplayAlert("Failed", $"Successfully failed with exception {x}!", "NO");
             }
         }
 

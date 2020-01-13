@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Database_Helpers
 {
-    //This class exists to help centralize our SQL related functions and info
+    
+    /// <summary>
+    /// This class exists to help centralize our SQL related functions and info
+    /// </summary>
     public static class SqlHelper
     {
         //ToDO / Notes
@@ -29,7 +32,7 @@ namespace Database_Helpers
 
 
         /// <summary>
-        ///     Returns The connection string for the database
+        /// Returns The connection string for the database
         /// </summary>
         public static string GetConnectionString()
         {
@@ -37,7 +40,9 @@ namespace Database_Helpers
         }
 
 
-        //Allows getting and setting the server address for our database
+        /// <summary>
+        /// The server address of the SQL server
+        /// </summary>
         public static string ServerAddress 
         {
             get
@@ -46,14 +51,18 @@ namespace Database_Helpers
             { _serverAddress = value; }
         }
 
-        //Allows getting and setting the server port for our database
+        /// <summary>
+        /// The port of the server to connect to
+        /// </summary>
         public static string ServerPort
         {
             get => _serverPort;
             set => _serverPort = value;
         }
 
-        //Allows getting and setting the server database name for our database
+        /// <summary>
+        /// The name of the database on the server
+        /// </summary>
         public static string ServerDatabaseName
         {
             get
@@ -62,7 +71,9 @@ namespace Database_Helpers
             { _databaseName = value; }
         }
 
-        //Allows getting and setting the server username for our database
+        /// <summary>
+        /// The username for the SQL server
+        /// </summary>
         public static string ServerUsername
         {
             get
@@ -71,7 +82,9 @@ namespace Database_Helpers
             { _serverUsername = value; }
         }
 
-        //Allows getting and setting the server password for our database
+        /// <summary>
+        /// The password for the SQL server
+        /// </summary>
         public static string ServerPassword
         {
             get
@@ -80,6 +93,9 @@ namespace Database_Helpers
             { _serverPassword = value; }
         }
 
+        /// <summary>
+        /// The user ID for the current user
+        /// </summary>
         public static int UserID
         {
             get
