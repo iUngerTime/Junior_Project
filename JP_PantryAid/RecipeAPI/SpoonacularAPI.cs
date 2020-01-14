@@ -73,7 +73,7 @@ namespace SpoonacularAPI
             /// <summary>
             /// Some legal thing about displaying recipes.  Should always be true;
             /// </summary>
-            public bool limitLicense;           
+            public bool limitLicense;
             /// <summary>
             /// Whether the recipies should have instructions.  Should always be true for obvious reasons.
             /// </summary>
@@ -91,12 +91,13 @@ namespace SpoonacularAPI
         /// <returns>
         /// Returns a List of Recipe models
         /// </returns>
-        public List<Recipe> RecipeSearch(string query, int maxResults , int offset )
+        public List<Recipe_Short> RecipeSearch(string query, int maxResults, int offset)
         {
             RecipeSearchParams param = SetUpParams(query, maxResults, offset);
             SpoonacularRecipeSearchRootObject rootObject = QueryAPI(param);
             List<RecipeInformationRootObject> recipeInfoList = ToRecipeInformationList(rootObject);
-            return ToRecipeList(recipeInfoList);
+            return ToRecipeShortList(recipeInfoList);
+
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace SpoonacularAPI
         /// <param name="limitLicense">Leave default unless needed</param>
         /// <param name="instructionsRequired">Leave default unless needed</param>
         /// <returns></returns>
-        public List<Recipe> RecipeSearch(string query,
+        public List<Recipe_Short> RecipeSearch(string query,
             int number = 5,
             int offset = 0,
             string cuisine = "",
@@ -126,15 +127,16 @@ namespace SpoonacularAPI
                 instructionsRequired);
             SpoonacularRecipeSearchRootObject rootObject = QueryAPI(param);
             List<RecipeInformationRootObject> recipeInfoList = ToRecipeInformationList(rootObject);
-            return ToRecipeList(recipeInfoList);
+            return ToRecipeShortList(recipeInfoList);
         }
 
-        private  SpoonacularRecipeSearchRootObject QueryAPI(RecipeSearchParams param)
+        private SpoonacularRecipeSearchRootObject QueryAPI(RecipeSearchParams param)
         {
             //string url =  + ;
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeSearchURL, Method.GET);
 
+            request.AddParameter("query", param.query);
             if (param.number > m_maxResults)
                 param.number = 20;
             if (param.number < 0)
@@ -159,13 +161,8 @@ namespace SpoonacularAPI
             try
             {
                 RestResponse response = client.Execute(request);
-
                 //try to get the data out of the response
                 rootObject = JsonConvert.DeserializeObject<SpoonacularRecipeSearchRootObject>(response.Content); return rootObject;
-
-
-                
-
             }
             catch (Exception e)
             {
@@ -174,7 +171,41 @@ namespace SpoonacularAPI
             }
         }
 
-        //public RecipeInformationRootObject ToRecipeInformation(Spoona)
+
+        /// <summary>
+        /// Takes a Recipe ID and returns a full recipe.  
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <returns></returns>
+        public Recipe_Full GetFullRecipe(int recipeId)
+        {
+            RestClient client = new RestClient(SpoonacularAPI.m_URL);
+            Recipe_Full recipe = new Recipe_Full();
+            //recipe.Instructions = new List<string>();
+            try
+            {
+                RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeInformationURL + recipeId + "/information", Method.GET);
+                request.AddParameter("apiKey", m_APYKey);
+                var response = client.Execute(request);
+
+                //try to get the data out of the response
+                RecipeInformationRootObject recipeRoot = JsonConvert.DeserializeObject<RecipeInformationRootObject>(response.Content);
+                recipe.Id = recipeRoot.id;
+                if (recipeRoot.title != null)
+                    recipe.Name = recipeRoot.title;
+                if (recipeRoot.instructions != null)
+                    recipe.Instructions = recipeRoot.instructions;  //well need to break this out later
+                if (recipeRoot.image != null)
+                    recipe.ImageURL = recipeRoot.image;
+                ///TODO:  Parse out all the bools into labels!!!!!!
+                ///TODO:  Parse out the Ingredients!!!!!!!
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return recipe;
+        }
 
 
         //Converts a rootObject to a List of recipe information objects
@@ -192,43 +223,35 @@ namespace SpoonacularAPI
 
                     //try to get the data out of the response
                     RecipeInformationRootObject recipeRoot = JsonConvert.DeserializeObject<RecipeInformationRootObject>(response.Content);
+
                     rootList.Add(recipeRoot);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                throw e;
             }
             return rootList;
         }
 
 
-        private List<Recipe> ToRecipeList(List<RecipeInformationRootObject> recipeInfo)
+        private List<Recipe_Short> ToRecipeShortList(List<RecipeInformationRootObject> recipeInfo)
         {
-            List<Recipe> recipes = new List<Recipe>();
+            List<Recipe_Short> recipes = new List<Recipe_Short>();
             //iterate through the list
             for (int i = 0; i < recipeInfo.Count; ++i)
             {
-                Recipe recipe = new Recipe();
-                recipe.Instructions = new List<string>();
+                Recipe_Short recipe = new Recipe_Short();
+                //recipe.Instructions = new List<string>();
                 recipe.Id = recipeInfo[i].id;
-                if (recipeInfo[i].title != null)
-                    recipe.Name = recipeInfo[i].title;
-                if (recipeInfo[i].instructions != null)
-                    recipe.Instructions.Add( recipeInfo[i].instructions);  //well need to break this out later
-                if (recipeInfo[i].image != null)
-                    recipe.ImageURL = recipeInfo[i].image;
-                ///TODO:  Parse out all the bools into labels!!!!!!
-                ///TODO:  Parse out the Ingredients!!!!!!!
-                
+                recipe.Name = recipeInfo[i].title;
+                recipe.ImageURL = m_URL + "/recipeImages/" + recipe.Id + "-" + m_RecipeImagex + "x" + m_RecipeImagey;
+                recipe.readyInMinutes = recipeInfo[i].readyInMinutes;
+                recipe.servings = recipeInfo[i].servings;
                 recipes.Add(recipe);
             }
-
             return recipes;
         }
-
-
 
 
         /// <summary>
@@ -269,29 +292,61 @@ namespace SpoonacularAPI
             return param;
         }
 
-        //THe key for our API
+        //The key for our API
         private static string m_APYKey = "6da40b0861384c3dbf879eb47b5bb539";
         //These two urls are broken apart as the API has different sub addresses for different types of searches
         private static string m_URL = "https://api.spoonacular.com";
         private static string m_RecipeSearchURL = "recipes/search";
         private static string m_RecipeInformationURL = "recipes/";
+
+
         //Limits the max number of results to return.
         private static int m_maxResults = 20;
 
+        /*  Valid values:
+         *  90x90
+         *  240x150
+         *  312x150
+         *  312x231
+         *  480x360
+         *  556x370
+         *  636x393
+         */
+
+        /// <summary>
+        /// Sets the x dimension of the returned images in pixels
+        /// </summary>
+        /// <remarks>
+        ///  Valid values:
+        /// *  90x90
+        /// *  240x150
+        /// *  312x150
+        /// *  312x231
+        /// *  480x360
+        /// *  556x370
+        /// *  636x393
+        /// </remarks>
+        public static int m_RecipeImagex = 556;
+
+        /// <summary>
+        /// Sets the y dimension of the returned images in pixels
+        /// </summary>
+        /// <remarks>
+        ///  Valid values:
+        /// *  90x90
+        /// *  240x150
+        /// *  312x150
+        /// *  312x231
+        /// *  480x360
+        /// *  556x370
+        /// *  636x393
+        /// </remarks>
+        public static int m_RecipeImagey = 370;
+
         private static SpoonacularAPI m_instance;
-        //private string 
+        
 
-
-
-
-
-
-
-
-
-
-
-       
+ 
     }
    
 }

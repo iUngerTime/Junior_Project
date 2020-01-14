@@ -8,8 +8,7 @@ using Xamarin.Forms.Xaml;
 using System.Data.SqlClient;
 using Database_Helpers;
 using PantryAid.Core.Models;
-
-
+using System.Net;
 
 namespace PantryAid
 {
@@ -46,7 +45,7 @@ namespace PantryAid
                 con.Open();
 
                 SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
-                List<Recipe> recipes = api.RecipeSearch("Turkey");
+                List<Recipe_Short> recipes = api.RecipeSearch("Turkey", 1);
 
                 SqlDataReader read = comm.ExecuteReader();
                 read.Read();
@@ -54,7 +53,10 @@ namespace PantryAid
                 read.Read();
                 resultLabel2.Text = read.GetValue(0).ToString();
                 resultLabel3.Text = recipes[0].Name;
-                resultLabel4.Text = recipes[0].Instructions[0];
+                resultLabel4.Text = recipes[0].Id.ToString();
+                Recipe_Full rFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetFullRecipe(recipes[0].Id);
+                resultLabel5.Text = rFull.Instructions;
+
                 //read.Read();
                 //resultLabel3.Text = read.GetValue(0).ToString();
                 //read.Read();
