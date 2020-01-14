@@ -18,6 +18,8 @@
             <Label Text="IngredientName2" x:Name="resultLabel2" FontSize="Title" HorizontalTextAlignment="Center"/>
             <Label Text="IngredientName3" x:Name="resultLabel3" FontSize="Title" HorizontalTextAlignment="Center"/>
             <Label Text="IngredientName4" x:Name="resultLabel4" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="IngredientName5" x:Name="resultLabel5" FontSize="Title" HorizontalTextAlignment="Center"/>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -19,7 +19,7 @@ namespace RecipeAPI
         /// <param name="maxResults">Maximum number of recipes to return.  Used to save API queries</param>
         /// <param name="offset">Used to control how many recipes to skip.  Useful for multiple pages of recipes</param>
         /// <returns></returns>
-        List<Recipe> RecipeSearch(string query, int maxResults = 5, int offset = 0);
+        List<Recipe_Short> RecipeSearch(string query, int maxResults = 5, int offset = 0);
 
 
 
