@@ -45,17 +45,17 @@ namespace PantryAid
                 con.Open();
 
                 SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
-                List<Recipe_Short> recipes = api.RecipeSearch("Turkey", 1);
+                List<Recipe_Short> recipes = api.RecipeSearch("Banana", 1);
 
                 SqlDataReader read = comm.ExecuteReader();
                 read.Read();
                 resultLabel1.Text = read.GetValue(0).ToString();
                 read.Read();
                 resultLabel2.Text = read.GetValue(0).ToString();
-                resultLabel3.Text = recipes[0].Name;
-                resultLabel4.Text = recipes[0].Id.ToString();
-                Recipe_Full rFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetFullRecipe(recipes[0].Id);
-                resultLabel5.Text = rFull.Instructions;
+                resultLabel3.Text = recipes[0].title;
+                resultLabel4.Text = recipes[0].id.ToString();
+                Recipe_Full rFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetRecipeFull(recipes[0]);
+                resultLabel5.Text = rFull.instructions;
 
                 //read.Read();
                 //resultLabel3.Text = read.GetValue(0).ToString();
