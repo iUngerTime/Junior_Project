@@ -49,6 +49,30 @@ namespace PantryAid
                 }
                 else
                     L_Wine.Text = "No wine pairings";
+                StringBuilder insts = new StringBuilder();
+                if (recipeFull.extendedIngredients != null)
+                {
+                    foreach (var VARIABLE in recipeFull.extendedIngredients)
+                    {
+                        insts.Append("* ")
+                            .Append(VARIABLE.name)
+                            .Append("  ")
+                            .Append(VARIABLE.amount)
+                            .Append(" ")
+                            .Append(VARIABLE.unit)
+                            .Append("<br />"); //because it's html not ascii
+                        
+                        //if (VARIABLE.Measurements != null)
+                        //    .Append(VARIABLE.Measurements.us.amount)
+                        //    .Append(" ").Append(VARIABLE.Measurements.us.unitShort)
+                    }
+
+                    L_Ingredients.Text = insts.ToString();
+                }
+
+
+                
+
                 //resultLabel1.Text = recipeFull.title;
                 //resultLabel2.Text = recipeFull.instructions;
             }
