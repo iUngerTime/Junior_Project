@@ -75,7 +75,7 @@ namespace SpoonacularAPI
             /// </summary>
             public bool limitLicense;
             /// <summary>
-            /// Whether the recipies should have instructions.  Should always be true for obvious reasons.
+            /// Whether the recipes should have instructions.  Should always be true for obvious reasons.
             /// </summary>
             public bool instructionsRequired;
         }
@@ -94,11 +94,14 @@ namespace SpoonacularAPI
         public List<Recipe_Short> RecipeSearch(string query, int maxResults, int offset)
         {
             RecipeSearchParams param = SetUpParams(query, maxResults, offset);
-            SpoonacularRecipeSearchRootObject rootObject = QueryAPI(param);
-            List<RecipeInformationRootObject> recipeInfoList = ToRecipeInformationList(rootObject);
-            return ToRecipeShortList(recipeInfoList);
-
+            SpoonacularRecipeShortSearchResult result = QueryAPI(param);
+            return result.results;
+            //List<RecipeInformationRootObject> recipeInfoList = ToRecipeInformationList(result);
+            //return ToRecipeShortList(recipeInfoList);
         }
+
+
+
 
         /// <summary>
         /// A Spoonacular specific search.  Is MUCH better than the alternatives
@@ -125,17 +128,16 @@ namespace SpoonacularAPI
         {
             RecipeSearchParams param = SetUpParams(query, number, offset, cuisine, diet, excludeIngredients, intolerances, limitLicense,
                 instructionsRequired);
-            SpoonacularRecipeSearchRootObject rootObject = QueryAPI(param);
-            List<RecipeInformationRootObject> recipeInfoList = ToRecipeInformationList(rootObject);
-            return ToRecipeShortList(recipeInfoList);
+            SpoonacularRecipeShortSearchResult result = QueryAPI(param);
+            return result.results;
         }
 
-        private SpoonacularRecipeSearchRootObject QueryAPI(RecipeSearchParams param)
+        private SpoonacularRecipeShortSearchResult QueryAPI(RecipeSearchParams param)
         {
-            //string url =  + ;
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeSearchURL, Method.GET);
 
+            //Set up the query parameters
             request.AddParameter("query", param.query);
             if (param.number > m_maxResults)
                 param.number = 20;
@@ -157,48 +159,40 @@ namespace SpoonacularAPI
             request.AddParameter("instructionsRequired", param.instructionsRequired);
             request.AddParameter("apiKey", m_APYKey);
 
-            SpoonacularRecipeSearchRootObject rootObject = new SpoonacularRecipeSearchRootObject();
+            //Execute the query
+            SpoonacularRecipeShortSearchResult result;
             try
             {
                 RestResponse response = client.Execute(request);
                 //try to get the data out of the response
-                rootObject = JsonConvert.DeserializeObject<SpoonacularRecipeSearchRootObject>(response.Content); return rootObject;
+
+                result = JsonConvert.DeserializeObject<SpoonacularRecipeShortSearchResult>(response.Content); 
+                return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
+                //add call to exception logger
                 throw;
             }
         }
 
 
         /// <summary>
-        /// Takes a Recipe ID and returns a full recipe.  
+        /// Takes a Recipe ID and returns the Recipe_Full.  
         /// </summary>
         /// <param name="recipeId"></param>
         /// <returns></returns>
-        public Recipe_Full GetFullRecipe(int recipeId)
+        public Recipe_Full GetRecipeFull(int recipeId)
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
-            Recipe_Full recipe = new Recipe_Full();
-            //recipe.Instructions = new List<string>();
+            Recipe_Full recipe;
             try
             {
                 RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeInformationURL + recipeId + "/information", Method.GET);
                 request.AddParameter("apiKey", m_APYKey);
                 var response = client.Execute(request);
-
                 //try to get the data out of the response
-                RecipeInformationRootObject recipeRoot = JsonConvert.DeserializeObject<RecipeInformationRootObject>(response.Content);
-                recipe.Id = recipeRoot.id;
-                if (recipeRoot.title != null)
-                    recipe.Name = recipeRoot.title;
-                if (recipeRoot.instructions != null)
-                    recipe.Instructions = recipeRoot.instructions;  //well need to break this out later
-                if (recipeRoot.image != null)
-                    recipe.ImageURL = recipeRoot.image;
-                ///TODO:  Parse out all the bools into labels!!!!!!
-                ///TODO:  Parse out the Ingredients!!!!!!!
+                recipe = JsonConvert.DeserializeObject<Recipe_Full>(response.Content);
             }
             catch (Exception e)
             {
@@ -208,54 +202,39 @@ namespace SpoonacularAPI
         }
 
 
-        //Converts a rootObject to a List of recipe information objects
-        private List<RecipeInformationRootObject> ToRecipeInformationList(SpoonacularRecipeSearchRootObject rootObject)
+        /// <summary>
+        /// Takes a Recipe_Short and returns the corresponding Recipe_Full. 
+        /// </summary>
+        /// <param name="recipe"></param>
+        /// <returns></returns>
+        public Recipe_Full GetRecipeFull(Recipe_Short recipe)
         {
-            RestClient client = new RestClient(SpoonacularAPI.m_URL);
-            List<RecipeInformationRootObject> rootList = new List<RecipeInformationRootObject>();  //for storing the recipe information
-            try
-            {
-                for (int i = 0; i < rootObject.results.Count; ++i)
-                {
-                    RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeInformationURL + rootObject.results[i].id + "/information", Method.GET);
-                    request.AddParameter("apiKey", m_APYKey);
-                    var response = client.Execute(request);
-
-                    //try to get the data out of the response
-                    RecipeInformationRootObject recipeRoot = JsonConvert.DeserializeObject<RecipeInformationRootObject>(response.Content);
-
-                    rootList.Add(recipeRoot);
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            return rootList;
-        }
-
-
-        private List<Recipe_Short> ToRecipeShortList(List<RecipeInformationRootObject> recipeInfo)
-        {
-            List<Recipe_Short> recipes = new List<Recipe_Short>();
-            //iterate through the list
-            for (int i = 0; i < recipeInfo.Count; ++i)
-            {
-                Recipe_Short recipe = new Recipe_Short();
-                //recipe.Instructions = new List<string>();
-                recipe.Id = recipeInfo[i].id;
-                recipe.Name = recipeInfo[i].title;
-                recipe.ImageURL = m_URL + "/recipeImages/" + recipe.Id + "-" + m_RecipeImagex + "x" + m_RecipeImagey;
-                recipe.readyInMinutes = recipeInfo[i].readyInMinutes;
-                recipe.servings = recipeInfo[i].servings;
-                recipes.Add(recipe);
-            }
-            return recipes;
+            return GetRecipeFull(recipe.id);
         }
 
 
         /// <summary>
-        /// Used to set up the struct with recommended configuration. 
+        /// Converts a list of short recipes to a list of full recipes.  NOTE: this is expensive in terms of API calls so I'm leaving it private for now until we see a specific need for it.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private List<Recipe_Full> ToRecipeFullList(List<Recipe_Short> list)
+        {
+            List<Recipe_Full> fullList = new List<Recipe_Full>();
+            foreach (var variable in list)
+            {
+                fullList.Add(this.GetRecipeFull(variable.id));
+            }
+
+            return fullList;
+        }
+
+        //SAVE - Will be used in the Image getting functions
+        //recipe.ImageURL = m_URL + "/recipeImages/" + recipe.Id + "-" + m_RecipeImagex + "x" + m_RecipeImagey;
+
+        /// <summary>
+        /// Used to set up the struct with the recommended configuration. 
         /// </summary>
         /// <param name="query">The query. The only needed value</param>
         /// <param name="number">The number of results to return</param>
@@ -291,6 +270,10 @@ namespace SpoonacularAPI
             };
             return param;
         }
+
+
+
+
 
         //The key for our API
         private static string m_APYKey = "6da40b0861384c3dbf879eb47b5bb539";
@@ -342,6 +325,9 @@ namespace SpoonacularAPI
         /// *  636x393
         /// </remarks>
         public static int m_RecipeImagey = 370;
+
+
+        //Singleton instance
 
         private static SpoonacularAPI m_instance;
         

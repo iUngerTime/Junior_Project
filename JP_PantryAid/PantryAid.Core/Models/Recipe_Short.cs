@@ -4,25 +4,37 @@ using System.Text;
 
 namespace PantryAid.Core.Models
 {
-    //This is a short recipe model and it only contains the name and a few other bits of data.  Thies what recipe searches will retrun.
+    //This is a short recipe model and it only contains the name and a few other bits of data.  This what recipe searches will return.
     public class Recipe_Short
     {
-        //Data
-        public int Id { get; set; }
-        public string ImageURL { get; set; }
+        /// <summary>
+        /// A unique id which can be used to get the Recipe_Full
+        /// </summary>
+        public int id { get; set; }
+        /// <summary>
+        /// The title or name of the recipe
+        /// </summary>
+        public string title { get; set; }
+        /// <summary>
+        /// How many minutes to prepare the recipe
+        /// </summary>
         public int readyInMinutes { get; set; }
+        /// <summary>
+        /// Servings count
+        /// </summary>
         public int servings { get; set; }
-        public string Name { get; set; }
+        /// <summary>
+        /// Name of the image file
+        /// </summary>
+        public string image { get; set; }
+        /// <summary>
+        /// List of urls where the image can be found
+        /// </summary>
+        public List<string> imageUrls { get; set; }
+        /// <summary>
+        /// Credit for the recipe
+        /// </summary>
+        public string author { get; set; }
 
-        //Ctors
-        public Recipe_Short() { Id = -1; ImageURL = ""; readyInMinutes = -1; servings = -1; Name = ""; }
-        public Recipe_Short(Recipe_Short Rshort)
-        {
-            Id = Rshort.Id;
-            ImageURL = Rshort.ImageURL;
-            readyInMinutes = Rshort.readyInMinutes;
-            servings = Rshort.readyInMinutes;
-            Name = Rshort.Name;
-        }
     }
 }
