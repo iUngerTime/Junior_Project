@@ -4,6 +4,7 @@ using System.Text;
 
 namespace PantryAid.Core.Models
 {
+
     /// <summary>
     /// A full recipe with instructions, ingredients, image, ect.
     /// </summary>
@@ -220,8 +221,5 @@ namespace PantryAid.Core.Models
             extendedIngredients = R.extendedIngredients;
             winePairing = R.winePairing;
         }
-
     }
-
-
 }

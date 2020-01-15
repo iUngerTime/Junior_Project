@@ -35,5 +35,6 @@ namespace PantryAid.Core.Models
         /// Credit for the recipe
         /// </summary>
         public string author { get; set; }
+
     }
 }

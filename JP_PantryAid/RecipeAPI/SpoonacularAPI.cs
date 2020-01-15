@@ -98,7 +98,6 @@ namespace SpoonacularAPI
             return result.results;
             //List<RecipeInformationRootObject> recipeInfoList = ToRecipeInformationList(result);
             //return ToRecipeShortList(recipeInfoList);
-
         }
 
 
@@ -166,6 +165,7 @@ namespace SpoonacularAPI
             {
                 RestResponse response = client.Execute(request);
                 //try to get the data out of the response
+
                 result = JsonConvert.DeserializeObject<SpoonacularRecipeShortSearchResult>(response.Content); 
                 return result;
             }
@@ -233,7 +233,6 @@ namespace SpoonacularAPI
         //SAVE - Will be used in the Image getting functions
         //recipe.ImageURL = m_URL + "/recipeImages/" + recipe.Id + "-" + m_RecipeImagex + "x" + m_RecipeImagey;
 
-
         /// <summary>
         /// Used to set up the struct with the recommended configuration. 
         /// </summary>
@@ -274,12 +273,15 @@ namespace SpoonacularAPI
 
 
 
+
+
         //The key for our API
         private static string m_APYKey = "6da40b0861384c3dbf879eb47b5bb539";
         //These two urls are broken apart as the API has different sub addresses for different types of searches
         private static string m_URL = "https://api.spoonacular.com";
         private static string m_RecipeSearchURL = "recipes/search";
         private static string m_RecipeInformationURL = "recipes/";
+
 
         //Limits the max number of results to return.
         private static int m_maxResults = 20;
@@ -324,7 +326,9 @@ namespace SpoonacularAPI
         /// </remarks>
         public static int m_RecipeImagey = 370;
 
+
         //Singleton instance
+
         private static SpoonacularAPI m_instance;
         
 
