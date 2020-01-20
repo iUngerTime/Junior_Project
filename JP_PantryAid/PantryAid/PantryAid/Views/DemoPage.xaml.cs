@@ -8,6 +8,7 @@ using Xamarin.Forms.Xaml;
 using System.Data.SqlClient;
 using Database_Helpers;
 using PantryAid.Core.Models;
+using PantryAid.Views;
 using System.Net;
 
 namespace PantryAid
@@ -36,7 +37,7 @@ namespace PantryAid
 
         private async void ConButton_Clicked(object sender, EventArgs e)
         {
-            string query = "SELECT CommonName FROM INGREDIENT;";
+            string query = "SELECT Name FROM INGREDIENT;";
 
             SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             SqlCommand comm = new SqlCommand(query, con);
@@ -88,7 +89,8 @@ namespace PantryAid
 
         private void RecipeFinderButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(new RecipePage());
+            //Navigation.PushModalAsync(new RecipePage());
+            Navigation.PushModalAsync(new ShortRecipePage());
         }
     }
 }

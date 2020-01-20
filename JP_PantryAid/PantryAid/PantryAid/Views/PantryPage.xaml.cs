@@ -65,7 +65,7 @@ namespace PantryAid
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             string ConnectionString = SqlHelper.GetConnectionString();
-            string query = String.Format("SELECT IngredientID, CommonName FROM INGREDIENT WHERE CommonName='{0}'", IngredientEntry.Text);
+            string query = String.Format("SELECT IngredientID, Name FROM INGREDIENT WHERE Name='{0}'", IngredientEntry.Text);
 
             SqlConnection con = new SqlConnection(ConnectionString);
             SqlCommand comm = new SqlCommand(query, con);
@@ -163,7 +163,7 @@ namespace PantryAid
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
             string ConnectionString = SqlHelper.GetConnectionString();
-            string query = String.Format("SELECT IngredientID, CommonName FROM INGREDIENT WHERE CommonName='{0}'", IngredientEntry.Text);
+            string query = String.Format("SELECT IngredientID, Name FROM INGREDIENT WHERE Name='{0}'", IngredientEntry.Text);
 
             SqlConnection con = new SqlConnection(ConnectionString);
             SqlCommand comm = new SqlCommand(query, con);
