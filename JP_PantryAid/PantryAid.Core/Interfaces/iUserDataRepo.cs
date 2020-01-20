@@ -54,7 +54,7 @@ namespace PantryAid.Core.Interfaces
         /// <param name="currUser">The current user to add a new recipe to</param>
         /// <param name="newFavorite">The recipe that is to be a favorite</param>
         /// <returns>0 if successful, 1 if failed</returns>
-        int AddFavoriteRecipe(User currUser, Recipe newFavorite);
+        int AddFavoriteRecipe(User currUser, Recipe_Short newFavorite);
 
         /// <summary>
         /// Remove a favorited recipe from a user
@@ -62,7 +62,7 @@ namespace PantryAid.Core.Interfaces
         /// <param name="currUser">The current user to remove an old favorite recipe from</param>
         /// <param name="nonFavorite">The recipe to remove from the list of favorites</param>
         /// <returns>0 if successful, 1 if failed</returns>
-        int RemoveFavoriteRecipe(User currUser, Recipe nonFavorite);
+        int RemoveFavoriteRecipe(User currUser, Recipe_Short nonFavorite);
 
         /// <summary>
         /// Add a disliked recipe to a user
@@ -70,7 +70,7 @@ namespace PantryAid.Core.Interfaces
         /// <param name="currUser">The user to add a new disliked recipe to</param>
         /// <param name="newDisliked">The recipe to add to the list of dislikes</param>
         /// <returns>0 if successful, 1 if failed</returns>
-        int AddDislikedRecipe(User currUser, Recipe newDisliked);
+        int AddDislikedRecipe(User currUser, Recipe_Short newDisliked);
 
         /// <summary>
         /// Remove a disliked recipe from a user
@@ -78,6 +78,6 @@ namespace PantryAid.Core.Interfaces
         /// <param name="currUser">The user to remove an old disliked recipe from</param>
         /// <param name="nonDisliked">The recipe to remove from the list of dislikes</param>
         /// <returns>0 if successful, 1 if failed</returns>
-        int RemoveDislikedRecipe(User currUser, Recipe nonDisliked);
+        int RemoveDislikedRecipe(User currUser, Recipe_Short nonDisliked);
     }
 }
