@@ -8,7 +8,7 @@ namespace PantryAid.Core.Interfaces
     /// <summary>
     /// Defines any functions related to editing/retrieving user info
     /// </summary>
-    interface iUserDataRepo
+    public interface iUserDataRepo
     {
         /// <summary>
         /// Adds a new user to the database
