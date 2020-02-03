@@ -10,16 +10,17 @@ using PantryAid.Core.Models;
 namespace Database_Helpers
 {
     /// <summary>
-    /// 
+    /// This class holds helper functions that interact with a sql database
+    /// The database connected to is definend in "SQL_Helper_Class.cs" in the same namespace
     /// </summary>
     public class UserData : iUserDataRepo
     {
         /// <summary>
-        /// 
+        /// Adds an alergy to a user's list of alergies
         /// </summary>
-        /// <param name="currUser"></param>
-        /// <param name="newAlergy"></param>
-        /// <returns></returns>
+        /// <param name="currUser">The user to operate on</param>
+        /// <param name="newAlergy">Alergy to be added to database</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int AddAlergy(User currUser, Ingredient newAlergy)
         {
             currUser.Allergies.Add(newAlergy);
@@ -31,33 +32,24 @@ namespace Database_Helpers
             try
             {
                 con.Open();
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-
-            try
-            {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
-
 
             con.Close();
 
-            return 0;
+            return PASS;
         }
 
         /// <summary>
-        /// 
+        /// Adds a recipe to a user's list of dislikes
         /// </summary>
-        /// <param name="currUser"></param>
-        /// <param name="newDisliked"></param>
-        /// <returns></returns>
+        /// <param name="currUser">The user to operate on</param>
+        /// <param name="newDisliked">The disliked recipe to add to database</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int AddDislikedRecipe(User currUser, Recipe_Short newDisliked)
         {
             currUser.DislikedRecipes.Add(newDisliked);
@@ -69,32 +61,24 @@ namespace Database_Helpers
             try
             {
                 con.Open();
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-
-            try
-            {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
 
             con.Close();
 
-            return 0;
+            return PASS;
         }
 
         /// <summary>
-        /// 
+        /// Adds a favorite recipe to an existing user in the database
         /// </summary>
-        /// <param name="currUser"></param>
-        /// <param name="newFavorite"></param>
-        /// <returns></returns>
+        /// <param name="currUser">The user to operate on</param>
+        /// <param name="newFavorite">New favorite recipe to add into database</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int AddFavoriteRecipe(User currUser, Recipe_Short newFavorite)
         {
             currUser.FavoriteRecipes.Add(newFavorite);
@@ -106,31 +90,23 @@ namespace Database_Helpers
             try
             {
                 con.Open();
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-
-            try
-            {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
 
             con.Close();
 
-            return 0;
+            return PASS;
         }
 
         /// <summary>
-        /// 
+        /// Adds a user to a sql database
         /// </summary>
-        /// <param name="newUser"></param>
-        /// <returns></returns>
+        /// <param name="newUser">New User to add to database</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int AddUser(User newUser)
         {
             string query = String.Format("INSERT INTO PERSON VALUES('{0}', '{1}');", newUser.FullName, newUser.Email);
@@ -140,31 +116,23 @@ namespace Database_Helpers
             try
             {
                 con.Open();
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-
-            try
-            {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
 
             con.Close();
 
-            return 0;
+            return PASS;
         }
 
         /// <summary>
-        /// 
+        /// Deletes a user from the sql database
         /// </summary>
-        /// <param name="delUser"></param>
-        /// <returns></returns>
+        /// <param name="delUser">The user to be deleted</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int DeleteUser(User delUser)
         {
             string query = String.Format("DELETE FROM PERSON WHERE UserID={0};", delUser.Id);
@@ -172,45 +140,44 @@ namespace Database_Helpers
             SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             SqlCommand comm = new SqlCommand(query, con);
 
+            //Remove Person
             try
             {
                 con.Open();
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-
-            try
-            {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
 
             comm = new SqlCommand(query2, con);
 
+            //Remove Pantry
             try
             {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
+
+            /* MUST IMPLEMENT
+             * REMOVE ALERGIES
+             * REMOVE FAVORITES
+             * REMOVE DISLIKES */
 
             con.Close();
 
-            return 0;
+            return PASS;
         }
 
         /// <summary>
-        /// 
+        /// Edits a current user's info to the new info (WILL NOT CHANGE USER_ID)
         /// </summary>
-        /// <param name="currentInfo"></param>
-        /// <param name="newInfo"></param>
+        /// <param name="currentInfo">The current user's info</param>
+        /// <param name="newInfo">The new info to update to</param>
         /// <returns></returns>
         public int EditUserInfo(User currentInfo, User newInfo)
         {
@@ -218,11 +185,11 @@ namespace Database_Helpers
         }
 
         /// <summary>
-        /// 
+        /// Removes an alergy from a user's list of alergies
         /// </summary>
-        /// <param name="currUser"></param>
-        /// <param name="alergy"></param>
-        /// <returns></returns>
+        /// <param name="currUser">User to operate on</param>
+        /// <param name="alergy">Alergy to be removed from list of alergies</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int RemoveAlergy(User currUser, Ingredient alergy)
         {
             currUser.Allergies.Remove(alergy);
@@ -234,32 +201,24 @@ namespace Database_Helpers
             try
             {
                 con.Open();
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-
-            try
-            {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
 
             con.Close();
 
-            return 0;
+            return PASS;
         }
 
         /// <summary>
-        /// 
+        /// Removes a disliked recipe from a user's list of dislikes
         /// </summary>
-        /// <param name="currUser"></param>
-        /// <param name="nonDisliked"></param>
-        /// <returns></returns>
+        /// <param name="currUser">User to operate on</param>
+        /// <param name="nonDisliked">Recipe that is not a disliked recipe</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int RemoveDislikedRecipe(User currUser, Recipe_Short nonDisliked)
         {
             currUser.DislikedRecipes.Remove(nonDisliked);
@@ -271,32 +230,24 @@ namespace Database_Helpers
             try
             {
                 con.Open();
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-
-            try
-            {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
 
             con.Close();
 
-            return 0;
+            return PASS;
         }
 
         /// <summary>
-        /// 
+        /// Removes a favorited recipe from the list
         /// </summary>
-        /// <param name="currUser"></param>
-        /// <param name="nonFavorite"></param>
-        /// <returns></returns>
+        /// <param name="currUser">User to remove data from</param>
+        /// <param name="nonFavorite">Recipe in the user's list of favorites</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int RemoveFavoriteRecipe(User currUser, Recipe_Short nonFavorite)
         {
             currUser.DislikedRecipes.Remove(nonFavorite);
@@ -308,24 +259,19 @@ namespace Database_Helpers
             try
             {
                 con.Open();
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-
-            try
-            {
                 comm.ExecuteNonQuery();
             }
             catch (Exception)
             {
-                return -1;
+                return FAIL;
             }
 
             con.Close();
 
-            return 0;
+            return PASS;
         }
+
+        private int FAIL = 0;
+        private int PASS = 1;
     }
 }
