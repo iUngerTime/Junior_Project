@@ -13,6 +13,7 @@
             <Button x:Name="GListButton" Text="Go to Grocery List" Clicked="GListButton_Clicked"/>
             <Button x:Name="PantryButton" Text="Go to Pantry" Clicked="PantryButton_Clicked"/>
             <Button x:Name="RecipeFinderButton" Text="Go to Recipe Finder" Clicked="RecipeFinderButton_Clicked"/>
+            <Button x:Name="RecipeIngredientButton" Text="Go to Search By Ingredient" Clicked="RecipeIngredientButton_Clicked"/>
             <Button Text="Connection Button" x:Name="ConButton" FontSize="Large" Clicked="ConButton_Clicked"/>
             <Label Text="IngredientName1" x:Name="resultLabel1" FontSize="Title" HorizontalTextAlignment="Center"/>
             <Label Text="IngredientName2" x:Name="resultLabel2" FontSize="Title" HorizontalTextAlignment="Center"/>
