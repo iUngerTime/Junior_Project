@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,10 +51,32 @@ namespace Database_Helpers
         /// 
         /// </summary>
         /// <param name="newUser"></param>
-        /// <returns></returns>
+        /// <returns>Returns 1 if it worked</returns>
         public int AddUser(User newUser)
         {
-            throw new NotImplementedException();
+            //Values needed to add user
+            string userName = newUser.FullName;
+            string email = newUser.Email;
+
+            //create the user in the database
+            string ConnectionString = SqlHelper.GetConnectionString();
+            string query = String.Format("INSERT INTO PERSON VALUES('{0}', '{1}');", userName, email);
+
+            SqlConnection con = new SqlConnection(ConnectionString);
+            SqlCommand comm = new SqlCommand(query, con);
+
+            //If any of the following code fails, return 0 as it was not entered into database
+            try
+            {
+                con.Open();
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return FAIL;
+            }
+
+            return PASS;
         }
 
         /// <summary>
@@ -109,5 +132,8 @@ namespace Database_Helpers
         {
             throw new NotImplementedException();
         }
+
+        private int PASS = 1;
+        private int FAIL = 0;
     }
 }
