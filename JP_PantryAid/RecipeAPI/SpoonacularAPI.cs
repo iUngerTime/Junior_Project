@@ -133,16 +133,16 @@ namespace SpoonacularAPI
         }
 
         /// <summary>
-        /// Returns a list of RecipeByIngredient.  
+        /// Returns a list of RecipeByIngredient. The ingredients appear to be quite fuzzy
         /// </summary>
         /// <param name="ingredients"> a list of ingredients to search with</param>
         /// <param name="number">The maximum number of recipes to return (between 1 and 100). Defaults to 10.</param>
-        /// <param name="limitLicense">WWhether the recipes should have an open license that allows display with proper attribution.</param>
-        /// <param name="ranking">Whether to maximize used ingredients (1) or minimize missing ingredients (2) first.</param>
-        /// <param name="ignorePantry">Whether to ignore typical pantry items, such as water, salt, flour, etc.</param>
+        /// <param name="limitLicense">Whether the recipes should have an open license that allows display with proper attribution. Default to true</param>
+        /// <param name="ranking">Whether to maximize used ingredients (1) or minimize missing ingredients (2) first. 2 is best most of the time</param>
+        /// <param name="ignorePantry">Whether to ignore typical pantry items, such as water, salt, flo</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public List<RecipeByIngredient> FindRecipeShortByIngredients(List<string> ingredients, int number, bool limitLicense = true, int ranking = 2, bool ignorePantry = true)
+        public List<RecipeByIngredient> FindRecipeByIngredients(List<string> ingredients, int number, bool limitLicense = true, int ranking = 2, bool ignorePantry = true)
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeSearchByIngredientsURL, Method.GET);
@@ -163,8 +163,8 @@ namespace SpoonacularAPI
                 number = 1;
             request.AddParameter("number", number);
             request.AddParameter("limitLicense", limitLicense);
-            //request.AddParameter("ranking", ranking);
-            //request.AddParameter("ignorePantry", ignorePantry);
+            request.AddParameter("ranking", ranking);
+            request.AddParameter("ignorePantry", ignorePantry);
             request.AddParameter("apiKey", m_APYKey);
 
             //Execute the query
@@ -185,6 +185,11 @@ namespace SpoonacularAPI
         }
 
 
+        /// <summary>
+        /// Queries the API for short recipes based off the passed params
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         private SpoonacularRecipeShortSearchResult QueryAPI(RecipeSearchParams param)
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);

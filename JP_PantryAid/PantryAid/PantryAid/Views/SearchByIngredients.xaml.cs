@@ -27,7 +27,7 @@ namespace PantryAid.Views
             Recipe_Full recipeFull = new Recipe_Full();
             if (query.Length > 0)
             {
-                recipeBy = api.FindRecipeShortByIngredients(tempquery, 1, true, 2, true)[0];
+                recipeBy = api.FindRecipeByIngredients(tempquery, 1, true, 2, true)[0];
                 //recipeFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetRecipeFull(recipeShort);
 
                 SetLabels(recipeBy);
