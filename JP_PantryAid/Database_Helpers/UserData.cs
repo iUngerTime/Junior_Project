@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,34 @@ namespace Database_Helpers
         /// <returns></returns>
         public int AddAlergy(User currUser, Ingredient newAlergy)
         {
-            throw new NotImplementedException();
+            currUser.Allergies.Add(newAlergy);
+
+            string query = String.Format("INSERT INTO ALERGIES VALUES({0}, {1})", SqlHelper.UserID, newAlergy.IngredientID);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+
+            con.Close();
+
+            return 0;
         }
 
         /// <summary>
@@ -32,7 +60,33 @@ namespace Database_Helpers
         /// <returns></returns>
         public int AddDislikedRecipe(User currUser, Recipe_Short newDisliked)
         {
-            throw new NotImplementedException();
+            currUser.DislikedRecipes.Add(newDisliked);
+
+            string query = String.Format("INSERT INTO DISLIKED_RECIPE VALUES({0}, {1})", SqlHelper.UserID, newDisliked.id);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
 
         /// <summary>
@@ -43,7 +97,33 @@ namespace Database_Helpers
         /// <returns></returns>
         public int AddFavoriteRecipe(User currUser, Recipe_Short newFavorite)
         {
-            throw new NotImplementedException();
+            currUser.FavoriteRecipes.Add(newFavorite);
+
+            string query = String.Format("INSERT INTO FAVORITE_RECIPE VALUES({0}, {1})", SqlHelper.UserID, newFavorite.id);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
 
         /// <summary>
@@ -53,7 +133,31 @@ namespace Database_Helpers
         /// <returns></returns>
         public int AddUser(User newUser)
         {
-            throw new NotImplementedException();
+            string query = String.Format("INSERT INTO PERSON VALUES('{0}', '{1}');", newUser.FullName, newUser.Email);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
 
         /// <summary>
@@ -63,7 +167,43 @@ namespace Database_Helpers
         /// <returns></returns>
         public int DeleteUser(User delUser)
         {
-            throw new NotImplementedException();
+            string query = String.Format("DELETE FROM PERSON WHERE UserID={0};", delUser.Id);
+            string query2 = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0};", delUser.Id);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            comm = new SqlCommand(query2, con);
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
 
         /// <summary>
@@ -85,7 +225,33 @@ namespace Database_Helpers
         /// <returns></returns>
         public int RemoveAlergy(User currUser, Ingredient alergy)
         {
-            throw new NotImplementedException();
+            currUser.Allergies.Remove(alergy);
+
+            string query = String.Format("DELETE FROM ALERGIES WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, alergy.IngredientID);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
 
         /// <summary>
@@ -96,7 +262,33 @@ namespace Database_Helpers
         /// <returns></returns>
         public int RemoveDislikedRecipe(User currUser, Recipe_Short nonDisliked)
         {
-            throw new NotImplementedException();
+            currUser.DislikedRecipes.Remove(nonDisliked);
+
+            string query = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, nonDisliked.id);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
 
         /// <summary>
@@ -107,7 +299,33 @@ namespace Database_Helpers
         /// <returns></returns>
         public int RemoveFavoriteRecipe(User currUser, Recipe_Short nonFavorite)
         {
-            throw new NotImplementedException();
+            currUser.DislikedRecipes.Remove(nonFavorite);
+
+            string query = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, nonFavorite.id);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
     }
 }
