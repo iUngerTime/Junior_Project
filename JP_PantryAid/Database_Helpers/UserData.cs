@@ -48,9 +48,9 @@ namespace Database_Helpers
         }
 
         /// <summary>
-        /// Adds a user to a SQL database
+        /// 
         /// </summary>
-        /// <param name="newUser">The user model need the username and email for insertion</param>
+        /// <param name="newUser"></param>
         /// <returns>Returns 1 if it worked</returns>
         public int AddUser(User newUser)
         {
