@@ -107,12 +107,72 @@ namespace Database_Helpers
 
         public int AddUser(User newUser)
         {
-            throw new NotImplementedException();
+            string query = String.Format("INSERT INTO PERSON VALUES('{0}', '{1}');", newUser.FullName, newUser.Email);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
 
         public int DeleteUser(User delUser)
         {
-            throw new NotImplementedException();
+            string query = String.Format("DELETE FROM PERSON WHERE UserID={0};", delUser.Id);
+            string query2 = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0};", delUser.Id);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            comm = new SqlCommand(query2, con);
+
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+
+            con.Close();
+
+            return 0;
         }
 
         public int EditUserInfo(User currentInfo, User newInfo)
