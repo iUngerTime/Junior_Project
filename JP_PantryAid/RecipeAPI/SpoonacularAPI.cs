@@ -132,6 +132,64 @@ namespace SpoonacularAPI
             return result.results;
         }
 
+        /// <summary>
+        /// Returns a list of RecipeByIngredient. The ingredients appear to be quite fuzzy
+        /// </summary>
+        /// <param name="ingredients"> a list of ingredients to search with</param>
+        /// <param name="number">The maximum number of recipes to return (between 1 and 100). Defaults to 10.</param>
+        /// <param name="limitLicense">Whether the recipes should have an open license that allows display with proper attribution. Default to true</param>
+        /// <param name="ranking">Whether to maximize used ingredients (1) or minimize missing ingredients (2) first. 2 is best most of the time</param>
+        /// <param name="ignorePantry">Whether to ignore typical pantry items, such as water, salt, flo</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public List<RecipeByIngredient> FindRecipeByIngredients(List<string> ingredients, int number, bool limitLicense = true, int ranking = 2, bool ignorePantry = true)
+        {
+            RestClient client = new RestClient(SpoonacularAPI.m_URL);
+            RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeSearchByIngredientsURL, Method.GET);
+
+            //Set up the query parameters
+            if(ingredients.Count < 1)
+                throw new Exception("Error no ingredients given");
+            string ingreds = ingredients[0];
+            for(int i = 1; i < ingredients.Count; ++i) //set up the list of ingredients as a string of comma separated entries
+            {
+                ingreds += "," + ingredients[i];
+            }
+
+            request.AddParameter("ingredients", ingreds);
+            if (number > m_maxResults)
+                number = 20;
+            if (number < 0)
+                number = 1;
+            request.AddParameter("number", number);
+            request.AddParameter("limitLicense", limitLicense);
+            request.AddParameter("ranking", ranking);
+            request.AddParameter("ignorePantry", ignorePantry);
+            request.AddParameter("apiKey", m_APYKey);
+
+            //Execute the query
+            List<RecipeByIngredient> result;
+            try
+            {
+                RestResponse response = client.Execute(request);
+                //try to get the data out of the response
+
+                result = JsonConvert.DeserializeObject<List<RecipeByIngredient>>(response.Content);
+                return result;
+            }
+            catch (Exception)
+            {
+                //add call to exception logger
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// Queries the API for short recipes based off the passed params
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         private SpoonacularRecipeShortSearchResult QueryAPI(RecipeSearchParams param)
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
@@ -184,6 +242,32 @@ namespace SpoonacularAPI
         /// <returns></returns>
         public Recipe_Full GetRecipeFull(int recipeId)
         {
+            RestClient client = new RestClient(SpoonacularAPI.m_URL);
+            Recipe_Full recipe;
+            try
+            {
+                RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeInformationURL + recipeId + "/information", Method.GET);
+                request.AddParameter("apiKey", m_APYKey);
+                var response = client.Execute(request);
+                //try to get the data out of the response
+                recipe = JsonConvert.DeserializeObject<Recipe_Full>(response.Content);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return recipe;
+        }
+
+        /// <summary>
+        /// Returns a Recipe Full given a RecipeByIngredient
+        /// </summary>
+        /// <param name="recipeBy"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public Recipe_Full GetRecipeFull(RecipeByIngredient recipeBy)
+        {
+            int recipeId = recipeBy.id;
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             Recipe_Full recipe;
             try
@@ -281,6 +365,7 @@ namespace SpoonacularAPI
         private static string m_URL = "https://api.spoonacular.com";
         private static string m_RecipeSearchURL = "recipes/search";
         private static string m_RecipeInformationURL = "recipes/";
+        private static string m_RecipeSearchByIngredientsURL = "recipes/findByIngredients";
 
 
         //Limits the max number of results to return.

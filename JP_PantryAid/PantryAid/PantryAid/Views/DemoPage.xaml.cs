@@ -92,5 +92,11 @@ namespace PantryAid
             //Navigation.PushModalAsync(new RecipePage());
             Navigation.PushModalAsync(new ShortRecipePage());
         }
+        private void RecipeIngredientButton_Clicked(object sender, EventArgs e)
+        {
+            //Navigation.PushModalAsync(new RecipePage());
+            Navigation.PushModalAsync(new SearchByIngredients());
+        }
+        
     }
 }
