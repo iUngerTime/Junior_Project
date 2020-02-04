@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PantryAid.Views;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,7 +12,7 @@ namespace PantryAid
             InitializeComponent();
 
             //Set the home page as navigation page
-            MainPage = new NavigationPage(new LogInPage());
+            MainPage = new NavigationPage(new SignInPage());
         }
 
         protected override void OnStart()
