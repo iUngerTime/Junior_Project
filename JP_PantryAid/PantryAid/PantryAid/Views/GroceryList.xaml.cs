@@ -47,7 +47,8 @@ namespace PantryAid
             File.Delete(FilePath); //This needs to be removed later, but for test purposes this will reset the file when you reopen the page
             if (!File.Exists(FilePath))
             {
-                File.WriteAllText(FilePath, "67-Butter\n43-Cheese\n98-Noodles\n"); //Creates the file and adds test data
+                //File.WriteAllText(FilePath, "67-Butter\n43-Cheese\n98-Noodles\n"); //Creates the file and adds test data
+                File.WriteAllText(FilePath, "");
             } 
 
             this.BindingContext = _list;
@@ -72,7 +73,7 @@ namespace PantryAid
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             string ConnectionString = SqlHelper.GetConnectionString();
-            string query = String.Format("SELECT IngredientID, Name FROM INGREDIENT WHERE Name='{0}';", IngredientEntry.Text); 
+            string query = String.Format("SELECT IngredientID, LOWER(LongDesc) FROM INGREDIENT WHERE LOWER(LongDesc) LIKE '{0},%';", IngredientEntry.Text.ToLower()); 
 
             SqlConnection con = new SqlConnection(ConnectionString);
             SqlCommand comm = new SqlCommand(query, con);
@@ -93,7 +94,9 @@ namespace PantryAid
                 //This section assumes that no Ingredients have duplicate CommonNames
                 if (read.Read())
                 {
-                    IngredientItem G = new IngredientItem(new Ingredient(read.GetInt32(0), read.GetString(1), ""), 0.0f, Measurements.Serving);
+                    string temp = read.GetString(1);
+                    string[] contents = temp.Split(',');
+                    IngredientItem G = new IngredientItem(new Ingredient(read.GetInt32(0), contents[0], ""), 0.0f, Measurements.Serving);
                     _list.Add(G);
 
                     File.AppendAllText(FilePath, String.Format("{0}-{1}\n", G.ID.ToString(), G.Name));
@@ -114,7 +117,8 @@ namespace PantryAid
         {
             string[] contents = File.ReadAllLines(FilePath);
             List<string> newcontents = new List<string>();
-            string selecteditem = IngredientEntry.Text;
+            string selecteditem = IngredientEntry.Text.ToLower();
+            bool found = false;
 
             //Find index of item to remove
             int i = 0;
@@ -122,11 +126,18 @@ namespace PantryAid
             {
                 string[] temp = line.Split('-');
 
-                if (selecteditem == temp[1])
+                if (selecteditem == temp[1].ToLower())
                 {
+                    found = true;
                     break;
                 }
                 ++i;
+            }
+
+            if (found == false)
+            {
+                await DisplayAlert("Error", "Could not find that ingredient", "OK");
+                return;
             }
 
             //Create a new array of all contents except for the one at index i

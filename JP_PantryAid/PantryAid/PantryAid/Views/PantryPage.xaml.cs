@@ -65,7 +65,7 @@ namespace PantryAid
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             string ConnectionString = SqlHelper.GetConnectionString();
-            string query = String.Format("SELECT IngredientID, Name FROM INGREDIENT WHERE Name='{0}'", IngredientEntry.Text);
+            string query = String.Format("SELECT IngredientID, LOWER(LongDesc) FROM INGREDIENT WHERE LOWER(LongDesc) LIKE '{0},%';", IngredientEntry.Text.ToLower());
 
             SqlConnection con = new SqlConnection(ConnectionString);
             SqlCommand comm = new SqlCommand(query, con);
@@ -100,6 +100,10 @@ namespace PantryAid
                 {
                     ingrid = read.GetInt32(0);
                     ingrname = read.GetString(1);
+                    //Long desc currently contains a bunch of garbage after the first comma
+                    //This grabs the first word before the comma
+                    string[] contents = ingrname.Split(',');
+                    ingrname = contents[0];
                 }
                 read.Close();
             }
@@ -163,7 +167,7 @@ namespace PantryAid
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
             string ConnectionString = SqlHelper.GetConnectionString();
-            string query = String.Format("SELECT IngredientID, Name FROM INGREDIENT WHERE Name='{0}'", IngredientEntry.Text);
+            string query = String.Format("SELECT IngredientID, LOWER(LongDesc) FROM INGREDIENT WHERE LOWER(LongDesc) LIKE '{0},%';", IngredientEntry.Text.ToLower());
 
             SqlConnection con = new SqlConnection(ConnectionString);
             SqlCommand comm = new SqlCommand(query, con);
