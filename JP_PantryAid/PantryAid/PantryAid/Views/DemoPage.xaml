@@ -6,14 +6,32 @@
              mc:Ignorable="d"
              x:Class="PantryAid.DemoPage">
     <ContentPage.Content>
-        <StackLayout>
-            <!--<Button Text="Increment" x:Name="IncrButton" Clicked="IncrButton_Clicked"  FontSize="Body"/>
-            <Label Text="0" x:Name="IncrLabel" FontSize="Header" HorizontalTextAlignment="Center"/>
-            <Button Text="Decrement" x:Name="DecrButton" Clicked="DecrButton_Clicked"  FontSize="Body"/>-->
-            <Button x:Name="GListButton" Text="Go to Grocery List" Clicked="GListButton_Clicked"/>
-            <Button x:Name="PantryButton" Text="Go to Pantry" Clicked="PantryButton_Clicked"/>
-            <Button x:Name="RecipeFinderButton" Text="Go to Recipe Finder" Clicked="RecipeFinderButton_Clicked"/>
-            <Button x:Name="RecipeIngredientButton" Text="Go to Search By Ingredient" Clicked="RecipeIngredientButton_Clicked"/>
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="175"/>
+                <RowDefinition Height="175"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Text="Welcome!" FontSize="20" HorizontalTextAlignment="Center" TextColor="Red"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="175"/>
+                    <ColumnDefinition Width="175"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="GListButton" Text="Grocery List" Clicked="GListButton_Clicked"/>
+                <Button Grid.Column="1" x:Name="PantryButton" Text="Pantry" Clicked="PantryButton_Clicked"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="175"/>
+                    <ColumnDefinition Width="175"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="RecipeFinderButton" Text="Recipe Finder" Clicked="RecipeFinderButton_Clicked"/>
+                <Button Grid.Column="1" x:Name="RecipeIngredientButton" Text="Search By Ingredient" Clicked="RecipeIngredientButton_Clicked"/>
+            </Grid>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
