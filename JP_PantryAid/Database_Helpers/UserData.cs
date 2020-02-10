@@ -137,6 +137,9 @@ namespace Database_Helpers
         {
             string query = String.Format("DELETE FROM PERSON WHERE UserID={0};", delUser.Id);
             string query2 = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0};", delUser.Id);
+            string query3 = String.Format("DELETE FROM FROM ALERGIES WHERE UserID={0}", delUser.Id);
+            string query4 = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0}", delUser.Id);
+            string query5 = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0}", delUser.Id);
             SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             SqlCommand comm = new SqlCommand(query, con);
 
@@ -163,10 +166,41 @@ namespace Database_Helpers
                 return FAIL;
             }
 
-            /* MUST IMPLEMENT
-             * REMOVE ALERGIES
-             * REMOVE FAVORITES
-             * REMOVE DISLIKES */
+            comm = new SqlCommand(query3, con);
+
+            //Remove Allergies
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return FAIL;
+            }
+
+            comm = new SqlCommand(query4, con);
+
+            //Remove Favorites
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return FAIL;
+            }
+
+            comm = new SqlCommand(query5, con);
+
+            //Remove Disliked
+            try
+            {
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return FAIL;
+            }
 
             con.Close();
 
@@ -181,7 +215,22 @@ namespace Database_Helpers
         /// <returns></returns>
         public int EditUserInfo(User currentInfo, User newInfo)
         {
-            throw new NotImplementedException();
+            string query = String.Format("UPDATE PERSON SET FullName='{0}', Email='{1}' WHERE UserID={2};", newInfo.FullName, newInfo.Email, currentInfo.Id);
+            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlCommand comm = new SqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                return FAIL;
+            }
+
+            con.Close();
+            return PASS;
         }
 
         /// <summary>
