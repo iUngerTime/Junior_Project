@@ -14,9 +14,9 @@
             </StackLayout>
             <StackLayout Orientation="Horizontal" Padding="5">
                 <Label Text="Email:" FontSize="Large"/>
-                <Entry x:Name="emailBox" Placeholder="Email goes here" FontSize="Large" />
+                <Entry x:Name="emailBox" Placeholder="Email goes here" FontSize="Large" Completed="EmailBox_OnCompleted" />
             </StackLayout>
-            <Button Text="Log in" FontSize="Large" Clicked="LogInClick"/>
+            <!--<Button Text="Log in" FontSize="Large" Clicked="LogInClick"/>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

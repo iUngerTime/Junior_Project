@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Data.SqlClient;
 using Database_Helpers;
+using PantryAid.Core.Models;
+using PantryAid.Views;
+using System.Net;
 
 namespace PantryAid
 {
@@ -19,48 +21,24 @@ namespace PantryAid
             InitializeComponent();
         }
 
-        private void IncrButton_Clicked(object sender, EventArgs e)
+        private void GListButton_Clicked(object sender, EventArgs e)
         {
-            int i = Convert.ToInt32(IncrLabel.Text);
-            ++i;
-            IncrLabel.Text = i.ToString();
+            Navigation.PushModalAsync(new GroceryList());
         }
 
-        private void DecrButton_Clicked(object sender, EventArgs e)
+        private void PantryButton_Clicked(object sender, EventArgs e)
         {
-            int i = Convert.ToInt32(IncrLabel.Text);
-            --i;
-            IncrLabel.Text = i.ToString();
+            Navigation.PushModalAsync(new PantryPage());
         }
 
-        private async void ConButton_Clicked(object sender, EventArgs e)
+        private void RecipeFinderButton_Clicked(object sender, EventArgs e)
         {
-            string query = "SELECT CommonName FROM INGREDIENT;";
-
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
-            try
-            {
-                con.Open();
-                
-                SqlDataReader read = comm.ExecuteReader();
-                read.Read();
-                resultLabel1.Text = read.GetValue(0).ToString();
-                read.Read();
-                resultLabel2.Text = read.GetValue(0).ToString();
-                read.Read();
-                resultLabel3.Text = read.GetValue(0).ToString();
-                read.Read();
-                resultLabel4.Text = read.GetValue(0).ToString();
-
-                await DisplayAlert("Connected", "Successfully connected!", "YES");
-
-                con.Close();
-            }
-            catch (Exception)
-            {
-                await DisplayAlert("Failed", "Successfully failed!", "NO");
-            }
+            Navigation.PushModalAsync(new ShortRecipePage());
         }
+        private void RecipeIngredientButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new SearchByIngredients());
+        }
+        
     }
 }

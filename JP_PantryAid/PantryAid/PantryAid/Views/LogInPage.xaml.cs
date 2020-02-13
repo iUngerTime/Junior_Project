@@ -57,7 +57,10 @@ namespace PantryAid
                 SqlDataReader read = comm.ExecuteReader();
 
                 if (read.Read())
+                {
                     auth = true;
+                    SqlHelper.UserID = read.GetInt32(0);
+                }
 
                 con.Close();
             }
@@ -65,6 +68,12 @@ namespace PantryAid
             { }
 
             return auth;
+        }
+
+        //When user presses enter
+        private void EmailBox_OnCompleted(object sender, EventArgs e)
+        {
+            LogInClick(null,null);  //Simulate clicking 
         }
     }
 }

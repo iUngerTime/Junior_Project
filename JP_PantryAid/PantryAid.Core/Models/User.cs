@@ -4,13 +4,15 @@ using System.Text;
 
 namespace PantryAid.Core.Models
 {
+    /// <summary>
+    /// Model to contain information pertinent to a user
+    /// </summary>
     public class User
     {
-        public string Handle { get; set; }
-        public string email { get; set; }
-        public List<Ingredient> Alergies { get; set; }
-        public List<Recipe> FavoriteRecipes { get; set; }
-        public List<Recipe> DislikedRecipes { get; set; }
-
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public List<Ingredient> Allergies { get; set; }
+        public List<Recipe_Full> FavoriteRecipes { get; set; }
+        public List<Recipe_Full> DislikedRecipes { get; set; }
     }
 }
