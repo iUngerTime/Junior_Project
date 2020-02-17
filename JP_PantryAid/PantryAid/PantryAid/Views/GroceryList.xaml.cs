@@ -12,6 +12,7 @@ using Xamarin.Forms.Xaml;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using PantryAid.Core.Interfaces;
 
 
 /*
@@ -65,14 +66,14 @@ namespace PantryAid
             {
                 string[] temp = line.Split('-'); //temp should always have only two strings contained after this point, the ID and the Name
 
-                IngredientItem G = new IngredientItem(new Ingredient(Convert.ToInt32(temp[0]), temp[1], ""), 0.0f, Measurements.Serving);
+                IngredientItem G = new IngredientItem(new Ingredient(Convert.ToInt32(temp[0]), temp[1]), 0.0f, Measurements.Serving);
                 _list.Add(G);
             }
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            string ConnectionString = SqlHelper.GetConnectionString();
+            /*string ConnectionString = SqlHelper.GetConnectionString();
             string query = String.Format("SELECT IngredientID, LOWER(LongDesc) FROM INGREDIENT WHERE LOWER(LongDesc) LIKE '{0},%';", IngredientEntry.Text.ToLower()); 
 
             SqlConnection con = new SqlConnection(ConnectionString);
@@ -96,7 +97,7 @@ namespace PantryAid
                 {
                     string temp = read.GetString(1);
                     string[] contents = temp.Split(',');
-                    IngredientItem G = new IngredientItem(new Ingredient(read.GetInt32(0), contents[0], ""), 0.0f, Measurements.Serving);
+                    IngredientItem G = new IngredientItem(new Ingredient(read.GetInt32(0), contents[0]), 0.0f, Measurements.Serving);
                     _list.Add(G);
 
                     File.AppendAllText(FilePath, String.Format("{0}-{1}\n", G.ID.ToString(), G.Name));
@@ -110,7 +111,22 @@ namespace PantryAid
             {
                 await DisplayAlert("Error", "Exception thrown while reading from database", "OK");
             }
-            con.Close();
+            con.Close();*/
+            IngredientData ingrdata = new IngredientData();
+            Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
+
+            if (foundingr == null)
+            {
+                await DisplayAlert("Error", "That ingredient could not be found", "OK");
+                return;
+            }
+            else
+            {
+                IngredientItem item = new IngredientItem(foundingr, 1.0f, Measurements.Serving);
+                _list.Add(item);
+
+                File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.ID.ToString(), item.Name));
+            }
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
