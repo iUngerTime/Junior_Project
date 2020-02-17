@@ -35,13 +35,6 @@
                                         <ColumnDefinition Width="2.5*"/>
                                         <ColumnDefinition Width="2.5*"/>
                                     </Grid.ColumnDefinitions>
-
-
-                                    <!--<Label x:Name="IDLabel" Margin="10,0,10,0" Text="{Binding id}" VerticalOptions="Center" Grid.Column="0">
-                                        <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="Recipe_Tapped"/>
-                                        </Label.GestureRecognizers>
-                                    </Label>-->
                                     
                                     <!--<ImageButton Source="{ Binding imageUrls[0]}" HeightRequest="200" Clicked="Recipe_Tapped">
                                         <Image.GestureRecognizers>

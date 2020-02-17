@@ -59,26 +59,10 @@ namespace PantryAid
 
         private void SetLabels(Recipe_Full recipeFull)
         {
-            //ImageUrl = recipeFull.imageUrls[0];
-            //ImageUrl = recipeFull.image;
             Image1.Source = recipeFull.image;
             L_Instructions.Text = recipeFull.instructions;
             L_RecipeName.Text = recipeFull.title;
 
-            /*
-            if (recipeFull.winePairing.pairedWines != null && recipeFull.winePairing.pairedWines.Count > 0)
-            {
-                try
-                {
-                    L_Wine.Text = (string)recipeFull.winePairing.pairedWines[0];
-                }
-                catch (Exception)
-                {
-                    L_Wine.Text = "No wine pairings";
-                }
-            }
-            else
-                L_Wine.Text = "No wine pairings";*/
             StringBuilder insts = new StringBuilder();
             if (recipeFull.extendedIngredients != null)
             {
@@ -91,18 +75,10 @@ namespace PantryAid
                         .Append(" ")
                         .Append(VARIABLE.unit)
                         .Append("<br />"); //because it's html not ascii
-
-                    //if (VARIABLE.Measurements != null)
-                    //    .Append(VARIABLE.Measurements.us.amount)
-                    //    .Append(" ").Append(VARIABLE.Measurements.us.unitShort)
                 }
 
                 L_Ingredients.Text = insts.ToString();
             }
-
-
-            //resultLabel1.Text = recipeFull.title;
-            //resultLabel2.Text = recipeFull.instructions;
         }
 
         //When user hits enter

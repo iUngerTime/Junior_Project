@@ -7,7 +7,7 @@
              x:Class="PantryAid.Views.SearchByIngredients">
     <ContentPage.Content>
         <StackLayout>
-            <Entry x:Name="Recipe_Search" Placeholder="Comma Seperated lis of ingredients" Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
+            <Entry x:Name="Recipe_Search" Placeholder="Comma Separated list of ingredients" Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
             <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
                 <Grid Padding="0">
                     <Grid.ColumnDefinitions>

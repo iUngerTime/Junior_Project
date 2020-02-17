@@ -37,7 +37,6 @@ namespace PantryAid.Views
             if (ingrList.Count > 0)
             {
                 recipeBy = api.FindRecipeByIngredients(ingrList, 5, true, 2, true);
-                //recipeFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetRecipeFull(recipeShort);
 
                 //SetLabels(recipeBy);
                 _list.ListView.Clear();
@@ -46,8 +45,6 @@ namespace PantryAid.Views
                     _list.Add(r);
                 }
             }
-           
-           
         }
 
         private void Query()
@@ -61,51 +58,8 @@ namespace PantryAid.Views
             if (query.Length > 0)
             {
                 recipeBy = api.FindRecipeByIngredients(tempquery, 1, true, 2, true)[0];
-                //recipeFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetRecipeFull(recipeShort);
-
-                //SetLabels(recipeBy);
             }
         }
-
-        /*
-        private void SetLabels(SpoonacularAPI.SpoonacularAPI.RecipeByIngredient recipeBy)
-        {
-            L_Instructions.Text = recipeBy.missedIngredientCount.ToString();
-            L_RecipeName.Text = recipeBy.title;
-
-
-
-            StringBuilder insts = new StringBuilder();
-            if (recipeBy.missedIngredients != null)
-            {
-                foreach (var variable in recipeBy.missedIngredients)
-                {
-                    insts.Append("* ")
-                        .Append(variable.name)
-                        .Append("  ")
-                        .Append(variable.amount)
-                        .Append(" ");
-                    if (variable.unit.Length > 0)
-                        insts.Append(variable.unit);
-                    else if (variable.unitLong.Length > 0)
-                        insts.Append(variable.unitLong);
-                    else if(variable.unitShort.Length > 0)
-                        insts.Append(variable.unitShort);
-                    insts.Append("<br />"); //because it's html not ascii
-
-                    //if (VARIABLE.Measurements != null)
-                    //    .Append(VARIABLE.Measurements.us.amount)
-                    //    .Append(" ").Append(VARIABLE.Measurements.us.unitShort)
-                }
-
-                L_Ingredients.Text = insts.ToString();
-            }
-
-
-            //resultLabel1.Text = recipeFull.title;
-            //resultLabel2.Text = recipeFull.instructions;
-        }
-        */
 
         public void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {

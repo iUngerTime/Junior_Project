@@ -66,23 +66,8 @@ namespace PantryAid.Views
             DoSearch();
         }
 
-        private void Recipe_Tapped(object sender, EventArgs e)
-        {
-            //Note: This only works for clicking on IDs
-            //Label l = (Label)sender;
-            //Image i = (Image) sender;
-            ImageButton IB;
-            
-            
-            //Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(i)));
-        }
-
         private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //ListView view = (ListView) sender;
-            //int index = e.ItemIndex;
-            //Recipe_Short shrt =;
-
             Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[e.ItemIndex].id)));
         }
     }
