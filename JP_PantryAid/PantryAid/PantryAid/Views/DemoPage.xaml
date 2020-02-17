@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="PantryAid.DemoPage">
     <ContentPage.Content>
-        <Grid>
+        <Grid VerticalOptions="Start" HorizontalOptions="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="175"/>
@@ -32,6 +32,8 @@
                 <Button Grid.Column="0" x:Name="RecipeFinderButton" Text="Recipe Finder" Clicked="RecipeFinderButton_Clicked"/>
                 <Button Grid.Column="1" x:Name="RecipeIngredientButton" Text="Search By Ingredient" Clicked="RecipeIngredientButton_Clicked"/>
             </Grid>
+            <Image Source="https://spoonacular.com/recipeImages/Baked-Cheese-Manicotti-633508.jpg"></Image>
         </Grid>
+        
     </ContentPage.Content>
 </ContentPage>

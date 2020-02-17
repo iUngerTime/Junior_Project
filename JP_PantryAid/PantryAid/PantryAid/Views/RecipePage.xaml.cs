@@ -12,6 +12,14 @@ namespace PantryAid
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecipePage : ContentPage
     {
+        private string _imageUrl;
+
+        public string ImageUrl
+        {
+            get { return _imageUrl; }
+            set { _imageUrl = "https://spoonacular.com/recipeImages/" + value; }
+        }
+
         public RecipePage()
         {
             InitializeComponent();
@@ -51,9 +59,13 @@ namespace PantryAid
 
         private void SetLabels(Recipe_Full recipeFull)
         {
+            //ImageUrl = recipeFull.imageUrls[0];
+            //ImageUrl = recipeFull.image;
+            Image1.Source = recipeFull.image;
             L_Instructions.Text = recipeFull.instructions;
             L_RecipeName.Text = recipeFull.title;
 
+            /*
             if (recipeFull.winePairing.pairedWines != null && recipeFull.winePairing.pairedWines.Count > 0)
             {
                 try
@@ -66,7 +78,7 @@ namespace PantryAid
                 }
             }
             else
-                L_Wine.Text = "No wine pairings";
+                L_Wine.Text = "No wine pairings";*/
             StringBuilder insts = new StringBuilder();
             if (recipeFull.extendedIngredients != null)
             {

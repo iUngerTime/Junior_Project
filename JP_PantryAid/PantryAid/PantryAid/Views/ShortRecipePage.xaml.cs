@@ -35,11 +35,18 @@ namespace PantryAid.Views
 
             List<Recipe_Short> list = api.RecipeSearch(Recipe_Search.Text, _recipesPerPage, _offset);
 
-            foreach (Recipe_Short r in  list)
+
+
+
+            for (int i = 0; i < list.Count; i++)
             {
-                _list.Add(r);
+                list[i].imageUrls[0] = "https://spoonacular.com/recipeImages/" + list[i].imageUrls[0];
+                _list.Add(list[i]);
+                
             }
+           
         }
+
 
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
@@ -62,9 +69,21 @@ namespace PantryAid.Views
         private void Recipe_Tapped(object sender, EventArgs e)
         {
             //Note: This only works for clicking on IDs
-            Label l = (Label)sender;
+            //Label l = (Label)sender;
+            //Image i = (Image) sender;
+            ImageButton IB;
             
-            Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(l.Text)));
+            
+            //Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(i)));
+        }
+
+        private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            //ListView view = (ListView) sender;
+            //int index = e.ItemIndex;
+            //Recipe_Short shrt =;
+
+            Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[e.ItemIndex].id)));
         }
     }
 }
