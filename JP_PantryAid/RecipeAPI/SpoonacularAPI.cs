@@ -180,7 +180,8 @@ namespace SpoonacularAPI
             catch (Exception)
             {
                 //add call to exception logger
-                throw;
+                //throw;
+                return null;
             }
         }
 
