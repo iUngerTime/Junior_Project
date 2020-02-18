@@ -139,13 +139,13 @@ namespace Database_Helpers
 
                     int id = -1;
                     string name = "";
-                    float quant = 1.0f;
+                    double quant = 1.0f;
 
                     while (read.Read())
                     {
                         id = read.GetInt32(0);
                         name = read.GetString(1);
-                        //quant = read.GetFloat(2);
+                        quant = read.GetDouble(2);
                         Ingredient ing = new Ingredient(id, name);
                         IngredientItem ingi = new IngredientItem(ing, quant, Measurements.Serving);
 
