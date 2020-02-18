@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PantryAid.Core.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -7,45 +8,69 @@ using System.Threading.Tasks;
 
 namespace Database_Helpers
 {
-    
     /// <summary>
-    /// This class exists to help centralize our SQL related functions and info
+    /// Accesses a SQL Database for project
     /// </summary>
-    public static class SqlHelper
+    public class SqlServerDataAccess : iSqlServerDataAccess
     {
-        //ToDO / Notes
-        // Add in config file loading for the connection string values
-        // We may need a more robust version of this depending on how user accounts are handled or if we end up using multiple database servers
-        //
-        //
-
-
-        //I broke these apart so that individual parts of the connection string could easily be changed without worrying about formatting
-        //private string ConnectionString = "server=aura.cset.oit.edu, 5433; database=iUngerTime; UID=iUngerTime; password=iUngerTime";
         private static string _serverAddress = "aura.cset.oit.edu";
         private static string _serverPort = "5433";
-        private static string _databaseName = "iUngerTime";
-        private static string _serverUsername = "iUngerTime";
-        private static string _serverPassword = "iUngerTime";
-
-        private static int _curuserid;
+        private static string _databaseName = "JBNT";
+        private static string _serverUsername = "JBNT";
+        private static string _serverPassword = "Hootie123";
 
         /// <summary>
         /// Returns The connection string for the database
         /// </summary>
         public static string GetConnectionString()
         {
-            return "server=" + ServerAddress + ", " + ServerPort + "; database=" + ServerDatabaseName +"; UID=" + ServerUsername + "; password=" + ServerPassword;
+            return "server=" + ServerAddress + ", " + ServerPort + "; database=" + ServerDatabaseName + "; UID=" + ServerUsername + "; password=" + ServerPassword;
         }
 
+        /// <summary>
+        /// Execute a Query on a sql database that has no return type
+        /// </summary>
+        /// <param name="sql">The query to execute</param>
+        /// <returns>0 if passed, 1 if failed</returns>
+        public int ExecuteQuery_NoReturnType(string sql)
+        {
+            using(SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(sql, con);
+
+                try
+                {
+                    con.Open();
+                    comm.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    return FAIL;
+                }
+
+                con.Close();
+            }
+
+            return PASS;
+        }
+
+        public List<T> ExecuteQuery_ExpectedListReturn<T>(string sql)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T ExecuteQuery_SingleReturnItem<T>(string sql)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// The server address of the SQL server
         /// </summary>
-        public static string ServerAddress 
+        public static string ServerAddress
         {
             get
-            { return  _serverAddress; }
+            { return _serverAddress; }
             set
             { _serverAddress = value; }
         }
@@ -93,15 +118,9 @@ namespace Database_Helpers
         }
 
         /// <summary>
-        /// The user ID for the current user
+        /// Definition of return types
         /// </summary>
-        public static int UserID
-        {
-            get
-            { return _curuserid; }
-            set
-            { _curuserid = value; }
-        }
-
+        private int FAIL = 0;
+        private int PASS = 1;
     }
 }

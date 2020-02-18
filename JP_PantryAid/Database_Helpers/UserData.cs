@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
+using PantryAid.Core.Utilities;
 
 namespace Database_Helpers
 {
@@ -15,6 +16,18 @@ namespace Database_Helpers
     /// </summary>
     public class UserData : iUserDataRepo
     {
+        //Database we perform functions on
+        private iSqlServerDataAccess _database;
+
+        /// <summary>
+        /// Ctor for this class
+        /// </summary>
+        /// <param name="database">database implenation to execute on</param>
+        public UserData(iSqlServerDataAccess database)
+        {
+            _database = database;
+        }
+
         /// <summary>
         /// Adds an alergy to a user's list of alergies
         /// </summary>
@@ -26,22 +39,8 @@ namespace Database_Helpers
             currUser.Allergies.Add(newAlergy);
 
             string query = String.Format("INSERT INTO ALERGIES VALUES({0}, {1})", SqlHelper.UserID, newAlergy.IngredientID);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         /// <summary>
@@ -55,22 +54,8 @@ namespace Database_Helpers
             currUser.DislikedRecipes.Add(newDisliked);
 
             string query = String.Format("INSERT INTO DISLIKED_RECIPE VALUES({0}, {1})", SqlHelper.UserID, newDisliked.id);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         /// <summary>
@@ -84,22 +69,8 @@ namespace Database_Helpers
             currUser.FavoriteRecipes.Add(newFavorite);
 
             string query = String.Format("INSERT INTO FAVORITE_RECIPE VALUES({0}, {1})", SqlHelper.UserID, newFavorite.id);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         /// <summary>
@@ -110,22 +81,8 @@ namespace Database_Helpers
         public int AddUser(User newUser)
         {
             string query = String.Format("INSERT INTO PERSON VALUES('{0}', '{1}');", newUser.FullName, newUser.Email);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         /// <summary>
@@ -140,71 +97,14 @@ namespace Database_Helpers
             string query3 = String.Format("DELETE FROM FROM ALERGIES WHERE UserID={0}", delUser.Id);
             string query4 = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0}", delUser.Id);
             string query5 = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0}", delUser.Id);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            //Remove Person
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
+            int failed = _database.ExecuteQuery_NoReturnType(query);
+            if (failed != 0) { _database.ExecuteQuery_NoReturnType(query2); }
+            if (failed != 0) { _database.ExecuteQuery_NoReturnType(query3); }
+            if (failed != 0) { _database.ExecuteQuery_NoReturnType(query4); }
+            if (failed != 0) { _database.ExecuteQuery_NoReturnType(query5); }
 
-            comm = new SqlCommand(query2, con);
-
-            //Remove Pantry
-            try
-            {
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            comm = new SqlCommand(query3, con);
-
-            //Remove Allergies
-            try
-            {
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            comm = new SqlCommand(query4, con);
-
-            //Remove Favorites
-            try
-            {
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            comm = new SqlCommand(query5, con);
-
-            //Remove Disliked
-            try
-            {
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-
-            return PASS;
+            return (failed == 1 ? PASS : FAIL);
         }
 
         /// <summary>
@@ -216,21 +116,8 @@ namespace Database_Helpers
         public int EditUserInfo(User currentInfo, User newInfo)
         {
             string query = String.Format("UPDATE PERSON SET FullName='{0}', Email='{1}' WHERE UserID={2};", newInfo.FullName, newInfo.Email, currentInfo.Id);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         /// <summary>
@@ -244,22 +131,8 @@ namespace Database_Helpers
             currUser.Allergies.Remove(alergy);
 
             string query = String.Format("DELETE FROM ALERGIES WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, alergy.IngredientID);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         /// <summary>
@@ -273,22 +146,8 @@ namespace Database_Helpers
             currUser.DislikedRecipes.Remove(nonDisliked);
 
             string query = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, nonDisliked.id);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         /// <summary>
@@ -302,22 +161,8 @@ namespace Database_Helpers
             currUser.DislikedRecipes.Remove(nonFavorite);
 
             string query = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, nonFavorite.id);
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-                comm.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         private int FAIL = 0;
