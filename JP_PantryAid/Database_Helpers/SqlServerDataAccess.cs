@@ -18,6 +18,7 @@ namespace Database_Helpers
         private static string _databaseName = "JBNT";
         private static string _serverUsername = "JBNT";
         private static string _serverPassword = "Hootie123";
+        private static int _curuserid;
 
         /// <summary>
         /// Returns The connection string for the database
@@ -115,6 +116,17 @@ namespace Database_Helpers
             { return _serverPassword; }
             set
             { _serverPassword = value; }
+        }
+
+        /// <summary>
+        /// The user ID for the current user
+        /// </summary>
+        public static int UserID
+        {
+            get
+            { return _curuserid; }
+            set
+            { _curuserid = value; }
         }
 
         /// <summary>
