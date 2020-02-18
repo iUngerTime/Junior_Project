@@ -170,7 +170,7 @@ namespace Database_Helpers
             throw new NotImplementedException();
         }
 
-        public int AddIngredientToPantry(int PantryID, int IngredientID, float Quantity = 1.0f)
+        public int AddIngredientToPantry(int PantryID, int IngredientID, double Quantity = 1.0f)
         {
             Ingredient ingr = this.GetIngredient(IngredientID);
 
@@ -214,10 +214,14 @@ namespace Database_Helpers
             return PASS;
         }
 
-        public int UpdatePantryIngredientQuantity(int PantryID, int IngredientID, float NewQuantity)
+        public int UpdatePantryIngredientQuantity(int PantryID, int IngredientID, double NewQuantity)
         {
             SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            string query = String.Format("UPDATE PANTRY_INGREDIENTS SET Quantity={2} WHERE PantryID={0} AND IngredientID={1};", PantryID, IngredientID, NewQuantity);
+            string query;
+            if (NewQuantity <= 0) //If new quantity is 0 then remove it from pantry
+                query = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0} AND IngredientID={1};", PantryID, IngredientID);
+            else
+                query = String.Format("UPDATE PANTRY_INGREDIENTS SET Quantity={2} WHERE PantryID={0} AND IngredientID={1};", PantryID, IngredientID, NewQuantity);
             SqlCommand comm = new SqlCommand(query, con);
 
             try
@@ -235,7 +239,7 @@ namespace Database_Helpers
             return PASS;
         }
 
-        public int AddIngredientToPantry(int PantryID, Ingredient ingredient, float Quantity = 1.0f)
+        public int AddIngredientToPantry(int PantryID, Ingredient ingredient, double Quantity = 1.0f)
         {
             return this.AddIngredientToPantry(PantryID, ingredient.IngredientID, Quantity);
         }

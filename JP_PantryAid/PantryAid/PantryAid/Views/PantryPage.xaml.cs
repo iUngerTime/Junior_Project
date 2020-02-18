@@ -82,7 +82,35 @@ namespace PantryAid
             }
 
             //Should never throw exception because of the above check
-            _list.ListView.Single(x => x.ID == foundingr.IngredientID);
+            IngredientItem item = _list.ListView.Single(x => x.ID == foundingr.IngredientID);
+            _list.ListView.Remove(item);
+        }
+
+        private void QuantityChangeClicked(object sender, EventArgs e)
+        {
+            Button b = (Button)sender;
+            //Get Command param
+            IngredientItem ob = b.CommandParameter as IngredientItem;
+
+            if (ob != null)
+            {
+                iIngredientData ingrdata = new IngredientData();
+                //Increment or decrement based on which button was clicked
+                double newquant = ob.Quantity;
+                if (b.Text == "+")
+                    newquant += 1;
+                else if (b.Text == "-")
+                    newquant -= 1;
+                
+                ingrdata.UpdatePantryIngredientQuantity(SqlHelper.UserID, ob.ID, newquant);
+                //Replace the item in the list with a duplicate that has the changed quantity
+                int index = _list.ListView.IndexOf(ob);
+                _list.ListView.Remove(ob);
+                if (newquant > 0)
+                    _list.ListView.Insert(index, new IngredientItem(ob.Ingredient, newquant, Measurements.Serving));
+            }
+            else
+                DisplayAlert("Error", "CommandParameter was null", "OK");
         }
     }
 }

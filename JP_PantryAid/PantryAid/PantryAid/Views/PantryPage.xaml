@@ -29,7 +29,7 @@
                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="2" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                 </Grid>
             </Frame>
-            <ListView ItemsSource="{Binding ListView}" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="False">
+            <ListView ItemsSource="{Binding ListView}" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="False" x:Name="Listv">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -41,9 +41,13 @@
                                         <ColumnDefinition Width="2.5*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Margin="10,0,10,0" Text="{Binding ID}" VerticalOptions="Center" Grid.Column="0"/>
-                                    <Label Margin="10,0,10,0" Text="{Binding Name}" VerticalOptions="Center" Grid.Column="1"/>
-                                    <Label Margin="10,0,10,0" Text="{Binding Quantity}" VerticalOptions="Center" Grid.Column="2"/>
+                                    <Label x:Name="idlabel" Margin="10,0,10,0" Text="{Binding ID}" VerticalOptions="Center" Grid.Column="0"/>
+                                    <Label x:Name="namelabel" Margin="10,0,10,0" Text="{Binding Name}" VerticalOptions="Center" Grid.Column="1"/>
+                                    <Label x:Name="quantlabel" Margin="10,0,10,0" Text="{Binding Quantity}" VerticalOptions="Center" Grid.Column="2"/>
+                                    <StackLayout Orientation="Horizontal" Grid.Column="2" Margin="30, 0, 0, 0">
+                                        <Button Text="+" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" Clicked="QuantityChangeClicked" CommandParameter="{Binding .}"/>
+                                        <Button Text="-" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" Clicked="QuantityChangeClicked" CommandParameter="{Binding .}"/>
+                                    </StackLayout>
 
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
