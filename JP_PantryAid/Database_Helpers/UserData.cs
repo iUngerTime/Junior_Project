@@ -165,6 +165,18 @@ namespace Database_Helpers
             return _database.ExecuteQuery_NoReturnType(query);
         }
 
+        /// <summary>
+        /// Get the user
+        /// </summary>
+        /// <param name="usr"></param>
+        /// <returns></returns>
+        public User GetUser(string usr)
+        {
+            string query = "SELECT UserID, Email FROM Person WHERE LOWER(Email) = '" + usr + "';";
+
+            return _database.ExecuteQuery_SingleUser(query);
+        }
+
         private int FAIL = 0;
         private int PASS = 1;
     }

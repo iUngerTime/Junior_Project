@@ -92,6 +92,37 @@ namespace Database_Helpers
             }
         }
 
+        public User ExecuteQuery_SingleUser(string sql)
+        {
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(sql, con);
+
+                int usrId = 0;
+
+                //Open Connection
+                try { con.Open(); }
+                catch (Exception) { return null; }
+
+                //Execute reader
+                try
+                {
+                    SqlDataReader read = comm.ExecuteReader();
+
+                    if (read.Read())
+                    {
+                        usrId = read.GetInt32(0);
+                    }
+                    else { return null; }
+
+                    read.Close();
+                }
+                catch (Exception) { return null; }
+
+                return new User() { Id = usrId };
+            }
+        }
+
         /// <summary>
         /// The server address of the SQL server
         /// </summary>

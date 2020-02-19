@@ -10,5 +10,6 @@ namespace PantryAid.Core.Utilities
         int ExecuteQuery_NoReturnType(string sql);
         List<IngredientItem> ExecuteQuery_GetPantry(string sql);
         Ingredient ExecuteQuery_SingleIngredientItem(string sql);
+        User ExecuteQuery_SingleUser(string sql);
     }
 }

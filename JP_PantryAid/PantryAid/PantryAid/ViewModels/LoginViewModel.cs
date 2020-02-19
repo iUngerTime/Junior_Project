@@ -1,4 +1,5 @@
 ﻿using Database_Helpers;
+using PantryAid.Core.Models;
 using PantryAid.Views;
 using System;
 using System.ComponentModel;
@@ -71,27 +72,14 @@ namespace PantryAid.ViewModels
             bool auth = false;
 
             //Run SQL command to get user's email
-            string query = "SELECT UserID, Email FROM Person WHERE LOWER(Email) = '" + email + "';";
+            var usrData = new UserData(new SqlServerDataAccess());
 
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            SqlCommand comm = new SqlCommand(query, con);
+            User usr = usrData.GetUser(email);
 
-            try
-            {
-                con.Open();
+            auth = (usr == null ? false : true);
 
-                SqlDataReader read = comm.ExecuteReader();
-
-                if (read.Read())
-                {
-                    auth = true;
-                    SqlHelper.UserID = read.GetInt32(0);
-                }
-
-                con.Close();
-            }
-            catch (Exception)
-            { }
+            if (auth)
+                SqlHelper.UserID = usr.Id;
 
             return auth;
         }
