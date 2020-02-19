@@ -23,5 +23,44 @@ namespace SpoonacularAPI
             public long expires { get; set; }
             public bool isStale { get; set; }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class MissedIngredient
+        {
+            public int id { get; set; }
+            public double amount { get; set; }
+            public string unit { get; set; }
+            public string unitLong { get; set; }
+            public string unitShort { get; set; }
+            public string aisle { get; set; }
+            public string name { get; set; }
+            public string original { get; set; }
+            public string originalString { get; set; }
+            public string originalName { get; set; }
+            public List<object> metaInformation { get; set; }
+            public List<object> meta { get; set; }
+            public string image { get; set; }
+        }
+
+        /// <summary>
+        /// This is the return from the recipe search by ingredient
+        /// It is irritating NOT the same as a RecipeShort although it's very close
+        /// </summary>
+        public class RecipeByIngredient
+        {
+            public int id { get; set; }
+            public string title { get; set; }
+            public string image { get; set; }
+            public string imageType { get; set; }
+            public int usedIngredientCount { get; set; }
+            public int missedIngredientCount { get; set; }
+            public List<MissedIngredient> missedIngredients { get; set; }
+            public List<object> usedIngredients { get; set; }
+            public List<object> unusedIngredients { get; set; }
+            public int likes { get; set; }
+        }
+
     }
 }

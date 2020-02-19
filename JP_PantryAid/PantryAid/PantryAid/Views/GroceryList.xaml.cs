@@ -12,6 +12,7 @@ using Xamarin.Forms.Xaml;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using PantryAid.Core.Interfaces;
 
 
 /*
@@ -36,7 +37,6 @@ namespace PantryAid
         string FileName = "GroceryList";
 
         ListViewModel<IngredientItem> _list = new ListViewModel<IngredientItem>();
-        //Currently the grocery list does not show a quantity or a longdesc or anything like that. If we decide to show them later then this form will need to be updated
         public GroceryList()
         {
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace PantryAid
             File.Delete(FilePath); //This needs to be removed later, but for test purposes this will reset the file when you reopen the page
             if (!File.Exists(FilePath))
             {
-                File.WriteAllText(FilePath, "67-Butter\n43-Cheese\n98-Noodles\n"); //Creates the file and adds test data
+                File.WriteAllText(FilePath, "");
             } 
 
             this.BindingContext = _list;
@@ -64,57 +64,36 @@ namespace PantryAid
             {
                 string[] temp = line.Split('-'); //temp should always have only two strings contained after this point, the ID and the Name
 
-                IngredientItem G = new IngredientItem(new Ingredient(Convert.ToInt32(temp[0]), temp[1], ""), 0.0f, Measurements.Serving);
+                IngredientItem G = new IngredientItem(new Ingredient(Convert.ToInt32(temp[0]), temp[1]), 0.0f, Measurements.Serving);
                 _list.Add(G);
             }
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            string ConnectionString = SqlHelper.GetConnectionString();
-            string query = String.Format("SELECT IngredientID, CommonName FROM INGREDIENT WHERE CommonName='{0}';", IngredientEntry.Text); 
+            IngredientData ingrdata = new IngredientData();
+            Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
 
-            SqlConnection con = new SqlConnection(ConnectionString);
-            SqlCommand comm = new SqlCommand(query, con);
-
-            try
+            if (foundingr == null)
             {
-                con.Open();
+                await DisplayAlert("Error", "That ingredient could not be found", "OK");
+                return;
             }
-            catch (Exception)
+            else
             {
-                await DisplayAlert("Failed", "Could not connect", "OK");
-            }
+                IngredientItem item = new IngredientItem(foundingr, 1.0f, Measurements.Serving);
+                _list.Add(item);
 
-            try
-            {
-                SqlDataReader read = comm.ExecuteReader();
-
-                //This section assumes that no Ingredients have duplicate CommonNames
-                if (read.Read())
-                {
-                    IngredientItem G = new IngredientItem(new Ingredient(read.GetInt32(0), read.GetString(1), ""), 0.0f, Measurements.Serving);
-                    _list.Add(G);
-
-                    File.AppendAllText(FilePath, String.Format("{0}-{1}\n", G.ID.ToString(), G.Name));
-                }
-                else
-                {
-                    await DisplayAlert("Error", "This Ingredient could not be found", "OK");
-                }
+                File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.ID.ToString(), item.Name));
             }
-            catch (Exception)
-            {
-                await DisplayAlert("Error", "Exception thrown while reading from database", "OK");
-            }
-            con.Close();
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
             string[] contents = File.ReadAllLines(FilePath);
             List<string> newcontents = new List<string>();
-            string selecteditem = IngredientEntry.Text;
+            string selecteditem = IngredientEntry.Text.ToLower();
+            bool found = false;
 
             //Find index of item to remove
             int i = 0;
@@ -122,11 +101,18 @@ namespace PantryAid
             {
                 string[] temp = line.Split('-');
 
-                if (selecteditem == temp[1])
+                if (selecteditem == temp[1].ToLower())
                 {
+                    found = true;
                     break;
                 }
                 ++i;
+            }
+
+            if (found == false)
+            {
+                await DisplayAlert("Error", "Could not find that ingredient", "OK");
+                return;
             }
 
             //Create a new array of all contents except for the one at index i
