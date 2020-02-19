@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
 using System.Data.SqlClient;
-
+using PantryAid.Core.Utilities;
 
 namespace Database_Helpers
 {
     public class IngredientData : iIngredientData
     {
+        private iSqlServerDataAccess _database;
+
+        public IngredientData(iSqlServerDataAccess database)
+        {
+            _database = database;
+        }
+
         public int AddIngredient(Ingredient newIng)
         {
             throw new NotImplementedException();
@@ -174,69 +181,27 @@ namespace Database_Helpers
         {
             Ingredient ingr = this.GetIngredient(IngredientID);
 
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             string query = String.Format("INSERT INTO PANTRY_INGREDIENTS VALUES ({0}, {1}, '{2}', {3});", PantryID, IngredientID, ingr.Name, Quantity);
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            comm.ExecuteNonQuery();
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         public int RemoveIngredientFromPantry(int PantryID, int IngredientID)
         {
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             string query = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0} AND IngredientID={1};", PantryID, IngredientID);
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            comm.ExecuteNonQuery();
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         public int UpdatePantryIngredientQuantity(int PantryID, int IngredientID, double NewQuantity)
         {
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             string query;
             if (NewQuantity <= 0) //If new quantity is 0 then remove it from pantry
                 query = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0} AND IngredientID={1};", PantryID, IngredientID);
             else
                 query = String.Format("UPDATE PANTRY_INGREDIENTS SET Quantity={2} WHERE PantryID={0} AND IngredientID={1};", PantryID, IngredientID, NewQuantity);
-            SqlCommand comm = new SqlCommand(query, con);
 
-            try
-            {
-                con.Open();
-            }
-            catch (Exception)
-            {
-                return FAIL;
-            }
-
-            comm.ExecuteNonQuery();
-            con.Close();
-
-            return PASS;
+            return _database.ExecuteQuery_NoReturnType(query);
         }
 
         public int AddIngredientToPantry(int PantryID, Ingredient ingredient, double Quantity = 1.0f)
