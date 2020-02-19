@@ -29,11 +29,11 @@ namespace Database_Helpers
         }
 
         /// <summary>
-        /// Adds an alergy to a user's list of alergies
+        /// Adds an alergy to the list of alergies associated with a user
         /// </summary>
-        /// <param name="currUser">The user to operate on</param>
-        /// <param name="newAlergy">Alergy to be added to database</param>
-        /// <returns>Returns 1 if pass, 0 if failed</returns>
+        /// <param name="currUser">The current user to add a new alergy to</param>
+        /// <param name="newAlergy">The ingredient that is the alergy</param>
+        /// <returns>0 if successful, 1 if failed</returns>
         public int AddAlergy(User currUser, Ingredient newAlergy)
         {
             currUser.Allergies.Add(newAlergy);
@@ -86,10 +86,10 @@ namespace Database_Helpers
         }
 
         /// <summary>
-        /// Deletes a user from the sql database
+        /// Deletes a user from the database
         /// </summary>
-        /// <param name="delUser">The user to be deleted</param>
-        /// <returns>Returns 1 if pass, 0 if failed</returns>
+        /// <param name="delUser">The info of the user to be deleted</param>
+        /// <returns>0 if successful, 1 if failed</returns>
         public int DeleteUser(User delUser)
         {
             string query = String.Format("DELETE FROM PERSON WHERE UserID={0};", delUser.Id);
@@ -108,11 +108,11 @@ namespace Database_Helpers
         }
 
         /// <summary>
-        /// Edits a current user's info to the new info (WILL NOT CHANGE USER_ID)
+        /// Edits a person's entire list of information
         /// </summary>
-        /// <param name="currentInfo">The current user's info</param>
-        /// <param name="newInfo">The new info to update to</param>
-        /// <returns></returns>
+        /// <param name="currentInfo">The information of the user to be edited</param>
+        /// <param name="newInfo">The new information to edit the current to</param>
+        /// <returns>0 if successful, 1 if failed</returns>
         public int EditUserInfo(User currentInfo, User newInfo)
         {
             string query = String.Format("UPDATE PERSON SET FullName='{0}', Email='{1}' WHERE UserID={2};", newInfo.FullName, newInfo.Email, currentInfo.Id);

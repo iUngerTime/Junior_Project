@@ -26,7 +26,7 @@ namespace PantryAid
 
         async public void FillGrid()
         {
-            iIngredientData ingrdata = new IngredientData();
+            iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             
             List<IngredientItem> results = ingrdata.GetIngredientsFromPantry(SqlHelper.UserID);
 
@@ -43,7 +43,7 @@ namespace PantryAid
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            IngredientData ingrdata = new IngredientData();
+            IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
 
             Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
             if (foundingr == null)
@@ -66,7 +66,7 @@ namespace PantryAid
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
-            IngredientData ingrdata = new IngredientData();
+            IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
 
             if (foundingr == null)
@@ -94,7 +94,7 @@ namespace PantryAid
 
             if (ob != null)
             {
-                iIngredientData ingrdata = new IngredientData();
+                iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
                 //Increment or decrement based on which button was clicked
                 double newquant = ob.Quantity;
                 if (b.Text == "+")

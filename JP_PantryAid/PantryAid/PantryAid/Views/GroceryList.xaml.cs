@@ -71,7 +71,7 @@ namespace PantryAid
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            IngredientData ingrdata = new IngredientData();
+            IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
 
             if (foundingr == null)

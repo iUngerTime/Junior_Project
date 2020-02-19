@@ -1,4 +1,5 @@
-﻿using PantryAid.Core.Utilities;
+﻿using PantryAid.Core.Models;
+using PantryAid.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -48,21 +49,47 @@ namespace Database_Helpers
                 {
                     return FAIL;
                 }
-
-                con.Close();
             }
 
             return PASS;
         }
 
-        public List<T> ExecuteQuery_ExpectedListReturn<T>(string sql)
+        public List<IngredientItem> ExecuteQuery_GetPantry(string sql)
         {
             throw new NotImplementedException();
         }
 
-        public T ExecuteQuery_SingleReturnItem<T>(string sql)
+        public Ingredient ExecuteQuery_SingleIngredientItem(string sql)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(sql, con);
+
+                int ingID = 0;
+                string ingName = null;
+
+                //Open Connection
+                try { con.Open(); }
+                catch (Exception) { return null; }
+
+                //Execute reader
+                try
+                {
+                    SqlDataReader read = comm.ExecuteReader();
+
+                    if (read.Read())
+                    {
+                        ingID = read.GetInt32(0);
+                        ingName = read.GetString(1);
+                    }
+                    else{ return null; }
+
+                    read.Close();
+                }
+                catch (Exception){ return null; }
+
+                return new Ingredient(ingID, ingName);
+            }
         }
 
         /// <summary>

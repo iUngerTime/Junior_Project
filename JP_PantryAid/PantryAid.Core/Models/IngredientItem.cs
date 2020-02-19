@@ -6,16 +6,16 @@ namespace PantryAid.Core.Models
 {
     public class IngredientItem
     {
-		public Ingredient Ingredient { get; set; }
-		public double Quantity { get; set; }
-		public Measurements MeasurementType { get; set; }
-
 		public IngredientItem(Ingredient ingr, double amount, Measurements measure)
 		{
 			Ingredient = ingr;
 			Quantity = amount;
 			MeasurementType = measure;
 		}
+
+		public Ingredient Ingredient { get; set; }
+		public double Quantity { get; set; }
+		public Measurements MeasurementType { get; set; }
 
 		//These two getters are needed for the gridview
 		public string Name

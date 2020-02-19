@@ -41,84 +41,16 @@ namespace Database_Helpers
 
         public Ingredient GetIngredient(int ID)
         {
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             string query = String.Format("SELECT * FROM NEW_INGREDIENTS WHERE IngredientID={0};", ID);
-            SqlCommand comm = new SqlCommand(query, con);
-            string ingrname = "";
 
-            try
-            {
-                con.Open();
-            }
-            catch(Exception)
-            {
-                return null;
-            }
-
-            try
-            {
-                SqlDataReader read = comm.ExecuteReader();
-
-                if (read.Read())
-                {
-                    ingrname = read.GetString(1);
-                }
-                else
-                {
-                    return null;
-                }
-
-                read.Close();
-            }
-            catch(Exception)
-            {
-                return null;
-            }
-
-            con.Close();
-
-            return new Ingredient(ID, ingrname);
+            return _database.ExecuteQuery_SingleIngredientItem(query);
         }
 
         public Ingredient GetIngredient(string name)
         {
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
             string query = String.Format("SELECT * FROM NEW_INGREDIENTS WHERE IngredientName='{0}';", name);
-            SqlCommand comm = new SqlCommand(query, con);
-            int ingrid = -1;
 
-            try
-            {
-                con.Open();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-
-            try
-            {
-                SqlDataReader read = comm.ExecuteReader();
-
-                if (read.Read())
-                {
-                    ingrid = read.GetInt32(0);
-                }
-                else
-                {
-                    return null;
-                }
-
-                read.Close();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-
-            con.Close();
-
-            return new Ingredient(ingrid, name);
+            return _database.ExecuteQuery_SingleIngredientItem(query);
         }
 
         public List<IngredientItem> GetIngredientsFromPantry(int PantryID)
@@ -213,9 +145,5 @@ namespace Database_Helpers
         {
             return this.RemoveIngredientFromPantry(PantryID, ingredient.IngredientID);
         }
-
-        private int FAIL = 0;
-        private int PASS = 1;
     }
-
 }
