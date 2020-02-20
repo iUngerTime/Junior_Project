@@ -2,9 +2,7 @@
 using Database_Helpers;
 using PantryAid.Core.Interfaces;
 using PantryAid.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using PantryAid.ViewModels;
 
 namespace PantryAid.Configuration
 {
@@ -14,10 +12,12 @@ namespace PantryAid.Configuration
         {
             var builder = new ContainerBuilder();
 
+            //Interface Registration
             builder.RegisterType<SqlServerDataAccess>().As<iSqlServerDataAccess>();
             builder.RegisterType<IngredientData>().As<iIngredientData>();
             builder.RegisterType<UserData>().As<iUserDataRepo>();
 
+            //Build and return
             return builder.Build();
         }
     }

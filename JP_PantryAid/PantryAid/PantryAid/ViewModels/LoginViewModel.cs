@@ -1,4 +1,5 @@
 ﻿using Database_Helpers;
+using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
 using PantryAid.Views;
 using System;
@@ -11,12 +12,18 @@ namespace PantryAid.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
+        private iUserDataRepo _userDatabaseAccess;
+
         public INavigation navigation { get; set; }
 
-        public LoginViewModel(INavigation nav)
+        public LoginViewModel(INavigation nav, iUserDataRepo databaseAccess)
         {
+            //Navigation and command binding
             this.navigation = nav;
             SubmitCommand = new Command(OnSubmit);
+
+            //Injection of view model
+            _userDatabaseAccess = databaseAccess;
         }
 
         public Action DisplayInvalidLoginPrompt;
@@ -72,9 +79,7 @@ namespace PantryAid.ViewModels
             bool auth = false;
 
             //Run SQL command to get user's email
-            var usrData = new UserData(new SqlServerDataAccess());
-
-            User usr = usrData.GetUser(email);
+            User usr = _userDatabaseAccess.GetUser(email);
 
             auth = (usr == null ? false : true);
 
