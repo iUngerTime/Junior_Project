@@ -72,7 +72,6 @@ namespace Database_Helpers
 
             try
             {
-                //The following garbage is utterly broken if we try to get the quantity
                 using (SqlDataReader read = comm.ExecuteReader())
                 {
 

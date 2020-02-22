@@ -32,7 +32,7 @@ namespace PantryAid
 
             if (results == null)
             {
-                await DisplayAlert("Error", "The data reader isn't doing its job", "end me");
+                await DisplayAlert("Error", "An error occurred when getting ingredients from pantry", "OK");
             }
 
             foreach (IngredientItem item in results)
@@ -43,9 +43,32 @@ namespace PantryAid
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
+            string ingrname = await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
+
+            if (ingrname == null) //User clicked cancel
+                return;
+
+            double quantity = 0.0f;
+            bool validquantity = false;
+            while (!validquantity)
+            {
+                string strquant = await DisplayPromptAsync("How much?", "Enter a quantity", "Add", "Cancel", "eg. 3", 10, Keyboard.Numeric);
+
+                if (strquant == null) //User clicked cancel
+                    return;
+
+                quantity = Convert.ToDouble(strquant);
+
+                if (quantity <= 0)
+                    await DisplayAlert("Error", "Quantity must be positive", "OK");
+                else
+                    validquantity = true;
+            }
+            
+
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
 
-            Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
+            Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
             if (foundingr == null)
             {
                 await DisplayAlert("Error", "The specified ingredient was not found", "OK");
@@ -60,14 +83,19 @@ namespace PantryAid
                 return;
             }
 
-            _list.Add(new IngredientItem(foundingr, 1.0f, Measurements.Serving));
-            ingrdata.AddIngredientToPantry(SqlHelper.UserID, foundingr);
+            _list.Add(new IngredientItem(foundingr, quantity, Measurements.Serving));
+            ingrdata.AddIngredientToPantry(SqlHelper.UserID, foundingr, quantity);
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
+            string ingrname = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
+
+            if (ingrname == null) //User clicked cancel
+                return;
+
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
-            Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
+            Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
 
             if (foundingr == null)
             {
