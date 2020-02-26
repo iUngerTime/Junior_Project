@@ -64,21 +64,34 @@ namespace SpoonacularAPI
 
         public class Recipe_Complex
         {
-            public long Id { get; set; }
+            public ComplexResult[] results { get; set; }
 
-            public long Calories { get; set; }
+            public long offset { get; set; }
 
-            public string Carbs { get; set; }
+            public long number { get; set; }
 
-            public string Fat { get; set; }
+            public long totalResults { get; set; }
+        }
 
-            public string Image { get; set; }
+        public class ComplexResult
+        {
+            public long id { get; set; }
+            public long usedIngredientCount { get; set; }
+            public long missedIngredientCount { get; set; }
+            public long likes { get; set; }
+            public string title { get; set; }
+            public string image { get; set; }
+            public string imageType { get; set; }
+            public Nutrition[] nutrition { get; set; }
+        }
 
-            public string ImageType { get; set; }
+        public class Nutrition
+        {
+            public string title { get; set; }
 
-            public string Protein { get; set; }
+            public double amount { get; set; }
 
-            public string Title { get; set; }
+            public string unit { get; set; }
         }
     }
 }

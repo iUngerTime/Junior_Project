@@ -184,7 +184,9 @@ namespace SpoonacularAPI
             }
         }
 
-        public List<Recipe_Complex> FindComplexRecipe(string query, 
+        public Recipe_Complex FindComplexRecipe(string query,
+            int offset = 0,
+            int number = 5,
             string cuisine = "", 
             List<string> excludeCuisine = null, 
             string diet = "", 
@@ -195,20 +197,16 @@ namespace SpoonacularAPI
             bool instructionsRequired = true, 
             bool fillIngredients = false, 
             bool addRecipeInformation = false, 
-            string author = "", 
-            string tags = "", 
             string titleMatch = "", 
             int maxReadyTime = -1,
             bool ignorePantry = true, 
             string sort = "", 
             string sortDirection = "", 
-            int offset = 0, 
-            int number = 5, 
             bool limitLicense = true
             )
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
-            RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeSearchByIngredientsURL, Method.GET);
+            RestRequest request = new RestRequest(SpoonacularAPI.m_ComplexRecipeURL, Method.GET);
 
             if (query == "")
                 throw new Exception("Cannot query API with empty query");
@@ -234,10 +232,6 @@ namespace SpoonacularAPI
             request.AddParameter("instructionsRequired", instructionsRequired);
             request.AddParameter("fillIngredients", fillIngredients);
             request.AddParameter("addRecipeInformation", addRecipeInformation);
-            if (author != "")
-                request.AddParameter("author", author);
-            if (tags != "")
-                request.AddParameter("tags", tags);
             if (titleMatch != "")
                 request.AddParameter("titleMatch", titleMatch);
             if (maxReadyTime > 0)
@@ -254,13 +248,13 @@ namespace SpoonacularAPI
             request.AddParameter("apiKey", m_APYKey);
 
             //Execute the query
-            List<Recipe_Complex> result;
+            Recipe_Complex result;
             try
             {
                 RestResponse response = client.Execute(request);
                 //try to get the data out of the response
 
-                result = JsonConvert.DeserializeObject<List<Recipe_Complex>>(response.Content);
+                result = JsonConvert.DeserializeObject<Recipe_Complex>(response.Content);
                 return result;
             }
             catch (Exception) //I don't know what this exception handling does, I copied it from Nick's stuff

@@ -9,13 +9,14 @@ using Xamarin.Forms.Xaml;
 
 using RecipeAPI;
 using PantryAid.Core.Models;
+using SpoonacularAPI;
 
 namespace PantryAid.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShortRecipePage : ContentPage
     {
-        ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
+        ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
         int _offset;
         int _recipesPerPage;
         public ShortRecipePage()
@@ -35,7 +36,20 @@ namespace PantryAid.Views
 
             List<Recipe_Short> list = api.RecipeSearch(Recipe_Search.Text, _recipesPerPage, _offset);
 
-            foreach (Recipe_Short r in  list)
+            foreach (Recipe_Short r in list)
+            {
+               // _list.Add(r);
+            }
+        }
+
+        private void DoComplexSearch()
+        {
+            _list.ListView.Clear();
+            SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
+
+            SpoonacularAPI.SpoonacularAPI.Recipe_Complex complex = api.FindComplexRecipe(Recipe_Search.Text, _offset, _recipesPerPage);
+
+            foreach (SpoonacularAPI.SpoonacularAPI.ComplexResult r in complex.results)
             {
                 _list.Add(r);
             }
@@ -43,20 +57,20 @@ namespace PantryAid.Views
 
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
-            DoSearch();
+            DoComplexSearch();
         }
 
         private void PrevButton_Clicked(object sender, EventArgs e)
         {
             if (_offset >= 5)
                 _offset -= _recipesPerPage;
-            DoSearch();
+            DoComplexSearch();
         }
 
         private void NextButton_Clicked(object sender, EventArgs e)
         {
             _offset += _recipesPerPage;
-            DoSearch();
+            DoComplexSearch();
         }
 
         private void Recipe_Tapped(object sender, EventArgs e)
