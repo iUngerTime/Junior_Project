@@ -185,6 +185,85 @@ namespace SpoonacularAPI
             }
         }
 
+        public Recipe_Complex FindComplexRecipe(string query,
+            int offset = 0,
+            int number = 5,
+            string cuisine = "", 
+            List<string> excludeCuisine = null, 
+            string diet = "", 
+            List<string> intolerances = null, 
+            List<string> includeIngredients = null, 
+            List<string> excludeIngredients = null, 
+            string type = "",
+            bool instructionsRequired = true, 
+            bool fillIngredients = false, 
+            bool addRecipeInformation = false, 
+            string titleMatch = "", 
+            int maxReadyTime = -1,
+            bool ignorePantry = true, 
+            string sort = "", 
+            string sortDirection = "", 
+            bool limitLicense = true
+            )
+        {
+            RestClient client = new RestClient(SpoonacularAPI.m_URL);
+            RestRequest request = new RestRequest(SpoonacularAPI.m_ComplexRecipeURL, Method.GET);
+
+            if (query == "")
+                throw new Exception("Cannot query API with empty query");
+            request.AddParameter("query", query);
+            if (cuisine != "")
+                request.AddParameter("cuisine", cuisine);
+            string excuisine = ConvertListToSingleString(excludeCuisine);
+            if (excuisine != "")
+                request.AddParameter("excludeCuisine", excuisine);
+            if (diet != "")
+                request.AddParameter("diet", diet);
+            string intolr = ConvertListToSingleString(intolerances);
+            if (intolr != "")
+                request.AddParameter("intolerances", intolr);
+            string inclIngr = ConvertListToSingleString(includeIngredients);
+            if (inclIngr != "")
+                request.AddParameter("includeIngredients", inclIngr);
+            string exclIngr = ConvertListToSingleString(excludeIngredients);
+            if (exclIngr != "")
+                request.AddParameter("excludeIngredients", exclIngr);
+            if (type != "")
+                request.AddParameter("type", type);
+            request.AddParameter("instructionsRequired", instructionsRequired);
+            request.AddParameter("fillIngredients", fillIngredients);
+            request.AddParameter("addRecipeInformation", addRecipeInformation);
+            if (titleMatch != "")
+                request.AddParameter("titleMatch", titleMatch);
+            if (maxReadyTime > 0)
+                request.AddParameter("maxReadyTime", maxReadyTime);
+            request.AddParameter("ignorePantry", ignorePantry);
+            if (sort != "")
+                request.AddParameter("sort", sort);
+            if (sortDirection != "")
+                request.AddParameter("sortDirection", sortDirection);
+            request.AddParameter("offset", offset);
+            request.AddParameter("number", number);
+            request.AddParameter("limitLicense", limitLicense);
+
+            request.AddParameter("apiKey", m_APYKey);
+
+            //Execute the query
+            Recipe_Complex result;
+            try
+            {
+                RestResponse response = client.Execute(request);
+                //try to get the data out of the response
+
+                result = JsonConvert.DeserializeObject<Recipe_Complex>(response.Content);
+                return result;
+            }
+            catch (Exception) //I don't know what this exception handling does, I copied it from Nick's stuff
+            {
+                //add call to exception logger
+                throw;
+            }
+        }
 
         /// <summary>
         /// Queries the API for short recipes based off the passed params
@@ -356,8 +435,19 @@ namespace SpoonacularAPI
             return param;
         }
 
+        
+        string ConvertListToSingleString(List<string> list)
+        {
+            if (list == null) return "";
 
-
+            string ret = "";
+            foreach (string item in list)
+            {
+                ret += item + ",";
+            }
+            //Cut off the last comma
+            return ret.Substring(0, ret.Length - 1);
+        }
 
 
         //The key for our API
@@ -367,6 +457,7 @@ namespace SpoonacularAPI
         private static string m_RecipeSearchURL = "recipes/search";
         private static string m_RecipeInformationURL = "recipes/";
         private static string m_RecipeSearchByIngredientsURL = "recipes/findByIngredients";
+        private static string m_ComplexRecipeURL = "/recipes/complexSearch";
 
 
         //Limits the max number of results to return.

@@ -9,13 +9,14 @@ using Xamarin.Forms.Xaml;
 
 using RecipeAPI;
 using PantryAid.Core.Models;
+using SpoonacularAPI;
 
 namespace PantryAid.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShortRecipePage : ContentPage
     {
-        ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
+        ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
         int _offset;
         int _recipesPerPage;
         public ShortRecipePage()
@@ -35,9 +36,6 @@ namespace PantryAid.Views
 
             List<Recipe_Short> list = api.RecipeSearch(Recipe_Search.Text, _recipesPerPage, _offset);
 
-
-
-
             for (int i = 0; i < list.Count; i++)
             {
                 list[i].imageUrls[0] = "https://spoonacular.com/recipeImages/" + list[i].imageUrls[0];
@@ -50,20 +48,20 @@ namespace PantryAid.Views
 
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
-            DoSearch();
+            DoComplexSearch();
         }
 
         private void PrevButton_Clicked(object sender, EventArgs e)
         {
             if (_offset >= 5)
                 _offset -= _recipesPerPage;
-            DoSearch();
+            DoComplexSearch();
         }
 
         private void NextButton_Clicked(object sender, EventArgs e)
         {
             _offset += _recipesPerPage;
-            DoSearch();
+            DoComplexSearch();
         }
 
         private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
