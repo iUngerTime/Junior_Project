@@ -36,24 +36,15 @@ namespace PantryAid.Views
 
             List<Recipe_Short> list = api.RecipeSearch(Recipe_Search.Text, _recipesPerPage, _offset);
 
-            foreach (Recipe_Short r in list)
+            for (int i = 0; i < list.Count; i++)
             {
-               // _list.Add(r);
+                list[i].imageUrls[0] = "https://spoonacular.com/recipeImages/" + list[i].imageUrls[0];
+                _list.Add(list[i]);
+                
             }
+           
         }
 
-        private void DoComplexSearch()
-        {
-            _list.ListView.Clear();
-            SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
-
-            SpoonacularAPI.SpoonacularAPI.Recipe_Complex complex = api.FindComplexRecipe(Recipe_Search.Text, _offset, _recipesPerPage);
-
-            foreach (SpoonacularAPI.SpoonacularAPI.ComplexResult r in complex.results)
-            {
-                _list.Add(r);
-            }
-        }
 
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
@@ -73,12 +64,9 @@ namespace PantryAid.Views
             DoComplexSearch();
         }
 
-        private void Recipe_Tapped(object sender, EventArgs e)
+        private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //Note: This only works for clicking on IDs
-            Label l = (Label)sender;
-            
-            Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(l.Text)));
+            Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[e.ItemIndex].id)));
         }
     }
 }

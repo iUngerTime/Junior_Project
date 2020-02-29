@@ -42,8 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IngredientData.cs" />
+    <Compile Include="SqlServerDataAccess.cs" />
     <Compile Include="SQL_Helper_Class.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PantryAid.Core\PantryAid.Core.csproj">
+      <Project>{b4682103-e60b-4736-85db-5b852ea9ca12}</Project>
+      <Name>PantryAid.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PantryAid.Core\PantryAid.Core.csproj">
+      <Project>{b4682103-e60b-4736-85db-5b852ea9ca12}</Project>
+      <Name>PantryAid.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

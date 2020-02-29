@@ -9,10 +9,11 @@ namespace PantryAid.Core.Models
     /// </summary>
     public class User
     {
+        public int Id { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
         public List<Ingredient> Allergies { get; set; }
-        public List<Recipe_Full> FavoriteRecipes { get; set; }
-        public List<Recipe_Full> DislikedRecipes { get; set; }
+        public List<Recipe_Short> FavoriteRecipes { get; set; }
+        public List<Recipe_Short> DislikedRecipes { get; set; }
     }
 }

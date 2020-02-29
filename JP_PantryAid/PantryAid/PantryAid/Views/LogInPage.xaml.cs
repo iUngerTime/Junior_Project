@@ -73,7 +73,7 @@ namespace PantryAid
         //When user presses enter
         private void EmailBox_OnCompleted(object sender, EventArgs e)
         {
-            LogInClick(null,null);  //Simulate clicing 
+            LogInClick(null,null);  //Simulate clicking 
         }
     }
 }

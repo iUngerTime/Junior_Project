@@ -3,17 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pantryAid="clr-namespace:PantryAid;assembly=PantryAid"
              mc:Ignorable="d"
              x:Class="PantryAid.Views.ShortRecipePage">
     <ContentPage.Content>
         <StackLayout>
             <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)" Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
             <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
-                <Grid Padding="0">
+                <Grid x:Name="Grid1" Padding="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2.5*"/>
                         <ColumnDefinition Width="2.5*"/>
                     </Grid.ColumnDefinitions>
+                    
 
                     <Label Margin="10,0,10,0" Text="ID" VerticalOptions="Center" Grid.Column="0"/>
                     <Label Margin="10,0,10,0" Text="Name" VerticalOptions="Center" Grid.Column="1"/>
@@ -22,7 +24,8 @@
                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                 </Grid>
             </Frame>
-            <ListView ItemsSource="{Binding ListView}" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="False">
+            <ListView ItemsSource="{Binding ListView}" SeparatorVisibility="None"  
+                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -32,19 +35,23 @@
                                         <ColumnDefinition Width="2.5*"/>
                                         <ColumnDefinition Width="2.5*"/>
                                     </Grid.ColumnDefinitions>
-
-                                    <Label x:Name="IDLabel" Margin="10,0,10,0" Text="{Binding id}" VerticalOptions="Center" Grid.Column="0">
-                                        <Label.GestureRecognizers>
+                                    
+                                    <!--<ImageButton Source="{ Binding imageUrls[0]}" HeightRequest="200" Clicked="Recipe_Tapped">
+                                        <Image.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="Recipe_Tapped"/>
-                                        </Label.GestureRecognizers>
-                                    </Label>
-
-                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" VerticalOptions="Center" Grid.Column="1">
+                                        </Image.GestureRecognizers>
+                                        
+                                    </ImageButton>-->
+                                    <Image Source="{ Binding imageUrls[0]}" HeightRequest="200"></Image>
+                                    
+                                    
+                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" VerticalOptions="Center" Grid.Column="1" HeightRequest="200">
                                         <!--<Label.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="Recipe_Tapped"/>
                                         </Label.GestureRecognizers>-->
                                     </Label>
-
+                                        
+                                    
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                                 </Grid>
