@@ -12,6 +12,14 @@ namespace PantryAid
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecipePage : ContentPage
     {
+        private string _imageUrl;
+
+        public string ImageUrl
+        {
+            get { return _imageUrl; }
+            set { _imageUrl = "https://spoonacular.com/recipeImages/" + value; }
+        }
+
         public RecipePage()
         {
             InitializeComponent();
@@ -51,22 +59,10 @@ namespace PantryAid
 
         private void SetLabels(Recipe_Full recipeFull)
         {
+            Image1.Source = recipeFull.image;
             L_Instructions.Text = recipeFull.instructions;
             L_RecipeName.Text = recipeFull.title;
 
-            if (recipeFull.winePairing.pairedWines != null && recipeFull.winePairing.pairedWines.Count > 0)
-            {
-                try
-                {
-                    L_Wine.Text = (string)recipeFull.winePairing.pairedWines[0];
-                }
-                catch (Exception)
-                {
-                    L_Wine.Text = "No wine pairings";
-                }
-            }
-            else
-                L_Wine.Text = "No wine pairings";
             StringBuilder insts = new StringBuilder();
             if (recipeFull.extendedIngredients != null)
             {
@@ -79,18 +75,10 @@ namespace PantryAid
                         .Append(" ")
                         .Append(VARIABLE.unit)
                         .Append("<br />"); //because it's html not ascii
-
-                    //if (VARIABLE.Measurements != null)
-                    //    .Append(VARIABLE.Measurements.us.amount)
-                    //    .Append(" ").Append(VARIABLE.Measurements.us.unitShort)
                 }
 
                 L_Ingredients.Text = insts.ToString();
             }
-
-
-            //resultLabel1.Text = recipeFull.title;
-            //resultLabel2.Text = recipeFull.instructions;
         }
 
         //When user hits enter
