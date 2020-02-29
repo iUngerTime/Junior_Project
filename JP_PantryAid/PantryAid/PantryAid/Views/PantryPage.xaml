@@ -7,9 +7,8 @@
              x:Class="PantryAid.PantryPage">
     <ContentPage.Content>
         <StackLayout>
-            <Entry x:Name="IngredientEntry" Placeholder="(eg. Apple)"/>
-            <Button x:Name="AddButton" Text="ADD" FontSize="Large" Clicked="AddButton_Clicked"/>
-            <Button x:Name="RemoveButton" Text="REMOVE" FontSize="Large" Clicked="RemoveButton_Clicked"/>
+            <Button x:Name="AddButton" Text="Add Ingredient(s)" FontSize="Large" Clicked="AddButton_Clicked"/>
+            <Button x:Name="RemoveButton" Text="Remove Ingredient(s)" FontSize="Large" Clicked="RemoveButton_Clicked"/>
             <Label Margin="0,0,0,20" FontSize="Large" Text="Pantry" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
 
             <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
@@ -29,7 +28,7 @@
                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="2" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                 </Grid>
             </Frame>
-            <ListView ItemsSource="{Binding ListView}" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="False">
+            <ListView ItemsSource="{Binding ListView}" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="False" x:Name="Listv">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -41,9 +40,13 @@
                                         <ColumnDefinition Width="2.5*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Margin="10,0,10,0" Text="{Binding ID}" VerticalOptions="Center" Grid.Column="0"/>
-                                    <Label Margin="10,0,10,0" Text="{Binding Name}" VerticalOptions="Center" Grid.Column="1"/>
-                                    <Label Margin="10,0,10,0" Text="{Binding Quantity}" VerticalOptions="Center" Grid.Column="2"/>
+                                    <Label x:Name="idlabel" Margin="10,0,10,0" Text="{Binding ID}" VerticalOptions="Center" Grid.Column="0"/>
+                                    <Label x:Name="namelabel" Margin="10,0,10,0" Text="{Binding Name}" VerticalOptions="Center" Grid.Column="1"/>
+                                    <Label x:Name="quantlabel" Margin="10,0,10,0" Text="{Binding Quantity}" VerticalOptions="Center" Grid.Column="2"/>
+                                    <StackLayout Orientation="Horizontal" Grid.Column="2" Margin="30, 0, 0, 0">
+                                        <Button Text="+" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" Clicked="QuantityChangeClicked" CommandParameter="{Binding .}"/>
+                                        <Button Text="-" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" Clicked="QuantityChangeClicked" CommandParameter="{Binding .}"/>
+                                    </StackLayout>
 
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>

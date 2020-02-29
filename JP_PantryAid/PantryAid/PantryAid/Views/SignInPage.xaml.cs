@@ -1,9 +1,7 @@
-﻿using PantryAid.ViewModels;
+﻿using CommonServiceLocator;
+using PantryAid.Core.Interfaces;
+using PantryAid.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +12,7 @@ namespace PantryAid.Views
     {
         public SignInPage()
         {
-            var vm = new LoginViewModel(Navigation);
+            var vm = new LoginViewModel(Navigation, ServiceLocator.Current.GetInstance<iUserDataRepo>());
             this.BindingContext = vm;
             vm.DisplayInvalidLoginPrompt += () => DisplayAlert("Error", "Invalid Login, try again", "OK");
             InitializeComponent();

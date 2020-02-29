@@ -1,7 +1,8 @@
-﻿using PantryAid.Views;
-using System;
+﻿using Autofac.Extras.CommonServiceLocator;
+using CommonServiceLocator;
+using PantryAid.Configuration;
+using PantryAid.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace PantryAid
 {
@@ -9,7 +10,14 @@ namespace PantryAid
     {
         public App()
         {
+            //Initialize
             InitializeComponent();
+
+            //Configure Injection
+            var container = ContainerConfig.Configure();
+
+            AutofacServiceLocator asl = new AutofacServiceLocator(container);
+            ServiceLocator.SetLocatorProvider(() => asl);
 
             //Set the home page as navigation page
             MainPage = new NavigationPage(new SignInPage());

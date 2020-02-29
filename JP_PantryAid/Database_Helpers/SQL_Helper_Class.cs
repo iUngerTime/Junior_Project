@@ -24,12 +24,11 @@ namespace Database_Helpers
         //private string ConnectionString = "server=aura.cset.oit.edu, 5433; database=iUngerTime; UID=iUngerTime; password=iUngerTime";
         private static string _serverAddress = "aura.cset.oit.edu";
         private static string _serverPort = "5433";
-        private static string _databaseName = "iUngerTime";
-        private static string _serverUsername = "iUngerTime";
-        private static string _serverPassword = "iUngerTime";
+        private static string _databaseName = "JBNT";
+        private static string _serverUsername = "JBNT";
+        private static string _serverPassword = "Hootie123";
 
         private static int _curuserid;
-
 
         /// <summary>
         /// Returns The connection string for the database
