@@ -209,9 +209,8 @@ namespace SpoonacularAPI
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_ComplexRecipeURL, Method.GET);
 
-            if (query == "")
-                throw new Exception("Cannot query API with empty query");
-            request.AddParameter("query", query);
+            if (query != "")
+                request.AddParameter("query", query);
             if (cuisine != "")
                 request.AddParameter("cuisine", cuisine);
             string excuisine = ConvertListToSingleString(excludeCuisine);

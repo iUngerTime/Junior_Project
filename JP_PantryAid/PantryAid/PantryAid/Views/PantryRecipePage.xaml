@@ -7,7 +7,7 @@
              x:Class="PantryAid.Views.PantryRecipePage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Find ingredients using pantry" FontSize="Header"/>
+            <Label Text="Find ingredients using pantry" FontSize="Large"/>
             <Button Text="Find" HorizontalOptions="CenterAndExpand" Pressed="Find_Pressed"/>
             <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
                 <Grid Padding="0">

@@ -23,6 +23,7 @@ namespace PantryAid.Views
         public PantryRecipePage()
         {
             InitializeComponent();
+            this.BindingContext = _list;
         }
 
         void DoSearch()
