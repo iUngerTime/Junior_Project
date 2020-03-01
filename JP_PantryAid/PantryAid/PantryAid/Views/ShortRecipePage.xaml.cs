@@ -16,7 +16,7 @@ namespace PantryAid.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShortRecipePage : ContentPage
     {
-        ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
+        ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
         int _offset;
         int _recipesPerPage;
         public ShortRecipePage()
@@ -48,20 +48,20 @@ namespace PantryAid.Views
 
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
-            DoComplexSearch();
+            DoSearch();
         }
 
         private void PrevButton_Clicked(object sender, EventArgs e)
         {
             if (_offset >= 5)
                 _offset -= _recipesPerPage;
-            DoComplexSearch();
+            DoSearch();
         }
 
         private void NextButton_Clicked(object sender, EventArgs e)
         {
             _offset += _recipesPerPage;
-            DoComplexSearch();
+            DoSearch();
         }
 
         private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
