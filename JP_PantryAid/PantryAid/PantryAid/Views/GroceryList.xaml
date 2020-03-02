@@ -7,9 +7,9 @@
              x:Class="PantryAid.GroceryList">
     <ContentPage.Content>
         <StackLayout>
-            <Entry x:Name="IngredientEntry" Placeholder="(eg. Apple)"/>
             <Button x:Name="AddButton" Text="ADD" FontSize="Large" Clicked="AddButton_Clicked"/>
             <Button x:Name="RemoveButton" Text="REMOVE" FontSize="Large" Clicked="RemoveButton_Clicked"/>
+            <Button x:Name="ClearButton" Text="CLEAR" FontSize="Large" Clicked="ClearButton_Clicked"/>
             <Label Margin="0,0,0,20" FontSize="Large" Text="GroceryList" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
 
             <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
@@ -19,11 +19,13 @@
                         <ColumnDefinition Width="2.5*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Margin="10,0,10,0" Text="ID" VerticalOptions="Center" Grid.Column="0"/>
-                    <Label Margin="10,0,10,0" Text="Name" VerticalOptions="Center" Grid.Column="1"/>
+                    <Label Margin="10,0,10,0" Text="Name" VerticalOptions="Center" Grid.Column="0"/>
+                    <Label Margin="10,0,10,0" Text="Quantity" VerticalOptions="Center" Grid.Column="1"/>
+                   
 
                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                  
                 </Grid>
             </Frame>
             <ListView ItemsSource="{Binding ListView}" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="False">
@@ -37,8 +39,8 @@
                                         <ColumnDefinition Width="2.5*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Margin="10,0,10,0" Text="{Binding ID}" VerticalOptions="Center" Grid.Column="0"/>
-                                    <Label Margin="10,0,10,0" Text="{Binding Name}" VerticalOptions="Center" Grid.Column="1"/>
+                                    <Label Margin="10,0,10,0" Text="{Binding Name}" VerticalOptions="Center" Grid.Column="0"/>
+                                    <Label Margin="10,0,10,0" Text="{Binding Quantity}" VerticalOptions="Center" Grid.Column="1"/>
 
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>

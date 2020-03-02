@@ -17,15 +17,15 @@ using PantryAid.Core.Interfaces;
 
 /*
 The file that holds ingredients for the grocery list is in the format
-<ID>-<Name>
-<ID>-<Name>
-<ID>-<Name>
+<Name>-<Quantity>
+<Name>-<Quantity>
+<Name>-<Quantity>
 ...
 
 ex.
-1-Milk
-2-Eggs
-3-Cookies
+Milk-1
+Eggs-5
+Cookies-7
 ...
 */
 namespace PantryAid
@@ -44,10 +44,9 @@ namespace PantryAid
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             FilePath = path + FileName;
 
-            File.Delete(FilePath); //This needs to be removed later, but for test purposes this will reset the file when you reopen the page
             if (!File.Exists(FilePath))
             {
-                File.WriteAllText(FilePath, "");
+                File.WriteAllText(FilePath, ""); //Creates file
             } 
 
             this.BindingContext = _list;
@@ -62,37 +61,58 @@ namespace PantryAid
 
             foreach (string line in contents)
             {
-                string[] temp = line.Split('-'); //temp should always have only two strings contained after this point, the ID and the Name
+                string[] temp = line.Split('-'); //temp[0] holds the name and temp[1] holds the quantity
 
-                IngredientItem G = new IngredientItem(new Ingredient(Convert.ToInt32(temp[0]), temp[1]), 0.0f, Measurements.Serving);
+                IngredientItem G = new IngredientItem(new Ingredient(-1, temp[0]), Convert.ToDouble(temp[1]), Measurements.Serving);
                 _list.Add(G);
             }
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
-            Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
+            string result = await DisplayPromptAsync("ADD", "Enter an ingredient to add to your list", "Add", "Cancel", "eg. Apple", 500, Keyboard.Text);
 
-            if (foundingr == null)
-            {
-                await DisplayAlert("Error", "That ingredient could not be found", "OK");
+            if (result == null)
                 return;
-            }
-            else
-            {
-                IngredientItem item = new IngredientItem(foundingr, 1.0f, Measurements.Serving);
-                _list.Add(item);
 
-                File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.ID.ToString(), item.Name));
+            bool valid = false;
+            double fquant = 0;
+
+            while (!valid)
+            {
+                string quant = await DisplayPromptAsync("How Much?", "Enter an quantity for the ingredient you just entered", "Add", "Cancel", "eg. 3", 10, Keyboard.Numeric);
+
+                if (quant == null)
+                    return;
+
+                fquant = Convert.ToDouble(quant);
+                if (fquant <= 0)
+                {
+                    valid = false;
+                    await DisplayAlert("Error", "Invalid quantity\nPlease enter a positive number", "OK");
+                }
+                else
+                    valid = true;
             }
+            IngredientItem item = new IngredientItem(new Ingredient(-1, result), fquant, Measurements.Serving);
+            _list.Add(item);
+
+            File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.Name, item.Quantity));
+            
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
+            string selecteditem = await DisplayPromptAsync("REMOVE", "Enter an ingredient to remove from your list", "Remove", "Cancel", "eg. Apple", 500, Keyboard.Text);
+
+            if (selecteditem == null)
+                return;
+
+            selecteditem = selecteditem.ToLower();
+
             string[] contents = File.ReadAllLines(FilePath);
             List<string> newcontents = new List<string>();
-            string selecteditem = IngredientEntry.Text.ToLower();
+
             bool found = false;
 
             //Find index of item to remove
@@ -101,7 +121,7 @@ namespace PantryAid
             {
                 string[] temp = line.Split('-');
 
-                if (selecteditem == temp[1].ToLower())
+                if (selecteditem == temp[0].ToLower())
                 {
                     found = true;
                     break;
@@ -127,6 +147,12 @@ namespace PantryAid
             File.WriteAllLines(FilePath, newcontents.ToArray());
 
             FillGrid();
+        }
+
+        private void ClearButton_Clicked(object sender, EventArgs e)
+        {
+            File.WriteAllText(FilePath, "");
+            _list.ListView.Clear();
         }
     }
 }
