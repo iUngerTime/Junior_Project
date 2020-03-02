@@ -7,8 +7,11 @@
              x:Class="PantryAid.PantryPage">
     <ContentPage.Content>
         <StackLayout>
-            <Button x:Name="AddButton" Text="Add Ingredient(s)" FontSize="Large" Clicked="AddButton_Clicked"/>
-            <Button x:Name="RemoveButton" Text="Remove Ingredient(s)" FontSize="Large" Clicked="RemoveButton_Clicked"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Button x:Name="RemoveButton" Text="Remove" FontSize="Medium" Clicked="RemoveButton_Clicked"/>
+                <Button x:Name="AddButton" Text="Add" FontSize="Medium" Clicked="AddButton_Clicked"/>
+            </StackLayout>
+            <Button x:Name="B_Search_for_Recipes" Text="Find Recipes" Clicked="B_Search_for_Recipes_OnClicked"></Button>
             <Label Margin="0,0,0,20" FontSize="Large" Text="Pantry" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
 
             <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">

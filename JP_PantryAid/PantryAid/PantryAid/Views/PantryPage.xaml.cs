@@ -9,6 +9,7 @@ using Xamarin.Forms.Xaml;
 using Database_Helpers;
 using PantryAid.Core.Models;
 using PantryAid.Core.Interfaces;
+using PantryAid.Views;
 
 namespace PantryAid
 {
@@ -139,6 +140,12 @@ namespace PantryAid
             }
             else
                 DisplayAlert("Error", "CommandParameter was null", "OK");
+        }
+
+        //go to the pantry recipe page and search
+        private void B_Search_for_Recipes_OnClicked(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new PantryRecipePage(true));
         }
     }
 }

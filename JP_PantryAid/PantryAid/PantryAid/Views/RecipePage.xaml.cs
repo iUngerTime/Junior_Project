@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace PantryAid
     public partial class RecipePage : ContentPage
     {
         private string _imageUrl;
+        private Recipe_Full recipeFull; //saving the current recipe full
 
         public string ImageUrl
         {
@@ -29,11 +31,20 @@ namespace PantryAid
         public RecipePage(int RecipeID)
         {
             InitializeComponent();
-            SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
-            Recipe_Search.Text = RecipeID.ToString();
+            try
+            {
+                SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
+                Recipe_Search.Text = RecipeID.ToString();
 
-            Recipe_Full RF = api.GetRecipeFull(RecipeID);
-            SetLabels(RF);
+                recipeFull = api.GetRecipeFull(RecipeID);
+                SetLabels();
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine(e);
+                //throw;
+            }
+            
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
@@ -47,17 +58,17 @@ namespace PantryAid
             SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
             string query = Recipe_Search.Text;
             Recipe_Short recipeShort;
-            Recipe_Full recipeFull = new Recipe_Full();
+            recipeFull = new Recipe_Full();
             if (query.Length > 0)
             {
                 recipeShort = api.RecipeSearch(query, 1)[0];
                 recipeFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetRecipeFull(recipeShort);
 
-                SetLabels(recipeFull);
+                SetLabels();
             }
         }
 
-        private void SetLabels(Recipe_Full recipeFull)
+        private void SetLabels()
         {
             Image1.Source = recipeFull.image;
             L_Instructions.Text = recipeFull.instructions;
@@ -85,6 +96,27 @@ namespace PantryAid
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
             Query();
+        }
+
+        string FilePath;
+        string FileName = "GroceryList";
+
+        private void B_Add_To_GroceryList_OnClicked(object sender, EventArgs e)
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            FilePath = path + FileName;
+
+            if (!File.Exists(FilePath))
+            {
+                File.WriteAllText(FilePath, ""); //Creates file
+            }
+
+            foreach (var recipe in recipeFull.extendedIngredients)
+            {
+                IngredientItem item = new IngredientItem(new Ingredient(-1, recipe.name), recipe.amount, Measurements.Serving);
+                File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.Name, item.Quantity));
+            }
+            Navigation.PushModalAsync(new GroceryList());
         }
     }
 }

@@ -17,13 +17,18 @@ namespace PantryAid.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PantryRecipePage : ContentPage
     {
-        ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
+        //ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
+        ListViewModel<SpoonacularAPI.SpoonacularAPI.RecipeByIngredient> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.RecipeByIngredient>();
         int _offset = 0;
         int _recipesPerPage = 5;
-        public PantryRecipePage()
+        public PantryRecipePage(bool usePantry = false)
         {
             InitializeComponent();
             this.BindingContext = _list;
+            if (usePantry)
+            {
+                DoSearch();
+            }
         }
 
         void DoSearch()
@@ -41,12 +46,21 @@ namespace PantryAid.Views
             }
 
             SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
-            SpoonacularAPI.SpoonacularAPI.Recipe_Complex complex = api.FindComplexRecipe("", _offset, _recipesPerPage, "", null, "", null, ingredients);
+            List<SpoonacularAPI.SpoonacularAPI.RecipeByIngredient> result = api.FindRecipeByIngredients(ingredients, _recipesPerPage);
+
+            foreach (SpoonacularAPI.SpoonacularAPI.RecipeByIngredient r in result)
+            {
+                //r.image = "https://api.spoonacular.com/" + r.image;
+                _list.Add(r);
+            }
+
+            /*SpoonacularAPI.SpoonacularAPI.Recipe_Complex complex = api.FindComplexRecipe("", _offset, _recipesPerPage, "", null, "", null, ingredients);
 
             foreach (SpoonacularAPI.SpoonacularAPI.ComplexResult r in complex.results)
             {
                 _list.Add(r);
             }
+            */
         }
 
         private void Find_Pressed(object sender, EventArgs e)
@@ -54,23 +68,22 @@ namespace PantryAid.Views
             DoSearch();
         }
 
-        private void Recipe_Tapped(object sender, EventArgs e)
-        {
-            Label l = (Label)sender;
-            Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(l.Text)));
-        }
-
         private void PrevButton_Clicked(object sender, EventArgs e)
         {
             if (_offset >= 5)
                 _offset -= _recipesPerPage;
-            DoSearch();
+            //DoSearch();
         }
 
         private void NextButton_Clicked(object sender, EventArgs e)
         {
             _offset += _recipesPerPage;
-            DoSearch();
+            //DoSearch();
+        }
+
+        private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[e.ItemIndex].id)));
         }
     }
 }

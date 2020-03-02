@@ -185,6 +185,29 @@ namespace SpoonacularAPI
             }
         }
 
+        /// <summary>
+        ///  A complex recipe search with many parameters (obviously)
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="offset"></param>
+        /// <param name="number"></param>
+        /// <param name="cuisine"></param>
+        /// <param name="excludeCuisine"></param>
+        /// <param name="diet"></param>
+        /// <param name="intolerances"></param>
+        /// <param name="includeIngredients"></param>
+        /// <param name="excludeIngredients"></param>
+        /// <param name="type"></param>
+        /// <param name="instructionsRequired"></param>
+        /// <param name="fillIngredients"></param>
+        /// <param name="addRecipeInformation"></param>
+        /// <param name="titleMatch"></param>
+        /// <param name="maxReadyTime"></param>
+        /// <param name="ignorePantry"></param>
+        /// <param name="sort"></param>
+        /// <param name="sortDirection"></param>
+        /// <param name="limitLicense"></param>
+        /// <returns></returns>
         public Recipe_Complex FindComplexRecipe(string query,
             int offset = 0,
             int number = 5,
@@ -452,7 +475,7 @@ namespace SpoonacularAPI
         //The key for our API
         private static string m_APYKey = "6da40b0861384c3dbf879eb47b5bb539";
         //These two urls are broken apart as the API has different sub addresses for different types of searches
-        private static string m_URL = "https://api.spoonacular.com";
+        public static string m_URL = "https://api.spoonacular.com";
         private static string m_RecipeSearchURL = "recipes/search";
         private static string m_RecipeInformationURL = "recipes/";
         private static string m_RecipeSearchByIngredientsURL = "recipes/findByIngredients";
