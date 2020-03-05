@@ -68,5 +68,29 @@ namespace PantryAid.Views
         {
             Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[e.ItemIndex].id)));
         }
+
+        private void SimilarRecipe_Search_Completed(object sender, EventArgs e)
+        {
+            _list.ListView.Clear();
+
+            SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
+
+            List<SpoonacularAPI.SpoonacularAPI.Recipe_Shorter> list = api.FindSimilarRecipes(SimilarRecipe_Search.Text, _recipesPerPage);
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].imageUrls != null)
+                    list[i].imageUrls[0] = "https://spoonacular.com/recipeImages/" + list[i].imageUrls[0];
+                Recipe_Short rs = new Recipe_Short();
+                rs.title = list[i].title;
+                rs.id = list[i].id;
+                rs.readyInMinutes = list[i].readyInMinutes;
+                rs.servings = list[i].servings;
+                rs.image = list[i].image;
+                rs.imageUrls = list[i].imageUrls;
+                rs.author = null;
+                _list.Add(rs);
+            }
+        }
     }
 }

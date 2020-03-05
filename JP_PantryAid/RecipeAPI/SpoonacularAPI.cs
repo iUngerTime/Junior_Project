@@ -132,6 +132,33 @@ namespace SpoonacularAPI
             return result.results;
         }
 
+        public List<Recipe_Shorter> FindSimilarRecipes(string id, int number = 5, bool limitLicense = true)
+        {//Broken
+            RestClient client = new RestClient(SpoonacularAPI.m_URL);
+            RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeInformationURL + id + "/similar", Method.GET);
+
+            request.AddParameter("number", number);
+            request.AddParameter("limitLicense", limitLicense);
+
+            request.AddParameter("apiKey", m_APYKey);
+
+            List<Recipe_Shorter> result;
+            try
+            {
+                RestResponse response = client.Execute(request);
+                //try to get the data out of the response
+
+                result = JsonConvert.DeserializeObject<List<Recipe_Shorter>>(response.Content);
+                return result;
+            }
+            catch (Exception)
+            {
+                //add call to exception logger
+                //throw;
+                return null;
+            }
+        }
+
         /// <summary>
         /// Returns a list of RecipeByIngredient. The ingredients appear to be quite fuzzy
         /// </summary>
