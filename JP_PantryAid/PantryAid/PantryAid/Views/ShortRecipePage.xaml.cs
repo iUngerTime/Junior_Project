@@ -53,7 +53,7 @@ namespace PantryAid.Views
 
         private void PrevButton_Clicked(object sender, EventArgs e)
         {
-            if (_offset >= 5)
+            if (_offset >= _recipesPerPage)
                 _offset -= _recipesPerPage;
             DoSearch();
         }
@@ -79,8 +79,9 @@ namespace PantryAid.Views
 
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].imageUrls != null)
-                    list[i].imageUrls[0] = "https://spoonacular.com/recipeImages/" + list[i].imageUrls[0];
+                //if (list[i].imageUrls[0] != null)
+                //list[i].imageUrls[0] = "https://spoonacular.com/recipeImages/" + list[i].imageUrls[0];
+                list[i].image = "https://spoonacular.com/recipeImages/" + list[i].image;
                 Recipe_Short rs = new Recipe_Short();
                 rs.title = list[i].title;
                 rs.id = list[i].id;
@@ -88,7 +89,7 @@ namespace PantryAid.Views
                 rs.servings = list[i].servings;
                 rs.image = list[i].image;
                 rs.imageUrls = list[i].imageUrls;
-                rs.author = null;
+                rs.author = "";
                 _list.Add(rs);
             }
         }

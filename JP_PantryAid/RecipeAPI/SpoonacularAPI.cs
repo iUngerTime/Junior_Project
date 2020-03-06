@@ -138,7 +138,7 @@ namespace SpoonacularAPI
             RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeInformationURL + id + "/similar", Method.GET);
 
             request.AddParameter("number", number);
-            request.AddParameter("limitLicense", limitLicense);
+            //request.AddParameter("limitLicense", limitLicense);
 
             request.AddParameter("apiKey", m_APYKey);
 
