@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)" Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
-            <Entry x:Name="SimilarRecipe_Search" Placeholder="(eg. 177013)" Completed="SimilarRecipe_Search_Completed" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/>
+            <!--<Entry x:Name="SimilarRecipe_Search" Placeholder="(eg. 177013)" Completed="SimilarRecipe_Search_Completed" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/>-->
             <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
                 <Grid x:Name="Grid1" Padding="0">
                     <Grid.ColumnDefinitions>

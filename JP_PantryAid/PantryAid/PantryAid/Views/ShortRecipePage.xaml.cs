@@ -28,6 +28,17 @@ namespace PantryAid.Views
             this.BindingContext = _list;
         }
 
+        //displays a list of similar recipes
+        public ShortRecipePage(string similarID)
+        {
+            InitializeComponent();
+
+            _offset = 0;
+            _recipesPerPage = 5;
+            this.BindingContext = _list;
+            FindSimilarRecipes(similarID);
+        }
+
         private void DoSearch()
         {
             _list.ListView.Clear();
@@ -68,14 +79,20 @@ namespace PantryAid.Views
         {
             Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[e.ItemIndex].id)));
         }
-
+        /*
         private void SimilarRecipe_Search_Completed(object sender, EventArgs e)
+        {
+           FindSimilarRecipes(SimilarRecipe_Search.Text);
+        }
+        */
+
+        private void FindSimilarRecipes(string id)
         {
             _list.ListView.Clear();
 
             SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
 
-            List<SpoonacularAPI.SpoonacularAPI.Recipe_Shorter> list = api.FindSimilarRecipes(SimilarRecipe_Search.Text, _recipesPerPage);
+            List<SpoonacularAPI.SpoonacularAPI.Recipe_Shorter> list = api.FindSimilarRecipes(id, _recipesPerPage);
 
             for (int i = 0; i < list.Count; i++)
             {
