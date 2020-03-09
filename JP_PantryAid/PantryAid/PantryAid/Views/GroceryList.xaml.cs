@@ -154,5 +154,32 @@ namespace PantryAid
             File.WriteAllText(FilePath, "");
             _list.ListView.Clear();
         }
+
+        private async void DumpButton_Clicked(object sender, EventArgs e)
+        {
+            List<IngredientItem> LostIngredients = new List<IngredientItem>(); //Keeps track of the entries that are not dumped because they don't exist in the database
+            iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+
+            foreach (IngredientItem item in _list.ListView)
+            {
+                Ingredient ingr = ingrdata.GetIngredient(item.Name.ToLower());
+
+                if (ingr == null)
+                    LostIngredients.Add(item);
+                else
+                    ingrdata.AddIngredientToPantry(SqlHelper.UserID, ingr, item.Quantity);
+            }
+
+            string alert = "The following ingredients could not be added to your pantry:\n";
+
+            foreach (IngredientItem item in LostIngredients)
+            {
+                alert += item.Name + "\n";
+            }
+            if (LostIngredients.Count == 0)
+                alert = "Successfully dumped grocery list!";
+
+            await DisplayAlert("Grocery Dump", alert, "OK");
+        }
     }
 }
