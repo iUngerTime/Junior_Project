@@ -64,7 +64,7 @@ namespace SpoonacularAPI
 
         public class Recipe_Complex
         {
-            public ComplexResult[] results { get; set; }
+            public List<ComplexResult> results { get; set; }
 
             public long offset { get; set; }
 
