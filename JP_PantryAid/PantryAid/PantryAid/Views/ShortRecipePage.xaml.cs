@@ -18,6 +18,7 @@ namespace PantryAid.Views
     {
         //ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
         ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
+
         int _offset;
         int _recipesPerPage;
 
@@ -60,9 +61,7 @@ namespace PantryAid.Views
             {
                 list[i].imageUrls[0] = "https://spoonacular.com/recipeImages/" + list[i].imageUrls[0];
                 _list.Add(list[i]);
-                
-            }
-           
+            }           
         }
         */
 
@@ -85,7 +84,6 @@ namespace PantryAid.Views
 
             }
         }
-
 
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
