@@ -99,6 +99,7 @@ namespace Database_Helpers
                 SqlCommand comm = new SqlCommand(sql, con);
 
                 int usrId = 0;
+                string email = "";
 
                 //Open Connection
                 try { con.Open(); }
@@ -112,6 +113,7 @@ namespace Database_Helpers
                     if (read.Read())
                     {
                         usrId = read.GetInt32(0);
+                        email = read.GetString(1);
                     }
                     else { return null; }
 
@@ -119,7 +121,7 @@ namespace Database_Helpers
                 }
                 catch (Exception) { return null; }
 
-                return new User() { Id = usrId };
+                return new User() { Id = usrId, Email = email };
             }
         }
 

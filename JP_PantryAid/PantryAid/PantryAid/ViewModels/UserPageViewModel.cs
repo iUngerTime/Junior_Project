@@ -1,14 +1,19 @@
-﻿using PantryAid.Core.Models;
+﻿using Database_Helpers;
+using PantryAid.Core.Interfaces;
+using PantryAid.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using Xamarin.Forms;
 
 namespace PantryAid.ViewModels
 {
     class UserPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private iUserDataRepo _userDatabaseAccess;
+        public INavigation navigation { get; set; }
 
         //Properties
         private int _userid;
@@ -18,6 +23,18 @@ namespace PantryAid.ViewModels
         private List<Recipe_Short> _favoriteRecipes;
         private List<Recipe_Short> _dislikedRecipes;
         //PLACEHOLDER FOR private list<preferences> DietaryOptions;
+
+        public UserPageViewModel(INavigation nav, iUserDataRepo databaseAccess)
+        {
+            //Navigation and command binding
+            this.navigation = nav;
+
+            //Injection of view model
+            _userDatabaseAccess = databaseAccess;
+
+            //Set the user id of the form
+            _userid = SqlServerDataAccess.UserID;
+        }
 
         //Getters and setters
         public int UserId
@@ -78,6 +95,13 @@ namespace PantryAid.ViewModels
                 _dislikedRecipes = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("DislikedRecipes"));
             }
+        }
+
+        private string GetEmailFromDB()
+        {
+            User usr =_userDatabaseAccess.GetUser(_userid);
+
+            return usr.Email;
         }
     }
 }

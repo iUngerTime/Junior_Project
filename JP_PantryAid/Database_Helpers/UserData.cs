@@ -168,11 +168,23 @@ namespace Database_Helpers
         /// <summary>
         /// Get the user
         /// </summary>
-        /// <param name="usr"></param>
+        /// <param name="email">Email of a user</param>
         /// <returns></returns>
-        public User GetUser(string usr)
+        public User GetUser(string email)
         {
-            string query = "SELECT UserID, Email FROM Person WHERE LOWER(Email) = '" + usr + "';";
+            string query = "SELECT UserID, Email FROM Person WHERE LOWER(Email) = '" + email + "';";
+
+            return _database.ExecuteQuery_SingleUser(query);
+        }
+
+        /// <summary>
+        /// Get the user
+        /// </summary>
+        /// <param name="usrid">UserId as an int</param>
+        /// <returns></returns>
+        public User GetUser(int usrid)
+        {
+            string query = "SELECT UserID, Email FROM Person WHERE UserID = '" + usrid + "';";
 
             return _database.ExecuteQuery_SingleUser(query);
         }

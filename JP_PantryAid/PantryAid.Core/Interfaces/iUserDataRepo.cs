@@ -11,6 +11,7 @@ namespace PantryAid.Core.Interfaces
     public interface iUserDataRepo
     {
         User GetUser(string usr);
+        User GetUser(int usrid);
         int AddUser(User newUser);
         int EditUserInfo(User currentInfo, User newInfo);
         int DeleteUser(User delUser);
