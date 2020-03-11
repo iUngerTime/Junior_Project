@@ -9,6 +9,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)" Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
+            <!--<Entry x:Name="SimilarRecipe_Search" Placeholder="(eg. 177013)" Completed="SimilarRecipe_Search_Completed" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Keyboard="Numeric"/>-->
             <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
                 <Grid x:Name="Grid1" Padding="0">
                     <Grid.ColumnDefinitions>
@@ -42,9 +43,9 @@
                                         </Image.GestureRecognizers>
                                         
                                     </ImageButton>-->
-                                    <Image Source="{ Binding imageUrls[0]}" HeightRequest="200"></Image>
-                                    
-                                    
+                                    <Image Source="{ Binding image }" HeightRequest="200"></Image>
+
+
                                     <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" VerticalOptions="Center" Grid.Column="1" HeightRequest="200">
                                         <!--<Label.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="Recipe_Tapped"/>

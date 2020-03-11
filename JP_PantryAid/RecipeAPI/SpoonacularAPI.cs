@@ -132,6 +132,33 @@ namespace SpoonacularAPI
             return result.results;
         }
 
+        public List<Recipe_Shorter> FindSimilarRecipes(string id, int number = 5, bool limitLicense = true)
+        {//Broken
+            RestClient client = new RestClient(SpoonacularAPI.m_URL);
+            RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeInformationURL + id + "/similar", Method.GET);
+
+            request.AddParameter("number", number);
+            //request.AddParameter("limitLicense", limitLicense);
+
+            request.AddParameter("apiKey", m_APYKey);
+
+            List<Recipe_Shorter> result;
+            try
+            {
+                RestResponse response = client.Execute(request);
+                //try to get the data out of the response
+
+                result = JsonConvert.DeserializeObject<List<Recipe_Shorter>>(response.Content);
+                return result;
+            }
+            catch (Exception)
+            {
+                //add call to exception logger
+                //throw;
+                return null;
+            }
+        }
+
         /// <summary>
         /// Returns a list of RecipeByIngredient. The ingredients appear to be quite fuzzy
         /// </summary>
@@ -185,6 +212,119 @@ namespace SpoonacularAPI
             }
         }
 
+        public struct ComplexParameters
+        {
+            public string query;
+            public int offset;
+            public int number;
+            public string cuisine;
+            public List<string> excludeCuisine;
+            public string diet;
+            public List<string> intolerances;
+            public List<string> includeIngredients;
+            public List<string> excludeIngredients;
+            public string type;
+            public bool instructionsRequired;
+            public bool fillIngredients;
+            public bool addRecipeInformation;
+            public string titleMatch;
+            public int maxReadyTime;
+            public bool ignorePantry;
+            public string sort;
+            public string sortDirection;
+            public bool limitLicense;
+        }
+
+
+        //sets up a struct with default values
+        public static ComplexParameters SetUpComplexParameters()
+        {
+            ComplexParameters par = new ComplexParameters();
+            par.query = "";
+            par.offset = 0;
+            par.number = 5;
+            par.cuisine = "";
+            par.excludeCuisine = null;
+            par.diet = "";
+            par.intolerances = null;
+            par.includeIngredients = null;
+            par.excludeIngredients = null;
+            par.type = "";
+            par.instructionsRequired = true;
+            par.fillIngredients = false;
+            par.addRecipeInformation = false;
+            par.titleMatch = "";
+            par.maxReadyTime = -1;
+            par.ignorePantry = true;
+            par.sort = "";
+            par.sortDirection = "";
+            par.limitLicense = true;
+            return par;
+        }
+
+        public Recipe_Complex FindComplexRecipe(ComplexParameters par)
+        {
+            RestClient client = new RestClient(SpoonacularAPI.m_URL);
+            RestRequest request = new RestRequest(SpoonacularAPI.m_ComplexRecipeURL, Method.GET);
+
+            if (par.query != "")
+                request.AddParameter("query", par.query);
+            if (par.cuisine != "")
+                request.AddParameter("cuisine", par.cuisine);
+            string excuisine = ConvertListToSingleString(par.excludeCuisine);
+            if (excuisine != "")
+                request.AddParameter("excludeCuisine", excuisine);
+            if (par.diet != "")
+                request.AddParameter("diet", par.diet);
+            string intolr = ConvertListToSingleString(par.intolerances);
+            if (intolr != "")
+                request.AddParameter("intolerances", intolr);
+            string inclIngr = ConvertListToSingleString(par.includeIngredients);
+            if (inclIngr != "")
+                request.AddParameter("includeIngredients", inclIngr);
+            string exclIngr = ConvertListToSingleString(par.excludeIngredients);
+            if (exclIngr != "")
+                request.AddParameter("excludeIngredients", exclIngr);
+            if (par.type != "")
+                request.AddParameter("type", par.type);
+            request.AddParameter("instructionsRequired", par.instructionsRequired);
+            request.AddParameter("fillIngredients", par.fillIngredients);
+            request.AddParameter("addRecipeInformation", par.addRecipeInformation);
+            if (par.titleMatch != "")
+                request.AddParameter("titleMatch", par.titleMatch);
+            if (par.maxReadyTime > 0)
+                request.AddParameter("maxReadyTime", par.maxReadyTime);
+            request.AddParameter("ignorePantry", par.ignorePantry);
+            if (par.sort != "")
+                request.AddParameter("sort", par.sort);
+            if (par.sortDirection != "")
+                request.AddParameter("sortDirection", par.sortDirection);
+            request.AddParameter("offset", par.offset);
+            request.AddParameter("number", par.number);
+            request.AddParameter("limitLicense", par.limitLicense);
+
+            request.AddParameter("apiKey", m_APYKey);
+
+            //Execute the query
+            Recipe_Complex result;
+            try
+            {
+                RestResponse response = client.Execute(request);
+                //try to get the data out of the response
+
+                result = JsonConvert.DeserializeObject<Recipe_Complex>(response.Content);
+                return result;
+            }
+            catch (Exception) //I don't know what this exception handling does, I copied it from Nick's stuff
+            {
+                //add call to exception logger
+                throw;
+            }
+        }
+
+
+
+
         public Recipe_Complex FindComplexRecipe(string query,
             int offset = 0,
             int number = 5,
@@ -209,9 +349,8 @@ namespace SpoonacularAPI
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_ComplexRecipeURL, Method.GET);
 
-            if (query == "")
-                throw new Exception("Cannot query API with empty query");
-            request.AddParameter("query", query);
+            if (query != "")
+                request.AddParameter("query", query);
             if (cuisine != "")
                 request.AddParameter("cuisine", cuisine);
             string excuisine = ConvertListToSingleString(excludeCuisine);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PantryAid.Core.Models;
+using PantryAid.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,6 +14,7 @@ namespace PantryAid
     public partial class RecipePage : ContentPage
     {
         private string _imageUrl;
+        private Recipe_Full _recipeFull;
 
         public string ImageUrl
         {
@@ -25,6 +27,8 @@ namespace PantryAid
             InitializeComponent();
         }
 
+
+
         //Called from ShortRecipePage
         public RecipePage(int RecipeID)
         {
@@ -32,8 +36,8 @@ namespace PantryAid
             SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
             Recipe_Search.Text = RecipeID.ToString();
 
-            Recipe_Full RF = api.GetRecipeFull(RecipeID);
-            SetLabels(RF);
+            _recipeFull = api.GetRecipeFull(RecipeID);
+            SetLabels(_recipeFull);
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
@@ -47,13 +51,13 @@ namespace PantryAid
             SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
             string query = Recipe_Search.Text;
             Recipe_Short recipeShort;
-            Recipe_Full recipeFull = new Recipe_Full();
+            //Recipe_Full recipeFull = new Recipe_Full();
             if (query.Length > 0)
             {
                 recipeShort = api.RecipeSearch(query, 1)[0];
-                recipeFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetRecipeFull(recipeShort);
+                _recipeFull = SpoonacularAPI.SpoonacularAPI.GetInstance().GetRecipeFull(recipeShort);
 
-                SetLabels(recipeFull);
+                SetLabels(_recipeFull);
             }
         }
 
@@ -85,6 +89,11 @@ namespace PantryAid
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
             Query();
+        }
+
+        private void B_SimilarClicked(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new ShortRecipePage(_recipeFull.id.ToString()));
         }
     }
 }
