@@ -28,7 +28,7 @@ namespace PantryAid.Views
         {//Need IngredientData to finish
             _list.ListView.Clear();
             List<string> ingredients = new List<string>();
-            List<IngredientItem> ingredientItems;
+            //List<IngredientItem> ingredientItems;
 
             SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
 

@@ -1,6 +1,7 @@
 ﻿using Database_Helpers;
 using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
+using PantryAid.OfficialViews;
 using PantryAid.Views;
 using System;
 using System.ComponentModel;
@@ -62,7 +63,7 @@ namespace PantryAid.ViewModels
             if (authenticated)
             {
                 //Open DemoPage.xaml Form as a new stack
-                navigation.PushModalAsync(new NavigationPage(new DemoPage()));
+                navigation.PushModalAsync(new TabbedMasterPage());
             }
             else
             {

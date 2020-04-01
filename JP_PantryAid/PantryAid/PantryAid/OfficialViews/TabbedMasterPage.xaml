@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PantryAid.OfficialViews.TabbedMasterPage"
+             xmlns:views="clr-namespace:PantryAid.OfficialViews"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             android:TabbedPage.ToolbarPlacement="Bottom">
+
+    <TabbedPage.Children>
+        <NavigationPage Title="Recipe Finder">
+            <x:Arguments>
+                <views:RecipeFinder />
+            </x:Arguments>
+        </NavigationPage>
+
+        <NavigationPage Title="Pantry">
+            <x:Arguments>
+                <views:Pantry />
+            </x:Arguments>
+        </NavigationPage>
+
+        <NavigationPage Title="Grocery List">
+            <x:Arguments>
+                <views:Pantry />
+            </x:Arguments>
+        </NavigationPage>
+    </TabbedPage.Children>
+</TabbedPage>

@@ -35,9 +35,9 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Label x:Name="IDLabel" Margin="10,0,10,0" Text="{Binding id}" VerticalOptions="Center" Grid.Column="0">
-                                        <Label.GestureRecognizers>
+                                        <!--<Label.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="Recipe_Tapped"/>
-                                        </Label.GestureRecognizers>
+                                        </Label.GestureRecognizers>-->
                                     </Label>
 
                                     <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" VerticalOptions="Center" Grid.Column="1">
@@ -54,8 +54,8 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked"/>
-            <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked"/>
+            <Button x:Name="PrevButton" Text="Prev"/>
+            <Button x:Name="NextButton" Text="Next"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
