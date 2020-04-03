@@ -10,21 +10,21 @@
              android:TabbedPage.ToolbarPlacement="Bottom">
 
     <TabbedPage.Children>
-        <NavigationPage Title="Recipe Finder">
+        <NavigationPage Title="Pantry" Icon="pantryIcon.png">
+            <x:Arguments>
+                <views:Pantry />
+            </x:Arguments>
+        </NavigationPage>
+
+        <NavigationPage Title="Recipe Finder" Icon="recipeFinderIcon.png">
             <x:Arguments>
                 <views:RecipeFinder />
             </x:Arguments>
         </NavigationPage>
 
-        <NavigationPage Title="Pantry">
+        <NavigationPage Title="Grocery List" Icon="groceryListIcon.png">
             <x:Arguments>
-                <views:Pantry />
-            </x:Arguments>
-        </NavigationPage>
-
-        <NavigationPage Title="Grocery List">
-            <x:Arguments>
-                <views:Pantry />
+                <views:GroceryList />
             </x:Arguments>
         </NavigationPage>
     </TabbedPage.Children>
