@@ -28,7 +28,7 @@ namespace PantryAid
         {
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             
-            List<IngredientItem> results = ingrdata.GetIngredientsFromPantry(SqlHelper.UserID);
+            List<IngredientItem> results = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
             if (results == null)
             {
@@ -75,7 +75,7 @@ namespace PantryAid
                 return;
             }
 
-            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlHelper.UserID);
+            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
             if (pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
             {
@@ -84,7 +84,7 @@ namespace PantryAid
             }
 
             _list.Add(new IngredientItem(foundingr, quantity, Measurements.Serving));
-            ingrdata.AddIngredientToPantry(SqlHelper.UserID, foundingr, quantity);
+            ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr, quantity);
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace PantryAid
                 return;
             }
 
-            if (ingrdata.RemoveIngredientFromPantry(SqlHelper.UserID, foundingr) == 0)
+            if (ingrdata.RemoveIngredientFromPantry(SqlServerDataAccess.UserID, foundingr) == 0)
             {
                 await DisplayAlert("Error", "That ingredient is not currently in your pantry", "OK");
                 return;
@@ -130,7 +130,7 @@ namespace PantryAid
                 else if (b.Text == "-")
                     newquant -= 1;
                 
-                ingrdata.UpdatePantryIngredientQuantity(SqlHelper.UserID, ob.ID, newquant);
+                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, ob.ID, newquant);
                 //Replace the item in the list with a duplicate that has the changed quantity
                 int index = _list.ListView.IndexOf(ob);
                 _list.ListView.Remove(ob);

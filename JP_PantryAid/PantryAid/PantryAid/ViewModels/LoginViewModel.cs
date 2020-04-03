@@ -86,7 +86,6 @@ namespace PantryAid.ViewModels
 
             if (auth)
             {
-                SqlHelper.UserID = usr.Id;
                 SqlServerDataAccess.UserID = usr.Id;
             }
 

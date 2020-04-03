@@ -10,9 +10,6 @@ namespace PantryAid
 {
     public partial class App : Application
     {
-        //FOR DEBUG PURPOSES
-        bool _debugMode = true;
-
         public App()
         {
             //Initialize
@@ -26,7 +23,7 @@ namespace PantryAid
 
 
             //Sets start up page based on debug mode set or not
-            if (_debugMode)
+            if (SqlServerDataAccess.DebugMode)
             {
                 //Set user to user id of Brenton
                 SqlServerDataAccess.UserID = 1;

@@ -38,7 +38,7 @@ namespace Database_Helpers
         {
             currUser.Allergies.Add(newAlergy);
 
-            string query = String.Format("INSERT INTO ALERGIES VALUES({0}, {1})", SqlHelper.UserID, newAlergy.IngredientID);
+            string query = String.Format("INSERT INTO ALERGIES VALUES({0}, {1})", SqlServerDataAccess.UserID, newAlergy.IngredientID);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
@@ -53,7 +53,7 @@ namespace Database_Helpers
         {
             currUser.DislikedRecipes.Add(newDisliked);
 
-            string query = String.Format("INSERT INTO DISLIKED_RECIPE VALUES({0}, {1})", SqlHelper.UserID, newDisliked.id);
+            string query = String.Format("INSERT INTO DISLIKED_RECIPE VALUES({0}, {1})", SqlServerDataAccess.UserID, newDisliked.id);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
@@ -68,7 +68,7 @@ namespace Database_Helpers
         {
             currUser.FavoriteRecipes.Add(newFavorite);
 
-            string query = String.Format("INSERT INTO FAVORITE_RECIPE VALUES({0}, {1})", SqlHelper.UserID, newFavorite.id);
+            string query = String.Format("INSERT INTO FAVORITE_RECIPE VALUES({0}, {1})", SqlServerDataAccess.UserID, newFavorite.id);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
@@ -130,7 +130,7 @@ namespace Database_Helpers
         {
             currUser.Allergies.Remove(alergy);
 
-            string query = String.Format("DELETE FROM ALERGIES WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, alergy.IngredientID);
+            string query = String.Format("DELETE FROM ALERGIES WHERE UserID={0} AND RecipeID={1};", SqlServerDataAccess.UserID, alergy.IngredientID);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
@@ -145,7 +145,7 @@ namespace Database_Helpers
         {
             currUser.DislikedRecipes.Remove(nonDisliked);
 
-            string query = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, nonDisliked.id);
+            string query = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlServerDataAccess.UserID, nonDisliked.id);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
@@ -160,7 +160,7 @@ namespace Database_Helpers
         {
             currUser.DislikedRecipes.Remove(nonFavorite);
 
-            string query = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlHelper.UserID, nonFavorite.id);
+            string query = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlServerDataAccess.UserID, nonFavorite.id);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }

@@ -46,7 +46,7 @@ namespace PantryAid
             //Run SQL command to get user's email
             string query = "SELECT UserID, Email FROM Person WHERE LOWER(Email) = '" + emailBox.Text + "';";
             
-            SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
+            SqlConnection con = new SqlConnection(SqlServerDataAccess.GetConnectionString());
             SqlCommand comm = new SqlCommand(query, con);
             
 
@@ -59,7 +59,7 @@ namespace PantryAid
                 if (read.Read())
                 {
                     auth = true;
-                    SqlHelper.UserID = read.GetInt32(0);
+                    SqlServerDataAccess.UserID = read.GetInt32(0);
                 }
 
                 con.Close();

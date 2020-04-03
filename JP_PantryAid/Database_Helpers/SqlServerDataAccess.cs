@@ -20,6 +20,7 @@ namespace Database_Helpers
         private static string _serverUsername = "JBNT";
         private static string _serverPassword = "Hootie123";
         private static int _curuserid;
+        private static bool _debugMode = true;
 
         /// <summary>
         /// Returns The connection string for the database
@@ -188,6 +189,11 @@ namespace Database_Helpers
             set
             { _curuserid = value; }
         }
+
+        /// <summary>
+        /// Sets Debug mode for application
+        /// </summary>
+        public static bool DebugMode { get => _debugMode; }
 
         /// <summary>
         /// Definition of return types
