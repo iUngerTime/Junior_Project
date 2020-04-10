@@ -56,7 +56,7 @@ namespace Database_Helpers
         public List<IngredientItem> GetIngredientsFromPantry(int PantryID)
         {
             SqlConnection con = new SqlConnection(SqlHelper.GetConnectionString());
-            string query = String.Format("SELECT IngredientID, IngredientName, Quantity FROM PANTRY_INGREDIENTS WHERE PantryID={0};", PantryID);
+            string query = String.Format("SELECT IngredientID, IngredientName, Quantity, Measurement FROM PANTRY_INGREDIENTS WHERE PantryID={0};", PantryID);
             SqlCommand comm = new SqlCommand(query, con);
 
             List<IngredientItem> pantryingredients = new List<IngredientItem>();
@@ -78,14 +78,16 @@ namespace Database_Helpers
                     int id = -1;
                     string name = "";
                     double quant = 1.0f;
+                    string measure = "";
 
                     while (read.Read())
                     {
                         id = read.GetInt32(0);
                         name = read.GetString(1);
                         quant = read.GetDouble(2);
+                        measure = read.GetString(3);
                         Ingredient ing = new Ingredient(id, name);
-                        IngredientItem ingi = new IngredientItem(ing, quant, Measurements.Serving);
+                        IngredientItem ingi = new IngredientItem(ing, quant, measure);
 
                         pantryingredients.Add(ingi);
                     }
@@ -108,11 +110,11 @@ namespace Database_Helpers
             return _database.ExecuteQuery_NoReturnType(String.Format("DELETE FROM NEW_INGREDIENTS WHERE IngredientName='{0}';", oldIng.Name));
         }
 
-        public int AddIngredientToPantry(int PantryID, int IngredientID, double Quantity = 1.0f)
+        public int AddIngredientToPantry(int PantryID, int IngredientID, string Measurement, double Quantity = 1.0f)
         {
             Ingredient ingr = this.GetIngredient(IngredientID);
 
-            string query = String.Format("INSERT INTO PANTRY_INGREDIENTS VALUES ({0}, {1}, '{2}', {3});", PantryID, IngredientID, ingr.Name, Quantity);
+            string query = String.Format("INSERT INTO PANTRY_INGREDIENTS VALUES ({0}, {1}, '{2}', {3}, '{4}');", PantryID, IngredientID, ingr.Name, Quantity, Measurement);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
@@ -135,9 +137,9 @@ namespace Database_Helpers
             return _database.ExecuteQuery_NoReturnType(query);
         }
 
-        public int AddIngredientToPantry(int PantryID, Ingredient ingredient, double Quantity = 1.0f)
+        public int AddIngredientToPantry(int PantryID, Ingredient ingredient, string Measurement, double Quantity = 1.0f)
         {
-            return this.AddIngredientToPantry(PantryID, ingredient.IngredientID, Quantity);
+            return this.AddIngredientToPantry(PantryID, ingredient.IngredientID, Measurement, Quantity);
         }
 
         public int RemoveIngredientFromPantry(int PantryID, Ingredient ingredient)

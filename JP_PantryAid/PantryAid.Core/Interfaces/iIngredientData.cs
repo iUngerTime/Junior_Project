@@ -18,8 +18,8 @@ namespace PantryAid.Core.Interfaces
         Ingredient GetIngredient(int ID);
         Ingredient GetIngredient(string name);
         List<IngredientItem> GetIngredientsFromPantry(int PantryID);
-        int AddIngredientToPantry(int PantryID, int IngredientID, double Quantity = 1.0f);
-        int AddIngredientToPantry(int PantryID, Ingredient ingredient, double Quantity = 1.0f);
+        int AddIngredientToPantry(int PantryID, int IngredientID, string Measurement, double Quantity = 1.0f);
+        int AddIngredientToPantry(int PantryID, Ingredient ingredient, string Measurement, double Quantity = 1.0f);
         int RemoveIngredientFromPantry(int PantryID, int IngredientID);
         int RemoveIngredientFromPantry(int PantryID, Ingredient ingredient);
         int UpdatePantryIngredientQuantity(int PantryID, int IngredientID, double NewQuantity);

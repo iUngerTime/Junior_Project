@@ -7,7 +7,27 @@
              x:Class="PantryAid.PantryPage">
     <ContentPage.Content>
         <StackLayout>
+            <StackLayout Orientation="Horizontal"> 
             <Button x:Name="AddButton" Text="Add Ingredient(s)" FontSize="Large" Clicked="AddButton_Clicked"/>
+            <Picker x:Name="MeasurementPicker" SelectedIndex="0" WidthRequest="300"> <!--It would probably be wise to move this to resources if we use it anywhere else-->
+                <Picker.Items>
+                        <x:String>Servings</x:String>
+                        <x:String>Tbsp</x:String>
+                        <x:String>Tsp</x:String>
+                        <x:String>Cups</x:String>
+                        <x:String>Pints</x:String>
+                        <x:String>Quarts</x:String>
+                        <x:String>Gallons</x:String>
+                        <x:String>Ounces</x:String>
+                        <x:String>Fluid Ounces</x:String>
+                        <x:String>Lbs</x:String>
+                        <x:String>Milligrams</x:String>
+                        <x:String>Grams</x:String>
+                        <x:String>Kilograms</x:String>
+                        <x:String>Liters</x:String>
+                    </Picker.Items>
+                </Picker>
+            </StackLayout>
             <Button x:Name="RemoveButton" Text="Remove Ingredient(s)" FontSize="Large" Clicked="RemoveButton_Clicked"/>
             <Label Margin="0,0,0,20" FontSize="Large" Text="Pantry" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
 
@@ -47,6 +67,7 @@
                                         <Button Text="+" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" Clicked="QuantityChangeClicked" CommandParameter="{Binding .}"/>
                                         <Button Text="-" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" Clicked="QuantityChangeClicked" CommandParameter="{Binding .}"/>
                                     </StackLayout>
+
 
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                                     <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>

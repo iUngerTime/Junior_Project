@@ -63,7 +63,7 @@ namespace PantryAid
             {
                 string[] temp = line.Split('-'); //temp[0] holds the name and temp[1] holds the quantity
 
-                IngredientItem G = new IngredientItem(new Ingredient(-1, temp[0]), Convert.ToDouble(temp[1]), Measurements.Serving);
+                IngredientItem G = new IngredientItem(new Ingredient(-1, temp[0]), Convert.ToDouble(temp[1]), "Serving");
                 _list.Add(G);
             }
         }
@@ -94,7 +94,7 @@ namespace PantryAid
                 else
                     valid = true;
             }
-            IngredientItem item = new IngredientItem(new Ingredient(-1, result), fquant, Measurements.Serving);
+            IngredientItem item = new IngredientItem(new Ingredient(-1, result), fquant, "Serving");
             _list.Add(item);
 
             File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.Name, item.Quantity));
@@ -166,8 +166,8 @@ namespace PantryAid
 
                 if (ingr == null)
                     LostIngredients.Add(item);
-                else
-                    ingrdata.AddIngredientToPantry(SqlHelper.UserID, ingr, item.Quantity);
+                else //To be edited once we figure out measurements a bit more
+                    ingrdata.AddIngredientToPantry(SqlHelper.UserID, ingr, "Serving", item.Quantity);
             }
 
             string alert = "The following ingredients could not be added to your pantry:\n";
