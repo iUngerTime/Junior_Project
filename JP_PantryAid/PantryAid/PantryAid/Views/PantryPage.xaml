@@ -9,7 +9,7 @@
         <StackLayout>
             <StackLayout Orientation="Horizontal"> 
             <Button x:Name="AddButton" Text="Add Ingredient(s)" FontSize="Large" Clicked="AddButton_Clicked"/>
-            <Picker x:Name="MeasurementPicker" SelectedIndex="0" WidthRequest="300"> <!--It would probably be wise to move this to resources if we use it anywhere else-->
+            <Picker x:Name="MeasurementPicker" WidthRequest="300"> <!--It would probably be wise to move this to resources if we use it anywhere else-->
                 <Picker.Items>
                         <x:String>Servings</x:String>
                         <x:String>Tbsp</x:String>
@@ -26,6 +26,7 @@
                         <x:String>Kilograms</x:String>
                         <x:String>Liters</x:String>
                     </Picker.Items>
+                    <Picker.SelectedIndex>0</Picker.SelectedIndex>
                 </Picker>
             </StackLayout>
             <Button x:Name="RemoveButton" Text="Remove Ingredient(s)" FontSize="Large" Clicked="RemoveButton_Clicked"/>
