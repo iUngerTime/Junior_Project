@@ -13,25 +13,20 @@ using Xamarin.Forms;
 
 namespace PantryAid.ViewModels
 {
-    class PantryViewModel : INotifyPropertyChanged
+    class GroceryListViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-        private iIngredientData _ingredientDatabaseAccess;
-        public Action DisplayInvalidIngredientPrompt;
-
+        
         public INavigation navigation { get; set; }
 
-        public PantryViewModel(INavigation nav, iIngredientData databaseAccess)
+        public GroceryListViewModel(INavigation nav)
         {
             //Navigation and command binding
             this.navigation = nav;
             AddCommand = new Command(OnAdd);
-
-            //Injection of view model
-            _ingredientDatabaseAccess = databaseAccess;
         }
 
-        //  View Model Properties 
+        // View Model Properites
         private string ingredient;
         public string Ingredient
         {
@@ -60,36 +55,8 @@ namespace PantryAid.ViewModels
         public ICommand AddCommand { protected set; get; }
         public void OnAdd()
         {
-            bool authenticated = AuthenticateIngredient();
-            if(authenticated)
-            {
-                //add ingredient with quantity to database
-            }
-            else
-            {
-                DisplayInvalidIngredientPrompt();
-            }
-        }
-
-        /// Authenticate an ingedient against a SQL database
-        /// returns true is ingredient was authenticated, false if not
-        
-        private bool AuthenticateIngredient()
-        {
-            bool auth = false;
-
-            Ingredient ing = _ingredientDatabaseAccess.GetIngredient(ingredient);
-
-            auth = (ing == null ? false : true);
-
-            if (auth)
-            {
-                // Set ing id to current id or ing string to current string
-                //SqlHelper. = ing.IngredientID;
-                //SqlServerDataAccess.IngredientID = ing.IngredientID;
-            }
-
-            return auth;
+            // Not authenticating for Grocery List
+            // Add ingredient and Quantity to Grocery List
         }
     }
 }
