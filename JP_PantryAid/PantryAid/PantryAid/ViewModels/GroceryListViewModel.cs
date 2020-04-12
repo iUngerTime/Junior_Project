@@ -19,14 +19,20 @@ namespace PantryAid.ViewModels
         
         public INavigation navigation { get; set; }
 
+        //Properties
+        private int _quantity;
+        private List<Ingredient> _ingredients;
+
+
         public GroceryListViewModel(INavigation nav)
         {
             //Navigation and command binding
             this.navigation = nav;
+
             AddCommand = new Command(OnAdd);
         }
 
-        // View Model Properites
+        // View Model getter and setters
         private string ingredient;
         public string Ingredient
         {
