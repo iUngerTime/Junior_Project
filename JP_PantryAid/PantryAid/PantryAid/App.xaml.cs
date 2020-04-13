@@ -1,4 +1,4 @@
-﻿using Autofac.Extras.CommonServiceLocator;
+using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
 using Database_Helpers;
 using PantryAid.Configuration;
@@ -10,6 +10,7 @@ namespace PantryAid
 {
     public partial class App : Application
     {
+        public static string BaseImageUrl { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public App()
         {
             //Initialize
