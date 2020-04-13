@@ -7,9 +7,63 @@
              x:Class="PantryAid.OfficialViews.RecipeFinder">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
+            <!--<Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
+                <Grid x:Name="Grid1" Padding="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition Width="2.5*"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Label Margin="10,0,10,0" Text="ID" VerticalOptions="Center" Grid.Column="0"/>
+                    <Label Margin="10,0,10,0" Text="Name" VerticalOptions="Center" Grid.Column="1"/>
+
+                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                </Grid>
+            </Frame>-->
+            <ListView ItemsSource="{Binding List.ListView }" SeparatorVisibility="None"  
+                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Padding="0" BorderColor="BlueViolet">
+                                <Grid Padding="0" RowSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="2.5*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--<ImageButton Source="{ Binding imageUrls[0]}" HeightRequest="200" Clicked="Recipe_Tapped">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="Recipe_Tapped"/>
+                                        </Image.GestureRecognizers>
+                                        
+                                    </ImageButton>-->
+                                    <Image Source="{ Binding imageUrls[0]}" HeightRequest="200"></Image>
+
+
+                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" VerticalOptions="Center" Grid.Column="1" HeightRequest="200">
+                                        <!--<Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="Recipe_Tapped"/>
+                                        </Label.GestureRecognizers>-->
+                                    </Label>
+
+
+                                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" HorizontalOptions="Start"/>
+                <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="End"/>
+            </StackLayout>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

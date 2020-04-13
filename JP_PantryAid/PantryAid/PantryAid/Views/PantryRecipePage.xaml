@@ -29,7 +29,7 @@
                         <ViewCell>
                             <Frame Padding="0" BorderColor="BlueViolet">
                                 <Grid Padding="0" RowSpacing="0">
-                                    <Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions> 
                                         <ColumnDefinition Width="2.5*"/>
                                         <ColumnDefinition Width="2.5*"/>
                                     </Grid.ColumnDefinitions>
