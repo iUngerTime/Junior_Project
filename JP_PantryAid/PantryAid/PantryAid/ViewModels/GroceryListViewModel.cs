@@ -37,25 +37,14 @@ namespace PantryAid.ViewModels
         }
 
         // View Model getter and setters and properties
-        private string ingredient;
-        public string Ingredient
+        private ListViewModel<IngredientItem> _ingredient;
+        public ListViewModel<IngredientItem> Ingredient
         {
-            get { return ingredient; }
+            get { return _ingredient; }
             set
             {
-                ingredient = value;
+                _ingredient = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("Ingredient"));
-            }
-        }
-
-        private int quantity;
-        public int Quantity
-        {
-            get { return quantity; }
-            set
-            {
-                quantity = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Quantity"));
             }
         }
 
