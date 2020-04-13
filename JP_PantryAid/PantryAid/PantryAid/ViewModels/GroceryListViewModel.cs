@@ -21,11 +21,6 @@ namespace PantryAid.ViewModels
         
         public INavigation navigation { get; set; }
 
-        //Properties
-        private int _quantity;
-        private List<Ingredient> _ingredients;
-
-
         public GroceryListViewModel(INavigation nav, iIngredientData databaseAccess)
         {
             // Navigation and command binding
