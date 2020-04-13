@@ -27,48 +27,50 @@ namespace PantryAid.ViewModels
             //Navigation and command binding
             this.navigation = nav;
             AddCommand = new Command(OnAdd);
+            RemoveCommand = new Command(OnRemove);
 
             //Injection of view model
             _ingredientDatabaseAccess = databaseAccess;
         }
 
         //  View Model Getter and Setters and properties
-        private string ingredient;
-        public string Ingredient
+        private string _ingredient;
+        public string ingredient
         {
-            get { return ingredient; }
+            get { return _ingredient; }
             set
             {
-                ingredient = value;
+                _ingredient = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("Ingredient"));
             }
         }
 
-        private int quantity;
+        private int _quantity;
         public int Quantity
         {
-            get { return quantity; }
+            get { return _quantity; }
             set
             {
-                quantity = value;
+                _quantity = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("Quantity"));
             }
         }
 
-        private Measurements measurement;
+        private Measurements _measurement;
         public Measurements Measurement
         {
-            get { return measurement; }
+            get { return _measurement; }
             set
             {
-                measurement = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Measurement"))
+                _measurement = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Measurement"));
             }
         }
 
         //
         // end Properties
 
+        // Commands
         public ICommand AddCommand { protected set; get; }
         public void OnAdd()
         {
@@ -83,6 +85,12 @@ namespace PantryAid.ViewModels
             }
         }
 
+        public ICommand RemoveCommand { protected set; get; }
+        public void OnRemove()
+        {
+
+        }
+
         /// Authenticate an ingedient against a SQL database
         /// returns true is ingredient was authenticated, false if not
         
@@ -90,7 +98,7 @@ namespace PantryAid.ViewModels
         {
             bool auth = false;
 
-            Ingredient ing = _ingredientDatabaseAccess.GetIngredient(ingredient);
+            Ingredient ing = _ingredientDatabaseAccess.GetIngredient(ingredient.ToLower());
 
             auth = (ing == null ? false : true);
 

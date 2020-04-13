@@ -16,6 +16,8 @@ namespace PantryAid.ViewModels
     class GroceryListViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        private iIngredientData _ingredientDatabaseAccess;
+
         
         public INavigation navigation { get; set; }
 
@@ -24,15 +26,17 @@ namespace PantryAid.ViewModels
         private List<Ingredient> _ingredients;
 
 
-        public GroceryListViewModel(INavigation nav)
+        public GroceryListViewModel(INavigation nav, iIngredientData databaseAccess)
         {
-            //Navigation and command binding
+            // Navigation and command binding
             this.navigation = nav;
-
             AddCommand = new Command(OnAdd);
+
+            // Dependency injection
+            _ingredientDatabaseAccess = databaseAccess;
         }
 
-        // View Model getter and setters
+        // View Model getter and setters and properties
         private string ingredient;
         public string Ingredient
         {
