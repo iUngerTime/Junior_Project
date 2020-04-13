@@ -17,15 +17,15 @@ using PantryAid.Core.Interfaces;
 
 /*
 The file that holds ingredients for the grocery list is in the format
-<Name>-<Quantity>
-<Name>-<Quantity>
-<Name>-<Quantity>
+<Name>-<Quantity>-<Measurement>
+<Name>-<Quantity>-<Measurement>
+<Name>-<Quantity>-<Measurement>
 ...
 
 ex.
-Milk-1
-Eggs-5
-Cookies-7
+Milk-1-Quarts
+Eggs-5-Servings
+Cookies-7-Servings
 ...
 */
 namespace PantryAid
@@ -61,9 +61,9 @@ namespace PantryAid
 
             foreach (string line in contents)
             {
-                string[] temp = line.Split('-'); //temp[0] holds the name and temp[1] holds the quantity
+                string[] temp = line.Split('-'); //temp[0] holds the name, temp[1] holds the quantity, and temp[2] holds the measurement
 
-                IngredientItem G = new IngredientItem(new Ingredient(-1, temp[0]), Convert.ToDouble(temp[1]), "Serving");
+                IngredientItem G = new IngredientItem(new Ingredient(-1, temp[0]), Convert.ToDouble(temp[1]), temp[2]);
                 _list.Add(G);
             }
         }
@@ -94,10 +94,10 @@ namespace PantryAid
                 else
                     valid = true;
             }
-            IngredientItem item = new IngredientItem(new Ingredient(-1, result), fquant, "Serving");
+            IngredientItem item = new IngredientItem(new Ingredient(-1, result), fquant, MeasurementPicker.SelectedItem as string);
             _list.Add(item);
 
-            File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.Name, item.Quantity));
+            File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
             
         }
 
@@ -166,8 +166,8 @@ namespace PantryAid
 
                 if (ingr == null)
                     LostIngredients.Add(item);
-                else //To be edited once we figure out measurements a bit more
-                    ingrdata.AddIngredientToPantry(SqlHelper.UserID, ingr, "Serving", item.Quantity);
+                else 
+                    ingrdata.AddIngredientToPantry(SqlHelper.UserID, ingr, item.Measurement, item.Quantity);
             }
 
             string alert = "The following ingredients could not be added to your pantry:\n";

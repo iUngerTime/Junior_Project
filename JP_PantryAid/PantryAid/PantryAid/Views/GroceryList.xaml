@@ -7,7 +7,28 @@
              x:Class="PantryAid.GroceryList">
     <ContentPage.Content>
         <StackLayout>
-            <Button x:Name="AddButton" Text="Add" FontSize="Large" Clicked="AddButton_Clicked"/>
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="AddButton" Text="Add" FontSize="Large" Clicked="AddButton_Clicked" WidthRequest="250"/>
+                <Picker x:Name="MeasurementPicker" WidthRequest="150">
+                    <Picker.Items>
+                        <x:String>Servings</x:String>
+                        <x:String>Tbsp</x:String>
+                        <x:String>Tsp</x:String>
+                        <x:String>Cups</x:String>
+                        <x:String>Pints</x:String>
+                        <x:String>Quarts</x:String>
+                        <x:String>Gallons</x:String>
+                        <x:String>Ounces</x:String>
+                        <x:String>Fluid Ounces</x:String>
+                        <x:String>Lbs</x:String>
+                        <x:String>Milligrams</x:String>
+                        <x:String>Grams</x:String>
+                        <x:String>Kilograms</x:String>
+                        <x:String>Liters</x:String>
+                    </Picker.Items>
+                    <Picker.SelectedIndex>0</Picker.SelectedIndex>
+                </Picker>
+            </StackLayout>
             <Button x:Name="RemoveButton" Text="Remove" FontSize="Large" Clicked="RemoveButton_Clicked"/>
             <Button x:Name="ClearButton" Text="Clear" FontSize="Large" Clicked="ClearButton_Clicked"/>
             <Button x:Name="DumpButton" Text="Dump Into Pantry" FontSize="Large" Clicked="DumpButton_Clicked"/>
