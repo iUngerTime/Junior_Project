@@ -19,6 +19,7 @@ namespace PantryAid.ViewModels
         private iIngredientData _ingredientDatabaseAccess;
         public Action DisplayInvalidIngredientPrompt;
 
+
         public INavigation navigation { get; set; }
 
         public PantryViewModel(INavigation nav, iIngredientData databaseAccess)
@@ -31,7 +32,7 @@ namespace PantryAid.ViewModels
             _ingredientDatabaseAccess = databaseAccess;
         }
 
-        //  View Model Properties 
+        //  View Model Getter and Setters and properties
         private string ingredient;
         public string Ingredient
         {
@@ -51,6 +52,17 @@ namespace PantryAid.ViewModels
             {
                 quantity = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("Quantity"));
+            }
+        }
+
+        private Measurements measurement;
+        public Measurements Measurement
+        {
+            get { return measurement; }
+            set
+            {
+                measurement = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Measurement"))
             }
         }
 
