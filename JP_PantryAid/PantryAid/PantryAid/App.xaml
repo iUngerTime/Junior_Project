@@ -4,9 +4,16 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             xmlns:themes = "clr-namespace:PantryAid.Themes;assembly=PantryAid"
              x:Class="PantryAid.App">
     <Application.Resources>
-
+        <Style TargetType="ContentPage" x:Key="CommonNav">
+            <Setter Property="NavigationPage.TitleView">
+                <Setter.Value>
+                    <AbsoluteLayout>
+                        <Button BackgroundColor="Black" AbsoluteLayout.LayoutBounds="1,0, 10, 10" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+                    </AbsoluteLayout>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
