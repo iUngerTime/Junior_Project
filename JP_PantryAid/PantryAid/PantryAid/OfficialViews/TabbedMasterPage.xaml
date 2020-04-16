@@ -19,14 +19,14 @@
         </NavigationPage>
 
         <NavigationPage Title="Recipe Finder" Icon="recipeFinderIcon.png">
-            <x:Arguments>
-                <grocery:GroceryListPage />
+            <x:Arguments
+                <recipe:RecipeFinderPage />
             </x:Arguments>
         </NavigationPage>
 
         <NavigationPage Title="Grocery List" Icon="groceryListIcon.png">
             <x:Arguments>
-                <recipe:RecipeFinderPage />
+                <grocery:GroceryListPage />
             </x:Arguments>
         </NavigationPage>
     </TabbedPage.Children>
