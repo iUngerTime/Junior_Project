@@ -32,7 +32,7 @@ namespace PantryAid
             else
             {
                 //Set the home page as navigation page
-                MainPage = new NavigationPage(new SignInPage());
+                MainPage = new SignInPage();
             }
         }
 

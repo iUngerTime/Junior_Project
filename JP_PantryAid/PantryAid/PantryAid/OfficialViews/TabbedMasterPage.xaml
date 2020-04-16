@@ -19,7 +19,7 @@
         </NavigationPage>
 
         <NavigationPage Title="Recipe Finder" Icon="recipeFinderIcon.png">
-            <x:Arguments
+            <x:Arguments>
                 <recipe:RecipeFinderPage />
             </x:Arguments>
         </NavigationPage>
