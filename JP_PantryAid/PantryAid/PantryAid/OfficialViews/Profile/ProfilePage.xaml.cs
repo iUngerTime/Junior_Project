@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace PantryAid.OfficialViews
+namespace PantryAid.OfficialViews.Profile
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class GroceryList : ContentPage
+    public partial class ProfilePage : ContentPage
     {
-        public GroceryList()
+        public ProfilePage()
         {
             InitializeComponent();
         }
