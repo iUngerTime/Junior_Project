@@ -21,7 +21,7 @@ namespace Database_Helpers
 
         public int AddIngredient(Ingredient newIng)
         {//Personally I feel like a name should be passed in directly
-            return _database.ExecuteQuery_NoReturnType(String.Format("INSERT INTO NEW_INGREDIENTS(IngredientName) VALUES({0});", newIng.Name));
+            return _database.ExecuteQuery_NoReturnType(String.Format("INSERT INTO NEW_INGREDIENTS(IngredientName) VALUES({0});", SqlHelper.Sanitize(newIng.Name)));
         }
 
         public int AddIngredientsFromRecipeFull(Recipe_Full recipe)
@@ -48,7 +48,7 @@ namespace Database_Helpers
 
         public Ingredient GetIngredient(string name)
         {
-            string query = String.Format("SELECT * FROM NEW_INGREDIENTS WHERE IngredientName='{0}';", name);
+            string query = String.Format("SELECT * FROM NEW_INGREDIENTS WHERE IngredientName='{0}';", SqlHelper.Sanitize(name));
 
             return _database.ExecuteQuery_SingleIngredientItem(query);
         }
@@ -107,14 +107,14 @@ namespace Database_Helpers
 
         public int RemoveIngredient(Ingredient oldIng)
         {
-            return _database.ExecuteQuery_NoReturnType(String.Format("DELETE FROM NEW_INGREDIENTS WHERE IngredientName='{0}';", oldIng.Name));
+            return _database.ExecuteQuery_NoReturnType(String.Format("DELETE FROM NEW_INGREDIENTS WHERE IngredientName='{0}';", SqlHelper.Sanitize(oldIng.Name)));
         }
 
         public int AddIngredientToPantry(int PantryID, int IngredientID, string Measurement, double Quantity = 1.0f)
         {
             Ingredient ingr = this.GetIngredient(IngredientID);
 
-            string query = String.Format("INSERT INTO PANTRY_INGREDIENTS VALUES ({0}, {1}, '{2}', {3}, '{4}');", PantryID, IngredientID, ingr.Name, Quantity, Measurement);
+            string query = String.Format("INSERT INTO PANTRY_INGREDIENTS VALUES ({0}, {1}, '{2}', {3}, '{4}');", PantryID, IngredientID, SqlHelper.Sanitize(ingr.Name), Quantity, Measurement);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }

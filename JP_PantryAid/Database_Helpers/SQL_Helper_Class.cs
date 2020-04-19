@@ -103,5 +103,31 @@ namespace Database_Helpers
             { _curuserid = value; }
         }
 
+        /// <summary>
+        /// Basic SQL sanitization for user input
+        /// </summary>
+        public static string Sanitize(string input)
+        {
+            input = input.Replace("-", "");
+            input = input.Replace("'", "");
+            input = input.Replace("(", "");
+            input = input.Replace(")", "");
+            input = input.Replace(",", "");
+            input = input.Replace("\\", "");
+            input = input.Replace("/", "");
+            input = input.Replace("$", "");
+            input = input.Replace("?", "");
+            input = input.Replace("#", "");
+            input = input.Replace(";", "");
+            input = input.Replace("&", "");
+            input = input.Replace("^", "");
+            input = input.Replace("\n", "");
+            input = input.Replace("\t", "");
+            input = input.Replace("[", "");
+            input = input.Replace("]", "");
+            input = input.Replace("{", "");
+            input = input.Replace("}", "");
+            return input;
+        }
     }
 }

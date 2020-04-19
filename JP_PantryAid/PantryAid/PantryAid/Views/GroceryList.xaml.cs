@@ -75,6 +75,8 @@ namespace PantryAid
             if (result == null)
                 return;
 
+            result = SqlHelper.Sanitize(result); //Sanitize in case ingredients get dumped into pantry
+
             bool valid = false;
             double fquant = 0;
 
