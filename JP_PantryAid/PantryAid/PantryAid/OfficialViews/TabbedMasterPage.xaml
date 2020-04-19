@@ -5,26 +5,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.TabbedMasterPage"
-             xmlns:views="clr-namespace:PantryAid.OfficialViews"
+             xmlns:pantry="clr-namespace:PantryAid.OfficialViews.Pantry"
+             xmlns:grocery="clr-namespace:PantryAid.OfficialViews.Grocery_List"
+             xmlns:recipe="clr-namespace:PantryAid.OfficialViews.Recipe_Finder"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              android:TabbedPage.ToolbarPlacement="Bottom">
 
     <TabbedPage.Children>
         <NavigationPage Title="Pantry" Icon="pantryIcon.png">
             <x:Arguments>
-                <views:Pantry />
+                <pantry:PantryPage />
             </x:Arguments>
         </NavigationPage>
 
         <NavigationPage Title="Recipe Finder" Icon="recipeFinderIcon.png">
             <x:Arguments>
-                <views:RecipeFinder />
+                <recipe:RecipeFinderPage />
             </x:Arguments>
         </NavigationPage>
 
         <NavigationPage Title="Grocery List" Icon="groceryListIcon.png">
             <x:Arguments>
-                <views:GroceryList />
+                <grocery:GroceryListPage />
             </x:Arguments>
         </NavigationPage>
     </TabbedPage.Children>

@@ -41,15 +41,6 @@
     <Reference Include="RestSharp.Net2, Version=102.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.Net2.1.1.11\lib\net20\RestSharp.Net2.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Buttons.XForms, Version=18.1451.0.43, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Buttons.18.1.0.43\lib\netstandard2.0\Syncfusion.Buttons.XForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Core.XForms, Version=18.1451.0.43, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Core.18.1.0.43\lib\netstandard2.0\Syncfusion.Core.XForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Licensing, Version=18.1460.0.43, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Licensing.18.1.0.43\lib\net46\Syncfusion.Licensing.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />

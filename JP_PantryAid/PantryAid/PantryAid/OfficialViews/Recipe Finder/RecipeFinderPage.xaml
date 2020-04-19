@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PantryAid.OfficialViews.RecipeFinder">
+             x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeFinderPage">
     <ContentPage.Content>
         <StackLayout>
             <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
@@ -63,7 +63,7 @@
                 <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" HorizontalOptions="Start"/>
                 <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="End"/>
             </StackLayout>
-            
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

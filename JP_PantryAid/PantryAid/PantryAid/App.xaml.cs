@@ -10,7 +10,6 @@ namespace PantryAid
 {
     public partial class App : Application
     {
-        public static string BaseImageUrl { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public App()
         {
             //Initialize
@@ -33,7 +32,7 @@ namespace PantryAid
             else
             {
                 //Set the home page as navigation page
-                MainPage = new NavigationPage(new SignInPage());
+                MainPage = new SignInPage();
             }
         }
 
