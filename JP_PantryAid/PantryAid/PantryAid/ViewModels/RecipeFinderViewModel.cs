@@ -60,7 +60,10 @@ namespace PantryAid.ViewModels
 
             for (int i = 0; i < list.Count; i++)
             {
-                list[i].imageUrls[0] = "https://spoonacular.com/recipeImages/" + list[i].imageUrls[0];
+                //cover nulls
+                if (list[i].image == null)
+                    list[i].image = "";
+                list[i].image = "https://spoonacular.com/recipeImages/" + list[i].image;
                 _list.Add(list[i]);
             }
 
@@ -78,6 +81,11 @@ namespace PantryAid.ViewModels
             if (_offset >= 5)
                 _offset -= _recipesPerPage;
             SearchByName(CurrentSearch);
+        }
+
+        public void ItemTapped(int index)
+        {
+            navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
         }
 
 

@@ -26,7 +26,8 @@ namespace PantryAid.OfficialViews.Recipe_Finder
 
         private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-
+            //Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(vm._list.ListView[].id)));
+            vm.ItemTapped(e.ItemIndex);
         }
 
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
