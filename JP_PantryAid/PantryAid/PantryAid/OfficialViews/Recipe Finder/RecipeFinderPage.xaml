@@ -41,7 +41,7 @@
                                         </Image.GestureRecognizers>
                                         
                                     </ImageButton>-->
-                                    <Image Source="{ Binding imageUrls[0]}" HeightRequest="200"></Image>
+                                    <Image Source="{ Binding image }" HeightRequest="200"></Image>
 
 
                                     <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" VerticalOptions="Center" Grid.Column="1" HeightRequest="200">
