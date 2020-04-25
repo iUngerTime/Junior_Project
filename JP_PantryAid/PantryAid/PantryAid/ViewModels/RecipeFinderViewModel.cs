@@ -11,8 +11,6 @@ namespace PantryAid.ViewModels
     //TODO: pass in some way to control whether it searches online or locally for testing
     public class RecipeFinderViewModel : INotifyPropertyChanged
     {
-        
-
         public ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
 
         

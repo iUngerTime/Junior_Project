@@ -6,16 +6,16 @@ namespace PantryAid.Core.Models
 {
     public class IngredientItem
     {
-		public IngredientItem(Ingredient ingr, double amount, Measurements measure)
+		public IngredientItem(Ingredient ingr, double amount, string measure)
 		{
 			Ingredient = ingr;
 			Quantity = amount;
-			MeasurementType = measure;
+			Measurement = measure;
 		}
 
 		public Ingredient Ingredient { get; set; }
 		public double Quantity { get; set; }
-		public Measurements MeasurementType { get; set; }
+		public string Measurement { get; set; }
 
 		//These two getters are needed for the gridview
 		public string Name
@@ -32,7 +32,7 @@ namespace PantryAid.Core.Models
 	/// <summary>
 	/// An Enumeration that encompases every possible form of measurement
 	/// </summary>
-	public enum Measurements
+	/*public enum Measurements
 	{
 		Teaspoon,
 		Tablespoon,
@@ -55,5 +55,5 @@ namespace PantryAid.Core.Models
 		Meter,
 		Inch,
 		Serving //I'm going to classify all things in the pantry and grocery list by this until we get a better idea of how we'll handle it
-	}
+	}*/
 }
