@@ -14,7 +14,7 @@ using Xamarin.Forms.Xaml;
 namespace PantryAid.OfficialViews.Grocery_List
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class GroceryListPage : ContentPage
+    public partial class GroceryListPage : BaseNavigationPage
     {
         public GroceryListViewModel vm;
         public GroceryListPage()

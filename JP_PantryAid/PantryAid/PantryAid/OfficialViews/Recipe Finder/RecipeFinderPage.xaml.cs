@@ -11,7 +11,7 @@ using Xamarin.Forms.Xaml;
 namespace PantryAid.OfficialViews.Recipe_Finder
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RecipeFinderPage : ContentPage
+    public partial class RecipeFinderPage : BaseNavigationPage
     {
         public RecipeFinderViewModel vm;
         //public ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
