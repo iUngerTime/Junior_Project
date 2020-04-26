@@ -11,19 +11,21 @@
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="Start"
                    HeightRequest="50"
-                   WidthRequest="50"/>
-            <Label Text="PantryAid" 
+                   WidthRequest="50"/>            
+            <StackLayout Spacing="0" Orientation="Horizontal">
+                <Label Text="Pantry"
+                   TextColor="White"
                    VerticalOptions="CenterAndExpand" 
                    HorizontalOptions="StartAndExpand"
-                   FontSize="20"
+                   FontSize="30"
                    FontAttributes="Bold"/>
-            <!--<Button x:Name="showPopupMenu"
-                    ImageSource="hamMenu.png"
-                    VerticalOptions="CenterAndExpand"
-                    HorizontalOptions="End"
-                    HeightRequest="60"
-                    WidthRequest="70"
-                    BackgroundColor="Transparent"/>-->
+                <Label Text="Aid"
+                   TextColor="Red"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="StartAndExpand"
+                   FontSize="30"
+                   FontAttributes="Bold"/>
+            </StackLayout>            
         </StackLayout>
     </NavigationPage.TitleView>
     <ContentPage.ToolbarItems>

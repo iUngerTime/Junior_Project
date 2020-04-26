@@ -27,7 +27,8 @@ namespace PantryAid
             {
                 //Set user to user id of Brenton
                 SqlServerDataAccess.UserID = 1;
-                MainPage = new TabbedMasterPage();
+                MainPage = new SignInPage();
+                MainPage.Navigation.PushModalAsync(new TabbedMasterPage());
             }
             else
             {
