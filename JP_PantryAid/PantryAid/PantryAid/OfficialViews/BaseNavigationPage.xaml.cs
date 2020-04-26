@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Database_Helpers;
+using PantryAid.OfficialViews.Profile;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,6 +12,31 @@ namespace PantryAid.OfficialViews
         public BaseNavigationPage()
         {
             InitializeComponent();
+        }
+
+        private async void NavigateToAccountPage(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new ProfilePage());
+        }
+
+        private async void NavigateToAboutPage(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new AboutPage());
+        }
+
+        private async void LogoutOfApplication(object sender, EventArgs e)
+        {
+            //Set the selected user ID to null
+            SqlServerDataAccess.UserID = -1;
+            
+            //Remove the Tabbed master page
+            await Navigation.PopModalAsync();
+        }
+
+        private void ExitApplication(object sender, EventArgs e)
+        {
+            //Kill the application
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }
 }

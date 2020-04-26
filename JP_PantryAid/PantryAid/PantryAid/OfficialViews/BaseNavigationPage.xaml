@@ -17,6 +17,19 @@
                    HorizontalOptions="StartAndExpand"
                    FontSize="20"
                    FontAttributes="Bold"/>
+            <!--<Button x:Name="showPopupMenu"
+                    ImageSource="hamMenu.png"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="End"
+                    HeightRequest="60"
+                    WidthRequest="70"
+                    BackgroundColor="Transparent"/>-->
         </StackLayout>
     </NavigationPage.TitleView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Account" Order="Secondary" Clicked="NavigateToAccountPage"/>
+        <ToolbarItem Text="About App" Order="Secondary" Clicked="NavigateToAboutPage"/>
+        <ToolbarItem Text="Logout" Order="Secondary" Clicked="LogoutOfApplication"/>
+        <ToolbarItem Text="Exit Application" Order="Secondary" Clicked="ExitApplication"/>
+    </ContentPage.ToolbarItems>
 </ContentPage>
