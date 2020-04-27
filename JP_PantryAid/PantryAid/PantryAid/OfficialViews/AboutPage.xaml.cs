@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace PantryAid.OfficialViews.Pantry
+namespace PantryAid.OfficialViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PantryPage : BaseNavigationPage
+    public partial class AboutPage : ContentPage
     {
-        public PantryPage()
+        public AboutPage()
         {
             InitializeComponent();
         }

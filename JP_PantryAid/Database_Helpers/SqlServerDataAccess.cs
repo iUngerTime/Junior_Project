@@ -20,7 +20,7 @@ namespace Database_Helpers
         private static string _serverUsername = "JBNT";
         private static string _serverPassword = "Hootie123";
         private static int _curuserid;
-        private static bool _debugMode = false;
+        private static bool _debugMode = true;
 
         /// <summary>
         /// Returns The connection string for the database

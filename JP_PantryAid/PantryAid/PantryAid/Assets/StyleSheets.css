@@ -1,0 +1,19 @@
+﻿/*
+    See:
+    https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/css/
+    for details on styles
+    It will give you red squigglies on some things which work
+*/
+
+
+.recipePageNavButtons {
+    font-size: medium;
+}
+#NameLabel {
+    font-size: medium;
+}
+
+
+.readyInMinLabel {
+    font-size: micro;
+}
