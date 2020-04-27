@@ -28,7 +28,7 @@ namespace PantryAid.OfficialViews.Pantry
 
         private void AddButton_Clicked(object sender, EventArgs e)
         {
-            vm.OnAdd(sender, Item.Text, Convert.ToInt32(Quantity.Text));
+            //vm.OnAdd(sender, Item.Text, Convert.ToInt32(Quantity.Text));
         }
         private void RemoveButton_Clicked(object sender, EventArgs e)
         {

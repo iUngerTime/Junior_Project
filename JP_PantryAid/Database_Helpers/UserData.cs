@@ -80,7 +80,7 @@ namespace Database_Helpers
         /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int AddUser(User newUser)
         {
-            string query = String.Format("INSERT INTO PERSON VALUES('{0}', '{1}');", SqlHelper.Sanitize(newUser.FullName), SqlHelper.Sanitize(newUser.Email));
+            string query = String.Format("INSERT INTO PERSON VALUES('{0}', '{1}');", SqlServerDataAccess.Sanitize(newUser.FullName), SqlServerDataAccess.Sanitize(newUser.Email));
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
@@ -115,7 +115,7 @@ namespace Database_Helpers
         /// <returns>0 if successful, 1 if failed</returns>
         public int EditUserInfo(User currentInfo, User newInfo)
         {
-            string query = String.Format("UPDATE PERSON SET FullName='{0}', Email='{1}' WHERE UserID={2};", SqlHelper.Sanitize(newInfo.FullName), SqlHelper.Sanitize(newInfo.Email), currentInfo.Id);
+            string query = String.Format("UPDATE PERSON SET FullName='{0}', Email='{1}' WHERE UserID={2};", SqlServerDataAccess.Sanitize(newInfo.FullName), SqlServerDataAccess.Sanitize(newInfo.Email), currentInfo.Id);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
@@ -172,7 +172,7 @@ namespace Database_Helpers
         /// <returns></returns>
         public User GetUser(string email)
         {
-            string query = "SELECT UserID, Email FROM Person WHERE LOWER(Email) = '" + SqlHelper.Sanitize(email) + "';";
+            string query = "SELECT UserID, Email FROM Person WHERE LOWER(Email) = '" + SqlServerDataAccess.Sanitize(email) + "';";
 
             return _database.ExecuteQuery_SingleUser(query);
         }

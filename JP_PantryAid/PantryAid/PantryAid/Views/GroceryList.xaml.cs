@@ -91,7 +91,7 @@ namespace PantryAid
 
                 File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.ID.ToString(), item.Name));
             }*/
-                fquant = Convert.ToDouble(quant);
+                /*fquant = Convert.ToDouble(quant);
                 if (fquant <= 0)
                 {
                     valid = false;
@@ -103,7 +103,7 @@ namespace PantryAid
             IngredientItem item = new IngredientItem(new Ingredient(-1, result), fquant, MeasurementPicker.SelectedItem as string);
             _list.Add(item);
 
-            File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
+            File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));*/
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
@@ -172,7 +172,7 @@ namespace PantryAid
                 if (ingr == null)
                     LostIngredients.Add(item);
                 else 
-                    ingrdata.AddIngredientToPantry(SqlHelper.UserID, ingr, item.Measurement, item.Quantity);
+                    ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, ingr, item.Measurement, item.Quantity);
             }
 
             string alert = "The following ingredients could not be added to your pantry:\n";

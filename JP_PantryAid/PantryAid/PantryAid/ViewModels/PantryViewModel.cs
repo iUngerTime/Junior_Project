@@ -106,7 +106,7 @@ namespace PantryAid.ViewModels
             }
 
             //_ingredientList.Add(new IngredientItem(foundingr, quantity, Measurements));
-            ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr, quantity);
+            //ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr, quantity);
         }
 
 

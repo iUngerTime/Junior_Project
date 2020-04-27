@@ -86,8 +86,8 @@ namespace PantryAid
                 return;
             }*/
 
-            _list.Add(new IngredientItem(foundingr, quantity, measure));
-            ingrdata.AddIngredientToPantry(SqlHelper.UserID, foundingr, measure, quantity);
+            //_list.Add(new IngredientItem(foundingr, quantity, measure));
+            //ingrdata.AddIngredientToPantry(SqlHelper.UserID, foundingr, measure, quantity);
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)

@@ -200,5 +200,27 @@ namespace Database_Helpers
         /// </summary>
         private int FAIL = 0;
         private int PASS = 1;
+
+        public static string Sanitize(string str)
+        {
+            str.Replace("-", "");
+            str.Replace("!", "");
+            str.Replace("@", "");
+            str.Replace("#", "");
+            str.Replace("$", "");
+            str.Replace("%", "");
+            str.Replace("^", "");
+            str.Replace("&", "");
+            str.Replace("*", "");
+            str.Replace("(", "");
+            str.Replace(")", "");
+            str.Replace("{", "");
+            str.Replace("}", "");
+            str.Replace("\\", "");
+            str.Replace(",", "");
+            str.Replace("/", "");
+            str.Replace("|", "");
+            return str;
+        }
     }
 }
