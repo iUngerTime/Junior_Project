@@ -62,6 +62,10 @@ namespace PantryAid.ViewModels
                 if (list[i].image == null)
                     list[i].image = "";
                 list[i].image = "https://spoonacular.com/recipeImages/" + list[i].image;
+                if (list[i].author == null)
+                    list[i].author = "";
+                if(list[i].imageUrls == null)
+                    list[i].imageUrls = new List<string>(){""};
                 _list.Add(list[i]);
             }
 

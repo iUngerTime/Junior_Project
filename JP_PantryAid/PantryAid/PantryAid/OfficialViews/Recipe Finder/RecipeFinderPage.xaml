@@ -6,62 +6,45 @@
              xmlns:base="clr-namespace:PantryAid.OfficialViews"
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeFinderPage">
+    <ContentPage.Resources>
+        <StyleSheet Source="/Assets/StyleSheets.css" />
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
-            <!--<Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
-                <Grid x:Name="Grid1" Padding="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2.5*"/>
-                        <ColumnDefinition Width="2.5*"/>
-                    </Grid.ColumnDefinitions>
-
-
-                    <Label Margin="10,0,10,0" Text="ID" VerticalOptions="Center" Grid.Column="0"/>
-                    <Label Margin="10,0,10,0" Text="Name" VerticalOptions="Center" Grid.Column="1"/>
-
-                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
-                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
-                </Grid>
-            </Frame>-->
+            <Entry x:Name="Recipe_Search" Text="Search: " Placeholder="(eg. Cheese Cake)"  
+                   Completed="Recipe_Search_OnCompleted" 
+                   VerticalOptions="Start" 
+                   HorizontalOptions="FillAndExpand" 
+                   AnchorY="0" />
             <ListView ItemsSource="{Binding List.ListView }" SeparatorVisibility="None"  
-                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" >
+                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame Padding="0" BorderColor="BlueViolet">
-                                <Grid Padding="0" RowSpacing="0">
+                            <!--The Grid holds the image and the title-->
+                            <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" Margin="10,0,0,10" IsClippedToBounds="True" >
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1.5*"/>
-                                        <ColumnDefinition Width="2.5*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <!--<ImageButton Source="{ Binding imageUrls[0]}" HeightRequest="200" Clicked="Recipe_Tapped">
-                                        <Image.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="Recipe_Tapped"/>
-                                        </Image.GestureRecognizers>
-                                        
-                                    </ImageButton>-->
-                                    <Image Source="{ Binding image }" HeightRequest="200"></Image>
-
-
-                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" VerticalOptions="Center" Grid.Column="1" HeightRequest="200">
-                                        <!--<Label.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="Recipe_Tapped"/>
-                                        </Label.GestureRecognizers>-->
-                                    </Label>
-
-
-                                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
-                                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
-                                </Grid>
-                            </Frame>
+                                    <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+                                <Image Source="{ Binding image }" 
+                                       Grid.Column="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                <StackLayout Orientation="Vertical" Grid.Column="1"  >
+                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" FontSize="Medium"  
+                                                   VerticalOptions="Center" />
+                                        <Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />
+                                    </StackLayout>
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                 <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" HorizontalOptions="Start"/>
+                <BoxView WidthRequest="200"></BoxView>
                 <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="End"/>
             </StackLayout>
 

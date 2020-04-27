@@ -95,6 +95,13 @@ namespace SpoonacularAPI
         {
             RecipeSearchParams param = SetUpParams(query, maxResults, offset);
             SpoonacularRecipeShortSearchResult result = QueryAPI(param);
+            foreach (Recipe_Short recipe_s in result.results)
+            {
+                if (recipe_s.author == null)
+                    recipe_s.author = "";
+                if(recipe_s.imageUrls == null)
+                    recipe_s.imageUrls = new List<string>();
+            }
             return result.results;
             //List<RecipeInformationRootObject> recipeInfoList = ToRecipeInformationList(result);
             //return ToRecipeShortList(recipeInfoList);
