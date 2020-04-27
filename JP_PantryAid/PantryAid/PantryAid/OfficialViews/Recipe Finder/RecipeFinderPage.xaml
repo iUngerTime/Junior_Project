@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeFinderPage">
     <ContentPage.Resources>
-        <!--<StyleSheet x:Key="StyleSheet" Source="/Assets/StyleSheets.css" />-->
+        <StyleSheet  Source="/Assets/StyleSheets.css" />
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
@@ -17,26 +17,32 @@
                    HorizontalOptions="FillAndExpand" 
                    AnchorY="0" />
             <ListView ItemsSource="{Binding List.ListView}" SeparatorVisibility="None"  
-                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped">
+                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" RowHeight="60">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <!--The Grid holds the image and the title-->
-                            <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" Margin="10,0,0,10" IsClippedToBounds="True" >
+                            <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" Margin="5,0,0,5" IsClippedToBounds="True" >
                                     <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
                                         <ColumnDefinition Width="4*"/>
                                         </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                <Image Source="{Binding image}" Grid.Column="0" 
+                                <Image Source="{Binding image}" Grid.Column="0" x:Name="Recipe_Image"
                                        VerticalOptions="FillAndExpand" 
                                        HorizontalOptions="FillAndExpand"/>
                                 <StackLayout Orientation="Vertical" Grid.Column="1"  >
-                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" FontSize="Medium"  
-                                                   VerticalOptions="Center" />
-                                        <Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />
+                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}"   
+                                                   VerticalOptions="Center" MaxLines="1"/>
+                                    <StackLayout Orientation="Horizontal" Margin="15,0,10,0">
+                                        <Label x:Name="ReadyInMinLabel" Text="Ready in:" StyleClass="readyInMinLabel"/>
+                                        <!--<Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />-->
+                                        <Label Text="{Binding readyInMinutes}" FontSize="Micro"/>
+                                        <Label Text="min" FontSize="Micro"/>
+                                    </StackLayout>
+                                    
                                 </StackLayout>
                             </Grid>
                         </ViewCell>
@@ -44,9 +50,9 @@
                 </ListView.ItemTemplate>
             </ListView>
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" HorizontalOptions="Start"/>
+                <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" HorizontalOptions="Start" StyleClass="recipePageNavButtons" />
                 <BoxView WidthRequest="200"></BoxView>
-                <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="End"/>
+                <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="End" StyleClass="recipePageNavButtons"/>
             </StackLayout>
 
         </StackLayout>

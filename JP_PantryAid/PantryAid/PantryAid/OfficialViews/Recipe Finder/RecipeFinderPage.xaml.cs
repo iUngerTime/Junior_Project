@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.StyleSheets;
 using Xamarin.Forms.Xaml;
 
 namespace PantryAid.OfficialViews.Recipe_Finder
@@ -22,9 +23,10 @@ namespace PantryAid.OfficialViews.Recipe_Finder
             this.BindingContext = vm;
             //this.BindingContext = vm._list;
             InitializeComponent();
+            //this.Resources.Add(StyleSheet.FromResource("Assets/StyleSheets.css",this.GetType().Assembly));
         }
 
-        private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
+        private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e) 
         {
             //Navigation.PushModalAsync(new RecipePage(Convert.ToInt32(vm._list.ListView[].id)));
             vm.ItemTapped(e.ItemIndex);
