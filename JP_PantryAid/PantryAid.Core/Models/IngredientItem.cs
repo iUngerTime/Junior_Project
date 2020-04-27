@@ -28,32 +28,4 @@ namespace PantryAid.Core.Models
 			get { return Ingredient.IngredientID; }
 		}
 	}
-
-	/// <summary>
-	/// An Enumeration that encompases every possible form of measurement
-	/// </summary>
-	/*public enum Measurements
-	{
-		Teaspoon,
-		Tablespoon,
-		FluidOunce,
-		Gill,
-		Cup,
-		Pint,
-		Quart,
-		Gallon,
-		Mililiter,
-		Liter,
-		Deciliter,
-		Pound,
-		Ounce,
-		Milligram,
-		Gram,
-		Kilogram,
-		Millimeter,
-		Centimeter,
-		Meter,
-		Inch,
-		Serving //I'm going to classify all things in the pantry and grocery list by this until we get a better idea of how we'll handle it
-	}*/
 }

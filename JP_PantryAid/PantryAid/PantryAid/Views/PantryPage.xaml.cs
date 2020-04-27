@@ -44,6 +44,9 @@ namespace PantryAid
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             /*string ingrname = await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
+            string measure = MeasurementPicker.SelectedItem as string;
+
+            string ingrname = await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
 
             if (ingrname == null) //User clicked cancel
                 return;
@@ -81,10 +84,10 @@ namespace PantryAid
             {
                 await DisplayAlert("Error", "The specified ingredient is already in your pantry", "OK");
                 return;
-            }
+            }*/
 
-            _list.Add(new IngredientItem(foundingr, quantity, Measurements.Serving));
-            ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr, quantity);*/
+            _list.Add(new IngredientItem(foundingr, quantity, measure));
+            ingrdata.AddIngredientToPantry(SqlHelper.UserID, foundingr, measure, quantity);
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
@@ -135,7 +138,7 @@ namespace PantryAid
                 int index = _list.ListView.IndexOf(ob);
                 _list.ListView.Remove(ob);
                 if (newquant > 0)
-                    _list.ListView.Insert(index, new IngredientItem(ob.Ingredient, newquant, Measurements.Serving));
+                    _list.ListView.Insert(index, new IngredientItem(ob.Ingredient, newquant, ob.Measurement));
             }
             else
                 DisplayAlert("Error", "CommandParameter was null", "OK");*/

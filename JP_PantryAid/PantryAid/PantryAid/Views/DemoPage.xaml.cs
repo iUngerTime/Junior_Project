@@ -37,8 +37,10 @@ namespace PantryAid
         }
         private void RecipeIngredientButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(new SearchByIngredients());
+            //Navigation.PushModalAsync(new SearchByIngredients());
+            Navigation.PushModalAsync(new PantryRecipePage());
         }
         
+
     }
 }

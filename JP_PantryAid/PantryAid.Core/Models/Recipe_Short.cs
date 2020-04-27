@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
+
 
 namespace PantryAid.Core.Models
 {
@@ -35,6 +37,31 @@ namespace PantryAid.Core.Models
         /// Credit for the recipe
         /// </summary>
         public string author { get; set; }
+
+
+        public Recipe_Short(int id_, string tite_, int readyInMinutes_, int servings_, string image_,
+            List<String> imageUrls_, string author_ = "")
+        {
+            id = id_;
+            title = tite_;
+            readyInMinutes = readyInMinutes_;
+            servings = servings_;
+            image = image_;
+            imageUrls = imageUrls_;
+            author = author_;
+        }
+
+        public Recipe_Short()
+        {
+            id = -1;
+            title = "";
+            readyInMinutes = -1;
+            servings = -1;
+            image = "";
+            imageUrls = new List<string>();
+            author = "";
+        }
+
 
     }
 }
