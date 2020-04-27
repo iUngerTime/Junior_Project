@@ -6,12 +6,61 @@
              xmlns:base="clr-namespace:PantryAid.OfficialViews"
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.Pantry.PantryPage"
-             Style="{DynamicResource CommonNav}">
+             >
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Button x:Name="AddButton" Text="Add Ingredient(s)" FontSize="Large" Clicked="AddButton_Clicked"/>
+            <Button x:Name="RemoveButton" Text="Remove Ingredient(s)" FontSize="Large" Clicked="RemoveButton_Clicked"/>
+            <Label Margin="0,0,0,20" FontSize="Large" Text="Pantry" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+            <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" Padding="0" CornerRadius="2" HeightRequest="60">
+                <Grid Padding="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition Width="2.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Margin="10,0,10,0" Text="ID" VerticalOptions="Center" Grid.Column="0"/>
+                    <Label Margin="10,0,10,0" Text="Name" VerticalOptions="Center" Grid.Column="1"/>
+                    <Label Margin="10,0,10,0" Text="Quantity" VerticalOptions="Center" Grid.Column="2"/>
+
+                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="2" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                </Grid>
+            </Frame>
+            <ListView ItemsSource="{Binding ListView}" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="False" x:Name="Listv">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Padding="0" BorderColor="BlueViolet">
+                                <Grid Padding="0" RowSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2.5*"/>
+                                        <ColumnDefinition Width="2.5*"/>
+                                        <ColumnDefinition Width="2.5*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label x:Name="idlabel" Margin="10,0,10,0" Text="{Binding ID}" VerticalOptions="Center" Grid.Column="0"/>
+                                    <Label x:Name="namelabel" Margin="10,0,10,0" Text="{Binding Name}" VerticalOptions="Center" Grid.Column="1"/>
+                                    <Label x:Name="quantlabel" Margin="10,0,10,0" Text="{Binding Quantity}" VerticalOptions="Center" Grid.Column="2"/>
+                                    <StackLayout Orientation="Horizontal" Grid.Column="2" Margin="30, 0, 0, 0">
+                                        <Button Text="+" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" Clicked="QuantityChangeClicked" CommandParameter="{Binding .}"/>
+                                        <Button Text="-" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" Clicked="QuantityChangeClicked" CommandParameter="{Binding .}"/>
+                                    </StackLayout>
+
+                                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                                    <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="2" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
+    
+
 </base:BaseNavigationPage>

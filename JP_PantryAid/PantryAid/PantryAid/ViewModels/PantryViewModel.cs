@@ -15,14 +15,14 @@ using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms.Xaml;
+using PantryAid.Core;
 
 namespace PantryAid.ViewModels
 {
-    class PantryViewModel : INotifyPropertyChanged
+    public class PantryViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         private iIngredientData _ingredientDatabaseAccess;
-        public Action DisplayInvalidIngredientPrompt;
 
         public INavigation navigation { get; set; }
 
@@ -30,15 +30,13 @@ namespace PantryAid.ViewModels
         {
             //Navigation and command binding
             this.navigation = nav;
-            AddCommand = new Command(OnAdd);
-            RemoveCommand = new Command(OnRemove);
 
             //Injection of view model
             _ingredientDatabaseAccess = databaseAccess;
         }
 
         //  View Model Getter and Setters and properties
-        private ListViewModel<IngredientItem> _ingredientList;
+        private ListViewModel<IngredientItem> _ingredientList = new ListViewModel<IngredientItem>();
         public ListViewModel<IngredientItem> ingredientList
         {
             get { return _ingredientList; }
@@ -49,17 +47,73 @@ namespace PantryAid.ViewModels
             }
         }
 
+        public async void FillGrid()
+        {
+            iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+
+            List<IngredientItem> results = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
+
+            if (results == null)
+            {
+                return;// await DisplayAlert("Error", "An error occurred when getting ingredients from pantry", "OK");
+            }
+
+            foreach (IngredientItem item in results)
+            {
+                _ingredientList.Add(item);
+            }
+
+        }
 
         // Commands
         public ICommand AddCommand { protected set; get; }
-        public void OnAdd()
+        public void OnAdd(object sender, string ingrName, string quant)
         {
+            string ingrname = ingrName;//await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
+
+            if (ingrname == null) //User clicked cancel
+                return;
+
+            double quantity = 0.0f;
+            bool validquantity = false;
+            while (!validquantity)
+            {
+                string strquant = quant;//await DisplayPromptAsync("How much?", "Enter a quantity", "Add", "Cancel", "eg. 3", 10, Keyboard.Numeric);
+
+                if (strquant == null) //User clicked cancel
+                    return;
+
+                quantity = Convert.ToDouble(strquant);
+
+                if (quantity <= 0)
+                    return; //await DisplayAlert("Error", "Quantity must be positive", "OK");
+                else
+                    validquantity = true;
+            }
+
+
+            IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+
+            Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
+
+
+            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
+
+            if (pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
+            {
+                //await DisplayAlert("Error", "The specified ingredient is already in your pantry", "OK");
+                return;
+            }
+
+            //_ingredientList.Add(new IngredientItem(foundingr, quantity, Measurements));
+            ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr, quantity);
         }
 
+
         public ICommand RemoveCommand { protected set; get; }
-        public async void OnRemove()
+        public async void OnRemove(string ingrName)
         {
-            string ingrname = "";// = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
+            string ingrname = ingrName;// = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
 
             if (ingrname == null) //User clicked cancel
                 return;
@@ -67,40 +121,38 @@ namespace PantryAid.ViewModels
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
 
-            if (foundingr == null)
-            {
-                //await DisplayAlert("Error", "That ingredient could not be found", "OK");
-                return;
-            }
-
-            if (ingrdata.RemoveIngredientFromPantry(SqlServerDataAccess.UserID, foundingr) == 0)
-            {
-                //await DisplayAlert("Error", "That ingredient is not currently in your pantry", "OK");
-                return;
-            }
-
-            //Should never throw exception because of the above check
-            IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
+           IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
             _ingredientList.ListView.Remove(item);
         }
 
         /// Authenticate an ingedient against a SQL database
         /// returns true is ingredient was authenticated, false if not
         
-        private bool AuthenticateIngredient()
+        //private bool AuthenticateIngredient()
+        //{
+        //    bool auth = false;
+
+        //    //Ingredient ing = _ingredientDatabaseAccess.GetIngredient(_ingredientItem.ToLower());
+
+        //    //auth = (ing == null ? false : true);
+
+        //    if (auth)
+        //    {
+
+        //    }
+
+        //    return auth;
+        //}
+
+        private void QuantityIncrement()
         {
-            bool auth = false;
 
-            //Ingredient ing = _ingredientDatabaseAccess.GetIngredient(_ingredientItem.ToLower());
+        }
+        
 
-            //auth = (ing == null ? false : true);
+        private void QuantityDecrement()
+        {
 
-            if (auth)
-            {
-
-            }
-
-            return auth;
         }
     }
 }
