@@ -7,16 +7,16 @@
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeFinderPage">
     <ContentPage.Resources>
-        <StyleSheet Source="/Assets/StyleSheets.css" />
+        <!--<StyleSheet x:Key="StyleSheet" Source="/Assets/StyleSheets.css" />-->
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Entry x:Name="Recipe_Search" Text="Search: " Placeholder="(eg. Cheese Cake)"  
+            <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  
                    Completed="Recipe_Search_OnCompleted" 
                    VerticalOptions="Start" 
                    HorizontalOptions="FillAndExpand" 
                    AnchorY="0" />
-            <ListView ItemsSource="{Binding List.ListView }" SeparatorVisibility="None"  
+            <ListView ItemsSource="{Binding List.ListView}" SeparatorVisibility="None"  
                       SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -30,13 +30,14 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
-                                <Image Source="{ Binding image }" 
-                                       Grid.Column="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                <Image Source="{Binding image}" Grid.Column="0" 
+                                       VerticalOptions="FillAndExpand" 
+                                       HorizontalOptions="FillAndExpand"/>
                                 <StackLayout Orientation="Vertical" Grid.Column="1"  >
                                     <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" FontSize="Medium"  
                                                    VerticalOptions="Center" />
                                         <Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />
-                                    </StackLayout>
+                                </StackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
