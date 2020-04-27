@@ -28,7 +28,7 @@ namespace PantryAid
         {
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             
-            List<IngredientItem> results = ingrdata.GetIngredientsFromPantry(SqlHelper.UserID);
+            List<IngredientItem> results = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
             if (results == null)
             {
@@ -43,6 +43,7 @@ namespace PantryAid
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
+            /*string ingrname = await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
             string measure = MeasurementPicker.SelectedItem as string;
 
             string ingrname = await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
@@ -77,13 +78,13 @@ namespace PantryAid
                 return;
             }
 
-            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlHelper.UserID);
+            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
             if (pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
             {
                 await DisplayAlert("Error", "The specified ingredient is already in your pantry", "OK");
                 return;
-            }
+            }*/
 
             _list.Add(new IngredientItem(foundingr, quantity, measure));
             ingrdata.AddIngredientToPantry(SqlHelper.UserID, foundingr, measure, quantity);
@@ -105,7 +106,7 @@ namespace PantryAid
                 return;
             }
 
-            if (ingrdata.RemoveIngredientFromPantry(SqlHelper.UserID, foundingr) == 0)
+            if (ingrdata.RemoveIngredientFromPantry(SqlServerDataAccess.UserID, foundingr) == 0)
             {
                 await DisplayAlert("Error", "That ingredient is not currently in your pantry", "OK");
                 return;
@@ -118,7 +119,7 @@ namespace PantryAid
 
         private void QuantityChangeClicked(object sender, EventArgs e)
         {
-            Button b = (Button)sender;
+            /*Button b = (Button)sender;
             //Get Command param
             IngredientItem ob = b.CommandParameter as IngredientItem;
 
@@ -132,7 +133,7 @@ namespace PantryAid
                 else if (b.Text == "-")
                     newquant -= 1;
                 
-                ingrdata.UpdatePantryIngredientQuantity(SqlHelper.UserID, ob.ID, newquant);
+                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, ob.ID, newquant);
                 //Replace the item in the list with a duplicate that has the changed quantity
                 int index = _list.ListView.IndexOf(ob);
                 _list.ListView.Remove(ob);
@@ -140,7 +141,7 @@ namespace PantryAid
                     _list.ListView.Insert(index, new IngredientItem(ob.Ingredient, newquant, ob.Measurement));
             }
             else
-                DisplayAlert("Error", "CommandParameter was null", "OK");
+                DisplayAlert("Error", "CommandParameter was null", "OK");*/
         }
     }
 }

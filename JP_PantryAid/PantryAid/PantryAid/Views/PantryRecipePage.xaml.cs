@@ -30,7 +30,7 @@ namespace PantryAid.Views
         {
             _list.ListView.Clear();
             List<string> ingredients = new List<string>();
-            List<IngredientItem> ingredientItems;
+            //List<IngredientItem> ingredientItems;
 
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             ingredientItems = ingrdata.GetIngredientsFromPantry(SqlHelper.UserID);

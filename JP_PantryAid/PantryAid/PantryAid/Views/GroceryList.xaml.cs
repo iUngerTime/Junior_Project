@@ -55,7 +55,7 @@ namespace PantryAid
 
         public void FillGrid()
         {
-            _list.ListView.Clear();
+            /*_list.ListView.Clear();
 
             string[] contents = File.ReadAllLines(FilePath);
 
@@ -65,11 +65,13 @@ namespace PantryAid
 
                 IngredientItem G = new IngredientItem(new Ingredient(-1, temp[0]), Convert.ToDouble(temp[1]), temp[2]);
                 _list.Add(G);
-            }
+            }*/
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
+            /*IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+            Ingredient foundingr = ingrdata.GetIngredient(IngredientEntry.Text.ToLower());
             string result = await DisplayPromptAsync("ADD", "Enter an ingredient to add to your list", "Add", "Cancel", "eg. Apple", 500, Keyboard.Text);
 
             if (result == null)
@@ -87,6 +89,8 @@ namespace PantryAid
                 if (quant == null)
                     return;
 
+                File.AppendAllText(FilePath, String.Format("{0}-{1}\n", item.ID.ToString(), item.Name));
+            }*/
                 fquant = Convert.ToDouble(quant);
                 if (fquant <= 0)
                 {
@@ -100,7 +104,6 @@ namespace PantryAid
             _list.Add(item);
 
             File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
-            
         }
 
         private async void RemoveButton_Clicked(object sender, EventArgs e)
