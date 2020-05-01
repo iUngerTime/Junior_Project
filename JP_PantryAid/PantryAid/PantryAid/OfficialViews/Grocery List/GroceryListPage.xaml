@@ -19,7 +19,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Frame BackgroundColor="#BF043055" BorderColor="Black" HasShadow="True" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0">
-                    <Entry x:Name="ItemEntry" FontSize="Body" Placeholder="Name (eg. Apple)" PlaceholderColor="GhostWhite" TextColor="GhostWhite" HorizontalTextAlignment="Center"/>
+                    <Entry x:Name="ItemEntry" FontSize="Body" Placeholder="Name (eg. Apple)" PlaceholderColor="GhostWhite" TextColor="GhostWhite"/>
                 </Frame>
                 <Frame x:Name="MeasurementFrame" BackgroundColor="#BF043055" BorderColor="Black" HasShadow="True" Grid.Row="1" Grid.Column="0">
                     <Picker x:Name="MeasurementPicker" WidthRequest="130" TextColor="GhostWhite">

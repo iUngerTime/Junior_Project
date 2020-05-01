@@ -57,8 +57,8 @@ namespace PantryAid.ViewModels
         }
 
         //Keeps track of which ingredients have their boxes checked
-        private List<string> checks = new List<string>();
-        public List<string> Checks
+        private List<IngredientItem> checks = new List<IngredientItem>();
+        public List<IngredientItem> Checks
         {
             get { return checks; }
             set
@@ -77,7 +77,7 @@ namespace PantryAid.ViewModels
         {
             GList.ListView.Clear();
 
-            /*string[] contents = File.ReadAllLines(FilePath);
+            string[] contents = File.ReadAllLines(FilePath);
 
             foreach (string line in contents)
             {
@@ -85,31 +85,45 @@ namespace PantryAid.ViewModels
 
                 IngredientItem I = new IngredientItem(new Ingredient(-1, temp[0]), Convert.ToDouble(temp[1]), temp[2]);
                 GList.Add(I);
-            }*/
+            }
         }
 
         public async void OnAdd(string ingrname, double quant, string measure)
         {
-
-            /*//ingrname = SqlHelper.Sanitize(ingrname);
+            ingrname = ingrname.ToLower();
+            ingrname = SqlServerDataAccess.Sanitize(ingrname);
             
             IngredientItem item = new IngredientItem(new Ingredient(-1, ingrname), quant, measure);
             GList.Add(item);
 
-            File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));*/
+            File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
         }
 
         public async void OnDelete()
         {
+            //Remove the items from the GList that were checked
+            foreach (IngredientItem ingr in Checks)
+            {
+                GList.ListView.Remove(ingr);
+            }
 
+            //Wipe the file
+            File.WriteAllText(FilePath, "");
+
+            //Rewrite the file from the contents of the list view model
+            foreach (IngredientItem item in GList.ListView)
+            {
+                File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
+            }
+            Checks.Clear();
         }
 
         public async void OnDump()
         {
-            /*List<IngredientItem> LostIngredients = new List<IngredientItem>(); //Keeps track of the entries that are not dumped because they don't exist in the database
+            List<IngredientItem> LostIngredients = new List<IngredientItem>(); //Keeps track of the entries that are not dumped because they don't exist in the database
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
 
-            foreach (IngredientItem item in _glist.ListView)
+            foreach (IngredientItem item in Checks)
             {
                 Ingredient ingr = ingrdata.GetIngredient(item.Name.ToLower());
 
@@ -119,7 +133,9 @@ namespace PantryAid.ViewModels
                     ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, ingr, item.Measurement, item.Quantity);
             }
 
-            string alert = "The following ingredients could not be added to your pantry:\n";
+            //Commented out until I can ask brent how to do alert displays in the vm
+
+            /*string alert = "The following ingredients could not be added to your pantry:\n";
 
             foreach (IngredientItem item in LostIngredients)
             {
@@ -129,25 +145,26 @@ namespace PantryAid.ViewModels
                 alert = "Successfully dumped grocery list!";
 
             //await DisplayAlert("Grocery Dump", alert, "OK");*/
+            Checks.Clear();
         }
 
         public void OnPlus(Entry QuantEntry)
         {
-            QuantEntry.Text = (Convert.ToInt32(QuantEntry.Text) + 1).ToString();
+            QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) + 1).ToString();
         }
 
         public void OnMinus(Entry QuantEntry)
         {
-            if (Convert.ToInt32(QuantEntry.Text) > 1)
-                QuantEntry.Text = (Convert.ToInt32(QuantEntry.Text) - 1).ToString();
+            if (Convert.ToDouble(QuantEntry.Text) > 1)
+                QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) - 1).ToString();
         }
 
-        public async void OnChecked(CheckBox sender, string Name, Frame popup)
+        public async void OnChecked(CheckBox sender, IngredientItem ingr, Frame popup)
         {
             if (sender.IsChecked)
-                Checks.Add(Name);
+                Checks.Add(ingr);
             else
-                Checks.Remove(Name);
+                Checks.Remove(ingr);
 
             //If the popup isn't there and there's at least one item checked
             if (!popup.IsVisible && Checks.Count > 0)
@@ -156,24 +173,25 @@ namespace PantryAid.ViewModels
                 popup.AnchorX = 1;
                 popup.AnchorY = 1;
 
-                //Animation scaleXAnimation = new Animation(f => popup.ScaleX = f, 0.5, 1, Easing.SinInOut);
-                Animation scaleYAnimation = new Animation(f => popup.Scale = f, 0.5, 1, Easing.SinInOut);
-
+                Animation scaleAnimation = new Animation(f => popup.Scale = f, 0.5, 1, Easing.SinInOut);
                 Animation fadeAnimation = new Animation(f => popup.Opacity = f, 0.2, 1, Easing.SinInOut);
 
-                //scaleXAnimation.Commit(popup, "popupScaleAnimation", 75);
-                scaleYAnimation.Commit(popup, "popupScaleAnimation", 25, 25);
+                scaleAnimation.Commit(popup, "popupScaleAnimation", 25, 25);
                 fadeAnimation.Commit(popup, "popupFadeAnimation", 25, 50);
             }
             else if (Checks.Count < 1)
             {
-                popup.IsVisible = false;
-                await Task.WhenAny<bool>
-                    (
-                    popup.FadeTo(0, 25, Easing.SinInOut)
-                    );
-
+                RemovePopup(popup);
             }
+        }
+
+        public async void RemovePopup(Frame popup)
+        {
+            popup.IsVisible = false;
+            await Task.WhenAny<bool>
+                (
+                popup.FadeTo(0, 25, Easing.SinInOut)
+                );
         }
     }
 }

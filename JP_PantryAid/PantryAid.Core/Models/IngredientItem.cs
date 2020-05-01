@@ -17,7 +17,7 @@ namespace PantryAid.Core.Models
 		public double Quantity { get; set; }
 		public string Measurement { get; set; }
 
-		//These two getters are needed for the gridview
+		//These getters are needed for the gridview
 		public string Name
 		{
 			get { return Ingredient.Name; }
@@ -26,6 +26,15 @@ namespace PantryAid.Core.Models
 		public int ID
 		{
 			get { return Ingredient.IngredientID; }
+		}
+
+		//For some reason the binding doesn't like this
+		public string FullQuantity
+		{
+			get
+			{
+				return Quantity.ToString() + " " + Measurement + "s";
+			}
 		}
 	}
 }

@@ -11,6 +11,20 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+/*
+The file that holds ingredients for the grocery list is in the format
+<Name>-<Quantity>-<Measurement>
+<Name>-<Quantity>-<Measurement>
+<Name>-<Quantity>-<Measurement>
+...
+
+ex.
+Milk-1-Quarts
+Eggs-5-Servings
+Cookies-7-Servings
+...
+*/
+
 namespace PantryAid.OfficialViews.Grocery_List
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -28,7 +42,8 @@ namespace PantryAid.OfficialViews.Grocery_List
 
         private void AddButton_Clicked(object sender, EventArgs e)
         {
-            vm.OnAdd(ItemEntry.Text, Convert.ToInt32(QuantityEntry.Text), MeasurementPicker.SelectedItem as string);
+            if (ItemEntry.Text != null)
+                vm.OnAdd(ItemEntry.Text, Convert.ToDouble(QuantityEntry.Text), MeasurementPicker.SelectedItem as string);
         }
 
         private void Minus_Clicked(object sender, EventArgs e)
@@ -44,12 +59,18 @@ namespace PantryAid.OfficialViews.Grocery_List
         private async void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             var ob = ((CheckBox)sender).BindingContext as IngredientItem;
-            vm.OnChecked((CheckBox)sender, ob.Name, popup);
+            vm.OnChecked((CheckBox)sender, ob, popup);
         }
 
-        private void Delete_Clicked(object sender, EventArgs e)
+        private async void Delete_Clicked(object sender, EventArgs e)
         {
-            vm.OnDelete();
+            bool answer = await DisplayAlert("Are You Sure?", "Do you want to delete all checked items?", "Yes", "No");
+            if (answer == true)
+            {
+                vm.OnDelete();
+                //Remove the popup manually since the checks have been cleared
+                vm.RemovePopup(popup);
+            }
         }
 
         private void Dump_Clicked(object sender, EventArgs e)
