@@ -222,5 +222,87 @@ namespace Database_Helpers
             str.Replace("|", "");
             return str;
         }
+
+        //Converts one measurement to another
+        //Converts all liquid measurements to cups and all mass/weight measurements to grams
+        //then converts to the desired measurement from there
+        //Returns -1 if not convertable
+        public static double ConvertM(string From, string To, double val)
+        {
+            if (To == "Serving")
+                return -1;
+
+            if (From == To)
+                return val;
+
+            switch (From)
+            {
+                case "Tbsp": //1 tbsp is 1/16 cup
+                    return ConvertM("Cup", To, val / 16);
+                case "Tsp":
+                    return ConvertM("Cup", To, val / 48);
+                case "Cup":
+                    switch (To)
+                    {
+                        case "Tbsp":
+                            return val * 16;
+                        case "Tsp":
+                            return val * 48;
+                        case "Pint":
+                            return val / 2;
+                        case "Quart":
+                            return val / 4;
+                        case "Gallon":
+                            return val / 16;
+                        case "Liter":
+                            return val / 4.227;
+                        case "Milliliter":
+                            return val / 237;
+                        case "Fluid Ounce":
+                            return val * 8;
+                        default:
+                            return -1;
+                    }
+                case "Pint":
+                    return ConvertM("Cup", To, val * 2);
+                case "Quart":
+                    return ConvertM("Cup", To, val * 4);
+                case "Gallon":
+                    return ConvertM("Cup", To, val * 16);
+                case "Liter":
+                    return ConvertM("Cup", To, val * 4.227);
+                case "Milliliter":
+                    return ConvertM("Cup", To, val / 237);
+                case "Fluid Ounce":
+                    return ConvertM("Cup", To, val / 8);
+
+                case "Ounce":
+                    return ConvertM("Gram", To, val * 28.35);
+                case "Lb":
+                    return ConvertM("Gram", To, val * 454);
+                case "Milligram":
+                    return ConvertM("Gram", To, val / 1000);
+                case "Gram":
+                    switch(To)
+                    {
+                        case "Ounce":
+                            return val / 28.35;
+                        case "Lb":
+                            return val / 454;
+                        case "Milligram":
+                            return val * 1000;
+                        case "Kilogram":
+                            return val / 1000;
+                        default:
+                            return -1;
+                    }
+                case "Kilogram":
+                    return ConvertM("Gram", To, val * 1000);
+
+                case "Serving":
+                default:
+                    return -1;
+            }
+        }
     }
 }
