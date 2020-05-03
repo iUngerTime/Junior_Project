@@ -89,7 +89,7 @@
 
                                     <CheckBox Margin="10,0,10,0" VerticalOptions="Center" Grid.Column="0" CheckedChanged="CheckBox_CheckedChanged" Color="GhostWhite" BindingContext="{Binding .}"/>
                                     <Label Margin="10,0,10,0" Text="{Binding Name}" VerticalOptions="Center" Grid.Column="1" TextColor="GhostWhite"/>
-                                    <Label Margin="10,0,10,0" Text="{Binding Quantity}" VerticalOptions="Center" Grid.Column="2" TextColor="GhostWhite"/>
+                                    <Label Margin="10,0,10,0" Text="{Binding FullQuantity}" VerticalOptions="Center" Grid.Column="2" TextColor="GhostWhite"/>
 
                                     <BoxView BackgroundColor="Black" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
                                     <BoxView BackgroundColor="Black" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>

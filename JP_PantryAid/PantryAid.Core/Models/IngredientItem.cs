@@ -28,7 +28,6 @@ namespace PantryAid.Core.Models
 			get { return Ingredient.IngredientID; }
 		}
 
-		//For some reason the binding doesn't like this
 		public string FullQuantity
 		{
 			get

@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace PantryAid.ViewModels
 {
@@ -88,15 +89,77 @@ namespace PantryAid.ViewModels
             }
         }
 
+        //Note to self: test this trash
         public async void OnAdd(string ingrname, double quant, string measure)
         {
             ingrname = ingrname.ToLower();
             ingrname = SqlServerDataAccess.Sanitize(ingrname);
-            
-            IngredientItem item = new IngredientItem(new Ingredient(-1, ingrname), quant, measure);
-            GList.Add(item);
 
-            File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
+        //Below is the code for converting measurements
+            double newquant = -1.0;
+            string[] lines = File.ReadAllLines(FilePath);
+            List<string> newlines = new List<string>();
+
+            //Check if this ingredient already exists in the list
+            foreach (string line in lines)
+            {
+                string[] items = line.Split('-'); //items[0] is name, items[1] is quantity, items[2] is measurement
+                
+                //If two ingredients match and have the same measurement
+                if (items[0] == ingrname && items[2] == measure)
+                {
+                    newquant = Convert.ToDouble(items[1]) + quant;
+                    newquant = Math.Round(newquant, 2, MidpointRounding.AwayFromZero);
+                    newlines.Add(String.Format("{0}-{1}-{2}", ingrname, newquant, measure));
+
+                    IngredientItem olditem = GList.ListView.First(x => x.Name == ingrname);
+                    int oldindex = GList.ListView.IndexOf(olditem);
+                    olditem.Quantity = newquant;
+                    GList.ListView.RemoveAt(oldindex);
+                    GList.ListView.Insert(oldindex, olditem);
+                }
+                //Else if the two ingredients have the same name only
+                else if (items[0] == ingrname)
+                {
+                    double result1 = SqlServerDataAccess.ConvertM(items[2], measure, Convert.ToDouble(items[1]));
+                    double result2 = SqlServerDataAccess.ConvertM(measure, items[2], quant);
+                    IngredientItem olditem = GList.ListView.First(x => x.Name == ingrname);
+                    int oldindex = GList.ListView.IndexOf(olditem);
+
+                    if (result1 > result2)
+                    {
+                        newquant = result2 + Convert.ToDouble(items[1]);
+                        newquant = Math.Round(newquant, 2, MidpointRounding.AwayFromZero);
+                        newlines.Add(String.Format("{0}-{1}-{2}", ingrname, newquant, items[2]));
+
+                        olditem.Measurement = items[2];
+                        olditem.Quantity = newquant;
+                    }
+                    else
+                    {
+                        newquant = result1 + quant;
+                        newquant = Math.Round(newquant, 2, MidpointRounding.AwayFromZero);
+                        newlines.Add(String.Format("{0}-{1}-{2}", ingrname, newquant, measure));
+
+                        olditem.Measurement = measure;
+                        olditem.Quantity = newquant;
+                    }
+                    GList.ListView.RemoveAt(oldindex);
+                    GList.ListView.Insert(oldindex, olditem);
+                }
+                else //Otherwise it isn't, it can stay in the file like it was before
+                    newlines.Add(line);
+            }
+            //Rewrite back to the file
+            File.WriteAllLines(FilePath, newlines.ToArray());
+
+            if (newquant == -1.0) //If newquant is its default value, then the name didn't already exist in the list just append the new item
+            {
+                IngredientItem item = new IngredientItem(new Ingredient(-1, ingrname), quant, measure);
+                GList.Add(item);
+
+                File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
+            }
         }
 
         public async void OnDelete()
