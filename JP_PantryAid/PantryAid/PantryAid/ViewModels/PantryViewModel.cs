@@ -127,7 +127,7 @@ namespace PantryAid.ViewModels
 
         /// Authenticate an ingedient against a SQL database
         /// returns true is ingredient was authenticated, false if not
-        
+
         //private bool AuthenticateIngredient()
         //{
         //    bool auth = false;
@@ -144,15 +144,29 @@ namespace PantryAid.ViewModels
         //    return auth;
         //}
 
-        private void QuantityIncrement()
+        private void QuantityChange(object sender)
         {
+            Button b = (Button)sender;
+            //Get Command param
+            IngredientItem ob = b.CommandParameter as IngredientItem;
 
-        }
-        
+            if (ob != null)
+            {
+                iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+                //Increment or decrement based on which button was clicked
+                double newquant = ob.Quantity;
+                if (b.Text == "+")
+                    newquant += 1;
+                else if (b.Text == "-")
+                    newquant -= 1;
 
-        private void QuantityDecrement()
-        {
-
+                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, ob.ID, newquant);
+                //Replace the item in the list with a duplicate that has the changed quantity
+                int index = _ingredientList.ListView.IndexOf(ob);
+                _ingredientList.ListView.Remove(ob);
+                if (newquant > 0)
+                    _ingredientList.ListView.Insert(index, new IngredientItem(ob.Ingredient, newquant, ob.Measurement));
+            }
         }
     }
 }
