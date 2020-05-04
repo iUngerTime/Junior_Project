@@ -8,47 +8,58 @@
     <ContentPage.Content>
         <ScrollView >
             <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
-                <Label Text="Recipe Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
-                
-                
-                <Grid x:Name="FormLayoutGrid" Grid.Row="1" Grid.Column="0" RowSpacing="0" VerticalOptions="Start">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
+                <Label Text="Recipe Details Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
 
-                    <Label   Text="Recipe Name" Grid.Row="0" Grid.Column="0" Margin="10" HorizontalOptions="StartAndExpand" VerticalOptions="Start" FontSize="20" />
-                    <Label  x:Name="L_RecipeName" Text="{ Binding RecipeFull.name}" 
-                            Grid.Row="1" Grid.Column="0" Margin="10" 
+                    <Label  Text="Recipe Name" Margin="10" 
+                            HorizontalOptions="StartAndExpand" VerticalOptions="Start" FontSize="20" />
+                    <Label  Text="{ Binding RecipeFull.name}" 
+                            Margin="10" 
                             HorizontalOptions="CenterAndExpand" 
                             VerticalOptions="Start" FontSize="20" />
-                    <Image x:Name="Image1" Grid.Row="2" Grid.Column="0" Source="{Binding RecipeFull.image}"/>
+                    <Image Source="{Binding RecipeFull.image}"/>
                     <Label  TextType="Html" Text="Instructions" 
-                            Grid.Row="4" Grid.Column="0" Margin="10" 
+                            Margin="10" 
                             HorizontalOptions="StartAndExpand" 
                             VerticalOptions="StartAndExpand" 
                             FontSize="20" />
-                    <Label x:Name="L_Instructions" TextType="Html" Text="{ Binding RecipeFull.instructions}" 
-                           Grid.Row="5" Grid.Column="0" Margin="10" 
+                    <Label TextType="Html" Text="{ Binding RecipeFull.instructions}" 
+                           Margin="10" 
                            HorizontalOptions="StartAndExpand" 
                            VerticalOptions="StartAndExpand" 
                            FontSize="20" />
-                    <Label  TextType="Html" Text="Ingredients" 
-                            Grid.Row="6" Grid.Column="0" Margin="10" 
+                    <Label  TextType="Html" Text="Ingredients:" 
+                            Margin="10" 
                             HorizontalOptions="StartAndExpand" 
                             VerticalOptions="StartAndExpand" 
                             FontSize="20" />
-                    <Label x:Name="L_Ingredients" TextType="Html" Text="" Grid.Row="7" Grid.Column="0" Margin="10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" FontSize="20" />
-                </Grid>
+                <ListView ItemsSource="{ Binding RecipeFull.extendedIngredients }" IsEnabled="False" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                               <Grid >
+                                   <Grid.ColumnDefinitions>
+                                       <ColumnDefinition Width="4*"/>
+                                       <ColumnDefinition Width="5*"/>
+                                       <ColumnDefinition Width="5*"/>
+                                       
+                                    </Grid.ColumnDefinitions>
+                                   <Image Source="{ Binding image }" Grid.Column="0"/>
+                                    <StackLayout Grid.Column="1" Orientation="Horizontal">
+                                       <Label Text="{ Binding amount }" HorizontalOptions="Start" 
+                                              FontSize="Medium" />
+                                       <Label Text="{ Binding unit }" HorizontalOptions="Start" 
+                                              FontSize="Medium" />
+                                    </StackLayout>
+                                   <Label Text="{ Binding name }" FontSize="Medium" Grid.Column="2" 
+                                          HorizontalTextAlignment="Start"
+                                          HorizontalOptions="Start"/>
+                                   
+                               </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
                 <Button HorizontalOptions="End"  Text="Find Similar" Clicked="B_SimilarClicked"></Button>
             </StackLayout>
         </ScrollView>

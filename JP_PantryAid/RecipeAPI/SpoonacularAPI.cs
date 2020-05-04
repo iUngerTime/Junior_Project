@@ -482,6 +482,12 @@ namespace SpoonacularAPI
             {
                 throw e;
             }
+
+            //recipe.image = "https://spoonacular.com/recipeImages/" + recipe.image;
+            foreach (Recipe_Full.RecipeFullIngredient ingred in recipe.extendedIngredients)
+            {
+                ingred.image = "https://spoonacular.com/cdn/ingredients_100x100/" + ingred.image;
+            }
             return recipe;
         }
 

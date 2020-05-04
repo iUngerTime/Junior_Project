@@ -8,9 +8,9 @@
     <ContentPage.Content>
         <ScrollView >
         <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
-            <Label Text="Recipe Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
+            <Label Text="Recipe Details Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
             <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)" Completed="Recipe_Search_OnCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" AnchorY="0" />
-            <!--<Button x:Name="AddButton" Text="Search" FontSize="Medium" Clicked="AddButton_Clicked" VerticalOptions="Start" HorizontalOptions="End" AnchorY="0" />-->
+            
             <Grid x:Name="FormLayoutGrid" Grid.Row="1" Grid.Column="0" RowSpacing="0" VerticalOptions="Start">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
