@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeDetailsPage">
+    <ContentPage.Content>
+        <ScrollView >
+            <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
+                <Label Text="Recipe Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
+                
+                
+                <Grid x:Name="FormLayoutGrid" Grid.Row="1" Grid.Column="0" RowSpacing="0" VerticalOptions="Start">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label   Text="Recipe Name" Grid.Row="0" Grid.Column="0" Margin="10" HorizontalOptions="StartAndExpand" VerticalOptions="Start" FontSize="20" />
+                    <Label  x:Name="L_RecipeName" Text="{ Binding RecipeFull.name}" 
+                            Grid.Row="1" Grid.Column="0" Margin="10" 
+                            HorizontalOptions="CenterAndExpand" 
+                            VerticalOptions="Start" FontSize="20" />
+                    <Image x:Name="Image1" Grid.Row="2" Grid.Column="0" Source="{Binding RecipeFull.image}"/>
+                    <Label  TextType="Html" Text="Instructions" 
+                            Grid.Row="4" Grid.Column="0" Margin="10" 
+                            HorizontalOptions="StartAndExpand" 
+                            VerticalOptions="StartAndExpand" 
+                            FontSize="20" />
+                    <Label x:Name="L_Instructions" TextType="Html" Text="{ Binding RecipeFull.instructions}" 
+                           Grid.Row="5" Grid.Column="0" Margin="10" 
+                           HorizontalOptions="StartAndExpand" 
+                           VerticalOptions="StartAndExpand" 
+                           FontSize="20" />
+                    <Label  TextType="Html" Text="Ingredients" 
+                            Grid.Row="6" Grid.Column="0" Margin="10" 
+                            HorizontalOptions="StartAndExpand" 
+                            VerticalOptions="StartAndExpand" 
+                            FontSize="20" />
+                    <Label x:Name="L_Ingredients" TextType="Html" Text="" Grid.Row="7" Grid.Column="0" Margin="10" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" FontSize="20" />
+                </Grid>
+                <Button HorizontalOptions="End"  Text="Find Similar" Clicked="B_SimilarClicked"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -87,7 +87,9 @@ namespace PantryAid.ViewModels
 
         public void ItemTapped(int index)
         {
-            navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
+            //navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
+            navigation.PushModalAsync(
+                new OfficialViews.Recipe_Finder.RecipeDetailsPage(Convert.ToInt32(_list.ListView[index].id)));
         }
 
 
