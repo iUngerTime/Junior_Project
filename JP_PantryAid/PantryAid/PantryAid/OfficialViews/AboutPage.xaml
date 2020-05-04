@@ -6,8 +6,10 @@
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.AboutPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
+        <StackLayout Orientation="Vertical">
+            <Label Text="About The App"
+                FontAttributes="Bold"
+                FontSize="40"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
         </StackLayout>
