@@ -67,7 +67,7 @@ namespace PantryAid.ViewModels
 
         // Commands
         public ICommand AddCommand { protected set; get; }
-        public void OnAdd(object sender, string ingrName, string quant)
+        public void OnAdd(object sender, string ingrName, string quant, string measure)
         {
             string ingrname = ingrName;//await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
 
@@ -104,14 +104,14 @@ namespace PantryAid.ViewModels
                 //await DisplayAlert("Error", "The specified ingredient is already in your pantry", "OK");
                 return;
             }
-
-            //_ingredientList.Add(new IngredientItem(foundingr, quantity, Measurements));
-            //ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr, quantity);
+            
+            _ingredientList.Add(new IngredientItem(foundingr, quantity, measure));
+            ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr.IngredientID, measure  ,quantity);
         }
 
 
         public ICommand RemoveCommand { protected set; get; }
-        public async void OnRemove(string ingrName)
+        public void OnRemove(string ingrName)
         {
             string ingrname = ingrName;// = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
 
@@ -124,25 +124,6 @@ namespace PantryAid.ViewModels
            IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
             _ingredientList.ListView.Remove(item);
         }
-
-        /// Authenticate an ingedient against a SQL database
-        /// returns true is ingredient was authenticated, false if not
-
-        //private bool AuthenticateIngredient()
-        //{
-        //    bool auth = false;
-
-        //    //Ingredient ing = _ingredientDatabaseAccess.GetIngredient(_ingredientItem.ToLower());
-
-        //    //auth = (ing == null ? false : true);
-
-        //    if (auth)
-        //    {
-
-        //    }
-
-        //    return auth;
-        //}
 
         private void QuantityChange(object sender)
         {
