@@ -229,15 +229,15 @@ namespace Database_Helpers
         //Returns -1 if not convertable
         public static double ConvertM(string From, string To, double val)
         {
-            if (To == "Serving")
-                return -1;
-
             if (From == To)
                 return val;
 
+            if (To == "Serving")
+                return -1;
+
             switch (From)
             {
-                case "Tbsp": //1 tbsp is 1/16 cup
+                case "Tbsp":
                     return ConvertM("Cup", To, val / 16);
                 case "Tsp":
                     return ConvertM("Cup", To, val / 48);
