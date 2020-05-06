@@ -33,10 +33,10 @@
                 <BoxView HorizontalOptions="CenterAndExpand" HeightRequest="2" Color="DarkGray" Margin="10"/>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="75"/>
-                        <RowDefinition Height="75"/>
-                        <RowDefinition Height="75"/>
-                        <RowDefinition Height="75"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="80"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="125"/>
@@ -59,7 +59,7 @@
                     <Label Grid.Column="1" Grid.Row="2" Text="Nick Sack" FontSize="30" FontAttributes="Bold" VerticalTextAlignment="Center" TextColor="GhostWhite"/>
 
                     <Frame Grid.Column="0" Grid.Row="3" CornerRadius="100" HeightRequest="75" WidthRequest="75" HorizontalOptions="Center" Padding="0" IsClippedToBounds="True">
-                        <Image Source="brentonAbout.jpg" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Image Source="thomasAbout.jpg" HorizontalOptions="Center" VerticalOptions="Center"/>
                     </Frame>
                     <Label Grid.Column="1" Grid.Row="3" Text="Thomas Eberhart" FontSize="30" FontAttributes="Bold" VerticalTextAlignment="Center" TextColor="GhostWhite"/>
 
