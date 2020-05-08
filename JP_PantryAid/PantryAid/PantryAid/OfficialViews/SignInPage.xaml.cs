@@ -15,6 +15,7 @@ namespace PantryAid.OfficialViews
             var vm = new LoginViewModel(Navigation, ServiceLocator.Current.GetInstance<iUserDataRepo>());
             this.BindingContext = vm;
             vm.DisplayInvalidLoginPrompt += () => DisplayAlert("Error", "Invalid Login, try again", "OK");
+            vm.DisplaySuccessfulSignupPrompt += () => DisplayAlert("Success", "Your account has been successfully created!", "OK");
             InitializeComponent();
 
             Email.Completed += (object sender, EventArgs e) =>
@@ -22,9 +23,14 @@ namespace PantryAid.OfficialViews
                 Password.Focus();
             };
 
-            Password.Completed += (object sender, EventArgs e) =>
+            LoginButton.Clicked += (object sender, EventArgs e) =>
             {
                 vm.SubmitCommand.Execute(null);
+            };
+
+            SignupButton.Clicked += (object sender, EventArgs e) =>
+            {
+                vm.SignupCommand.Execute(null);
             };
         }
     }

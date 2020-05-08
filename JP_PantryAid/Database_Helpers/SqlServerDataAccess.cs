@@ -101,6 +101,7 @@ namespace Database_Helpers
 
                 int usrId = 0;
                 string email = "";
+                string hash = "";
 
                 //Open Connection
                 try { con.Open(); }
@@ -115,6 +116,7 @@ namespace Database_Helpers
                     {
                         usrId = read.GetInt32(0);
                         email = read.GetString(1);
+                        hash = read.GetString(2);
                     }
                     else { return null; }
 
@@ -122,7 +124,7 @@ namespace Database_Helpers
                 }
                 catch (Exception) { return null; }
 
-                return new User() { Id = usrId, Email = email };
+                return new User() { Id = usrId, Email = email, Hash = hash };
             }
         }
 
