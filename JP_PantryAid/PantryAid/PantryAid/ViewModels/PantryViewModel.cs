@@ -67,7 +67,7 @@ namespace PantryAid.ViewModels
 
         // Commands
         public ICommand AddCommand { protected set; get; }
-        public void OnAdd(object sender, string ingrName, string quant)
+        public void OnAdd(object sender, string ingrName, string quant, string measure)
         {
             string ingrname = ingrName;//await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
 
@@ -105,13 +105,13 @@ namespace PantryAid.ViewModels
                 return;
             }
 
-            //_ingredientList.Add(new IngredientItem(foundingr, quantity, Measurements));
-            //ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr, quantity);
+            _ingredientList.Add(new IngredientItem(foundingr, quantity, measure));
+            ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr.IngredientID, measure, quantity);
         }
 
 
         public ICommand RemoveCommand { protected set; get; }
-        public async void OnRemove(string ingrName)
+        public void OnRemove(string ingrName)
         {
             string ingrname = ingrName;// = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
 
@@ -121,38 +121,33 @@ namespace PantryAid.ViewModels
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
 
-           IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
+            IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
             _ingredientList.ListView.Remove(item);
         }
 
-        /// Authenticate an ingedient against a SQL database
-        /// returns true is ingredient was authenticated, false if not
-        
-        //private bool AuthenticateIngredient()
-        //{
-        //    bool auth = false;
-
-        //    //Ingredient ing = _ingredientDatabaseAccess.GetIngredient(_ingredientItem.ToLower());
-
-        //    //auth = (ing == null ? false : true);
-
-        //    if (auth)
-        //    {
-
-        //    }
-
-        //    return auth;
-        //}
-
-        private void QuantityIncrement()
+        private void QuantityChange(object sender)
         {
+            Button b = (Button)sender;
+            //Get Command param
+            IngredientItem ob = b.CommandParameter as IngredientItem;
 
-        }
-        
+            if (ob != null)
+            {
+                iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+                //Increment or decrement based on which button was clicked
+                double newquant = ob.Quantity;
+                if (b.Text == "+")
+                    newquant += 1;
+                else if (b.Text == "-")
+                    newquant -= 1;
 
-        private void QuantityDecrement()
-        {
-
+                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, ob.ID, newquant);
+                //Replace the item in the list with a duplicate that has the changed quantity
+                int index = _ingredientList.ListView.IndexOf(ob);
+                _ingredientList.ListView.Remove(ob);
+                if (newquant > 0)
+                    _ingredientList.ListView.Insert(index, new IngredientItem(ob.Ingredient, newquant, ob.Measurement));
+            }
         }
     }
 }
