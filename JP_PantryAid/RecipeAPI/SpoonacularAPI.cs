@@ -80,6 +80,12 @@ namespace SpoonacularAPI
             public bool instructionsRequired;
         }
 
+        string SanitizeInput(string str)
+        {
+            string result = str.Replace(" ", "+");
+            return result;
+        }
+
 
 
         /// <summary>
@@ -95,6 +101,7 @@ namespace SpoonacularAPI
         {
             RecipeSearchParams param = SetUpParams(query, maxResults, offset);
             SpoonacularRecipeShortSearchResult result = QueryAPI(param);
+
             foreach (Recipe_Short recipe_s in result.results)
             {
                 if (recipe_s.author == null)
@@ -420,6 +427,7 @@ namespace SpoonacularAPI
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeSearchURL, Method.GET);
+            param.query = SanitizeInput(param.query);
 
             //Set up the query parameters
             request.AddParameter("query", param.query);

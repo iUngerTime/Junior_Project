@@ -34,7 +34,13 @@ namespace PantryAid.OfficialViews.Recipe_Finder
 
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
+            noResultsLabel.IsVisible = false;
             vm.SearchByName(Recipe_Search.Text);
+            //if there are no results, display that to the user
+            if (vm._list.ListView.Count == 0)
+            {
+                noResultsLabel.IsVisible = true;
+            }
         }
 
         private void PrevButton_Clicked(object sender, EventArgs e)

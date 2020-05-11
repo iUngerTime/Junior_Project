@@ -22,10 +22,6 @@ namespace PantryAid.ViewModels
             }
         }
 
-        //int _recipeId;
-        //save the current search for paging
-        private string _currentSearch;
-        
         public INavigation navigation { get; set; }
 
         public RecipeDetailsPageViewModel(INavigation nav, int recipeId)
@@ -45,6 +41,7 @@ namespace PantryAid.ViewModels
             }
             //_recipeFull.image = "https://spoonacular.com/recipeImages/" + _recipeFull.image;
         }
+
 
 
 

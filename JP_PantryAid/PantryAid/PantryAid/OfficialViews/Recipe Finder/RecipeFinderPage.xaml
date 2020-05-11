@@ -17,7 +17,8 @@
                    HorizontalOptions="FillAndExpand" 
                    AnchorY="0" />
             <ListView ItemsSource="{Binding List.ListView}" SeparatorVisibility="None"  
-                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" RowHeight="60">
+                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" 
+                      RowHeight="60" x:Name="RecipeResultsList">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -54,7 +55,7 @@
                 <BoxView WidthRequest="200"></BoxView>
                 <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="End" StyleClass="recipePageNavButtons"/>
             </StackLayout>
-
+            <Label x:Name="noResultsLabel" IsVisible="False">Nothing found</Label>
         </StackLayout>
     </ContentPage.Content>
 </base:BaseNavigationPage>

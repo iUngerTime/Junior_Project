@@ -75,14 +75,20 @@ namespace PantryAid.ViewModels
 
         public void NextPage()
         {
-            _offset += _recipesPerPage;
-            SearchByName(CurrentSearch);
+            if (_list.ListView.Count > 0 && CurrentSearch.Length > 0)
+            {
+                _offset += _recipesPerPage;
+                SearchByName(CurrentSearch);
+            }
         }
         public void PrevPage()
         {
-            if (_offset >= 5)
-                _offset -= _recipesPerPage;
-            SearchByName(CurrentSearch);
+            if (_list.ListView.Count > 0 && CurrentSearch.Length > 0)
+            {
+                if (_offset >= 5)
+                    _offset -= _recipesPerPage;
+                SearchByName(CurrentSearch);
+            }
         }
 
         public void ItemTapped(int index)
