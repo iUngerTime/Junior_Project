@@ -28,13 +28,38 @@ namespace PantryAid.OfficialViews.Pantry
 
         private void AddButton_Clicked(object sender, EventArgs e)
         {
-            //vm.OnAdd(sender, Item.Text, Convert.ToInt32(Quantity.Text));
+            if (ItemEntry.Text != null)
+                vm.OnAdd(sender, ItemEntry.Text, QuantityEntry.Text, MeasurementPicker.SelectedItem as string);
         }
-        private void RemoveButton_Clicked(object sender, EventArgs e)
+        private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
-
+            bool answer = await DisplayAlert("Are You Sure?", "Do you want to delete all checked items?", "Yes", "No");
+            if (answer == true)
+            {
+                vm.OnRemove();
+                //Remove the popup manually since the checks have been cleared
+                vm.RemovePopup(popup);
+            }
         }
-        private void QuantityChangeClicked(object sender, EventArgs e)
+        private void QuantityChange_Clicked(object sender, EventArgs e)
+        {
+            vm.QuantityChanged(sender);
+        }
+        private void Minus_Clicked(object sender, EventArgs e)
+        {
+            vm.OnMinus(QuantityEntry);
+        }
+        private void Plus_Clicked(object sender, EventArgs e)
+        {
+            vm.OnPlus(QuantityEntry);
+        }
+        private async void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            var ob = ((CheckBox)sender).BindingContext as IngredientItem;
+            vm.OnChecked((CheckBox)sender, ob, popup);
+        }
+
+        private void Dump_Clicked(object sender, EventArgs e)
         {
 
         }

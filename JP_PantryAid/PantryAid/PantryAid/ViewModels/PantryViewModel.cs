@@ -43,7 +43,18 @@ namespace PantryAid.ViewModels
             set
             {
                 _ingredientList = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Ingredient"));
+                PropertyChanged(this, new PropertyChangedEventArgs("IngredientList"));
+            }
+        }
+
+        private List<IngredientItem> checks = new List<IngredientItem>();
+        public List<IngredientItem> Checks
+        {
+            get { return checks; }
+            set
+            {
+                checks = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Checks"));
             }
         }
 
@@ -96,10 +107,15 @@ namespace PantryAid.ViewModels
 
             Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
 
+            if (foundingr == null)
+            {
+                //DisplayAlert("Error", "The specified ingredient was not found", "OK");
+                return;
+            }
 
             List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
-            if (pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
+            if (pantryingredients != null && pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
             {
                 //await DisplayAlert("Error", "The specified ingredient is already in your pantry", "OK");
                 return;
@@ -111,21 +127,34 @@ namespace PantryAid.ViewModels
 
 
         public ICommand RemoveCommand { protected set; get; }
-        public void OnRemove(string ingrName)
+        public void OnRemove()
         {
-            string ingrname = ingrName;// = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
+            //string ingrname = ingrName;// = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
 
-            if (ingrname == null) //User clicked cancel
-                return;
+            //if (ingrname == null) //User clicked cancel
+            //    return;
 
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
-            Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
+            //Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
 
-            IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
-            _ingredientList.ListView.Remove(item);
+            //IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
+            foreach (IngredientItem ingr in Checks)
+            {
+                _ingredientList.ListView.Remove(ingr);
+            }
+  
+        }
+        public void OnPlus(Entry QuantEntry)
+        {
+            QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) + 1).ToString();
         }
 
-        private void QuantityChange(object sender)
+        public void OnMinus(Entry QuantEntry)
+        {
+            if (Convert.ToDouble(QuantEntry.Text) > 1)
+                QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) - 1).ToString();
+        }
+        public void QuantityChanged(object sender)
         {
             Button b = (Button)sender;
             //Get Command param
@@ -148,6 +177,39 @@ namespace PantryAid.ViewModels
                 if (newquant > 0)
                     _ingredientList.ListView.Insert(index, new IngredientItem(ob.Ingredient, newquant, ob.Measurement));
             }
+        }
+        public async void OnChecked(CheckBox sender, IngredientItem ingr, Frame popup)
+        {
+            if (sender.IsChecked)
+                Checks.Add(ingr);
+            else
+                Checks.Remove(ingr);
+
+            //If the popup isn't there and there's at least one item checked
+            if (!popup.IsVisible && Checks.Count > 0)
+            {
+                popup.IsVisible = true;
+                popup.AnchorX = 1;
+                popup.AnchorY = 1;
+
+                Animation scaleAnimation = new Animation(f => popup.Scale = f, 0.5, 1, Easing.SinInOut);
+                Animation fadeAnimation = new Animation(f => popup.Opacity = f, 0.2, 1, Easing.SinInOut);
+
+                scaleAnimation.Commit(popup, "popupScaleAnimation", 25, 25);
+                fadeAnimation.Commit(popup, "popupFadeAnimation", 25, 50);
+            }
+            else if (Checks.Count < 1)
+            {
+                RemovePopup(popup);
+            }
+        }
+        public async void RemovePopup(Frame popup)
+        {
+            popup.IsVisible = false;
+            await Task.WhenAny<bool>
+                (
+                popup.FadeTo(0, 25, Easing.SinInOut)
+                );
         }
     }
 }
