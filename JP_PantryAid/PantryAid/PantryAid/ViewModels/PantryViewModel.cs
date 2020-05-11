@@ -115,7 +115,7 @@ namespace PantryAid.ViewModels
 
             List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
-            if (pantryingredients != null && pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
+            if (pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
             {
                 //await DisplayAlert("Error", "The specified ingredient is already in your pantry", "OK");
                 return;

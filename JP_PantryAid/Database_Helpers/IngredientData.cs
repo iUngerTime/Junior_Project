@@ -56,7 +56,7 @@ namespace Database_Helpers
         public List<IngredientItem> GetIngredientsFromPantry(int PantryID)
         {
             SqlConnection con = new SqlConnection(SqlServerDataAccess.GetConnectionString());
-            string query = String.Format("SELECT IngredientID, IngredientName, Quantity FROM PANTRY_INGREDIENTS WHERE PantryID={0};", PantryID);
+            string query = String.Format("SELECT IngredientID, IngredientName, Quantity, Measurement FROM PANTRY_INGREDIENTS WHERE PantryID={0};", PantryID);
             SqlCommand comm = new SqlCommand(query, con);
 
             List<IngredientItem> pantryingredients = new List<IngredientItem>();
