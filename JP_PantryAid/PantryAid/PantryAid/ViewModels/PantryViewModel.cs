@@ -135,12 +135,15 @@ namespace PantryAid.ViewModels
             //    return;
 
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
+
             //Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
 
             //IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
             foreach (IngredientItem ingr in Checks)
             {
                 _ingredientList.ListView.Remove(ingr);
+                ingrdata.RemoveIngredientFromPantry(SqlServerDataAccess.UserID, ingr.ID);
             }
   
         }
