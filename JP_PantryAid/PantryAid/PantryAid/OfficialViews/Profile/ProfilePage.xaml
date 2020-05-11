@@ -68,7 +68,7 @@
             <Button Grid.Row="4" Grid.Column="1" Text="View"/>
 
             <!--sixth row is ditary options-->
-            <Label Text="Alergies" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Label Text="Dietary Options" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
             <Button Grid.Row="5" Grid.Column="1" Text="View"/>
         </Grid>
     </StackLayout>
