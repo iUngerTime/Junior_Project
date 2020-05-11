@@ -129,24 +129,15 @@ namespace PantryAid.ViewModels
         public ICommand RemoveCommand { protected set; get; }
         public void OnRemove()
         {
-            //string ingrname = ingrName;// = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
-
-            //if (ingrname == null) //User clicked cancel
-            //    return;
-
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
             List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
-
-            //Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
-
-            //IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
             foreach (IngredientItem ingr in Checks)
             {
                 _ingredientList.ListView.Remove(ingr);
                 ingrdata.RemoveIngredientFromPantry(SqlServerDataAccess.UserID, ingr.ID);
             }
-  
         }
+
         public void OnPlus(Entry QuantEntry)
         {
             QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) + 1).ToString();
