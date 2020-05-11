@@ -87,7 +87,7 @@ namespace Database_Helpers
                         quant = read.GetDouble(2);
                         measure = read.GetString(3);
                         Ingredient ing = new Ingredient(id, name);
-                        IngredientItem ingi = new IngredientItem(ing, quant, "Serving");
+                        IngredientItem ingi = new IngredientItem(ing, quant, measure);
 
                         pantryingredients.Add(ingi);
                     }
