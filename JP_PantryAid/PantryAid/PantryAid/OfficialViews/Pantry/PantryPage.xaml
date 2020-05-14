@@ -114,7 +114,6 @@
 >
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                     <Button Text="Delete From List" Clicked="RemoveButton_Clicked"/>
-                    <Button Text="Move to Pantry" Clicked="Dump_Clicked"/>
                 </StackLayout>
             </Frame>
         </StackLayout>

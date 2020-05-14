@@ -76,11 +76,9 @@ namespace PantryAid.ViewModels
 
         }
 
-        // Commands
-        public ICommand AddCommand { protected set; get; }
-        public void OnAdd(object sender, string ingrName, string quant, string measure)
+        public async void OnAdd(object sender, string ingrName, string quant, string measure)
         {
-            string ingrname = ingrName;//await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
+            string ingrname = ingrName;
 
             if (ingrname == null) //User clicked cancel
                 return;
@@ -89,7 +87,7 @@ namespace PantryAid.ViewModels
             bool validquantity = false;
             while (!validquantity)
             {
-                string strquant = quant;//await DisplayPromptAsync("How much?", "Enter a quantity", "Add", "Cancel", "eg. 3", 10, Keyboard.Numeric);
+                string strquant = quant;
 
                 if (strquant == null) //User clicked cancel
                     return;
@@ -109,7 +107,8 @@ namespace PantryAid.ViewModels
 
             if (foundingr == null)
             {
-                //DisplayAlert("Error", "The specified ingredient was not found", "OK");
+                
+                //await Application.Current.MainPage.DisplayAlert("Error", "The specified ingredient was not found", "OK");
                 return;
             }
 
@@ -125,8 +124,6 @@ namespace PantryAid.ViewModels
             ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr.IngredientID, measure, quantity);
         }
 
-
-        public ICommand RemoveCommand { protected set; get; }
         public void OnRemove()
         {
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());

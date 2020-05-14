@@ -58,10 +58,5 @@ namespace PantryAid.OfficialViews.Pantry
             var ob = ((CheckBox)sender).BindingContext as IngredientItem;
             vm.OnChecked((CheckBox)sender, ob, popup);
         }
-
-        private void Dump_Clicked(object sender, EventArgs e)
-        {
-
-        }
     }
 }
