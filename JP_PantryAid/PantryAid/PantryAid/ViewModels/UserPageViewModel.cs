@@ -34,8 +34,12 @@ namespace PantryAid.ViewModels
 
             //Set the user id of the form
             _userid = SqlServerDataAccess.UserID;
+
+            //Get Info
+            _email = GetEmailFromDB();
         }
 
+        #region properties
         //Getters and setters
         public int UserId
         {
@@ -96,6 +100,7 @@ namespace PantryAid.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs("DislikedRecipes"));
             }
         }
+        #endregion
 
         private string GetEmailFromDB()
         {
