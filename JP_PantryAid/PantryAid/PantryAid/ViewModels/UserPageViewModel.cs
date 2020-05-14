@@ -39,6 +39,7 @@ namespace PantryAid.ViewModels
             _userid = SqlServerDataAccess.UserID;
             User currUser = GetUserInfoFromDB();
             _email = currUser.Email;
+            _password = currUser.Hash;
 
             //Command binding
             ChangeEmail = new Command(OnChangeEmailPress);
@@ -128,8 +129,17 @@ namespace PantryAid.ViewModels
                         await Application.Current.MainPage.DisplayAlert("Error", "Emails you entered differ, try again", "OK");
                     else
                     {
-                        //Change email
-                        await Application.Current.MainPage.DisplayAlert("Success", "Your email has been changed!", "OK");
+                        //update user with new email
+                        User newInfo = new User { Hash = _password, Email = firstAttempt, Id = _userid };
+                        int pass = _userDatabaseAccess.EditUserInfo(newInfo, newInfo);
+
+                        if(pass == 1)
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Success", "Your email has been changed!", "OK");
+
+                            //Update UI
+                            Email = newInfo.Email;
+                        }
                     }
                 }
             }
@@ -150,8 +160,20 @@ namespace PantryAid.ViewModels
                     else
                     {
                         //hash the plain text password
+                        firstAttempt = Database_Helpers.Hashing.HashPassword(secondAttempt);
+
                         //Change password
-                        await Application.Current.MainPage.DisplayAlert("Success", "Your password has been changed!", "OK");
+                        //update user
+                        User newInfo = new User { Hash = firstAttempt, Email = _email, Id = _userid };
+                        int pass = _userDatabaseAccess.EditUserInfo(newInfo, newInfo);
+
+                        if(pass == 1)
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Success", "Your password has been changed!", "OK");
+
+                            //Update UI *THIS IS FOR TESTING LEAVE COMMENTED OUT
+                            //Password = secondAttempt;
+                        }
                     }
                 }
             }
