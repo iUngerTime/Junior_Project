@@ -32,7 +32,7 @@ namespace PantryAid.ViewModels
         {
             FilePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + FileName;
 
-            if (!File.Exists(FilePath))
+            if (File.Exists(FilePath))
             {
                 File.WriteAllText(FilePath, ""); //Creates file
             }
@@ -89,13 +89,12 @@ namespace PantryAid.ViewModels
             }
         }
 
-        //Note to self: test this trash
         public async void OnAdd(string ingrname, double quant, string measure)
         {
             ingrname = ingrname.ToLower();
             ingrname = SqlServerDataAccess.Sanitize(ingrname);
 
-        //Below is the code for converting measurements
+            //Below is the code for converting measurements
             double newquant = -1.0;
             string[] lines = File.ReadAllLines(FilePath);
             List<string> newlines = new List<string>();
@@ -126,7 +125,9 @@ namespace PantryAid.ViewModels
                     IngredientItem olditem = GList.ListView.First(x => x.Name == ingrname);
                     int oldindex = GList.ListView.IndexOf(olditem);
 
-                    if (result1 > result2)
+                    if (result1 == -1 || result2 == -1)
+                        return;
+                    if (result1 + quant > result2 + Convert.ToDouble(items[1]))
                     {
                         newquant = result2 + Convert.ToDouble(items[1]);
                         newquant = Math.Round(newquant, 2, MidpointRounding.AwayFromZero);

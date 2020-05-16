@@ -43,7 +43,7 @@ namespace PantryAid.OfficialViews.Grocery_List
         private void AddButton_Clicked(object sender, EventArgs e)
         {
             if (ItemEntry.Text != null)
-                vm.OnAdd(ItemEntry.Text, Convert.ToDouble(QuantityEntry.Text), MeasurementPicker.SelectedItem as string);
+                vm.OnAdd(ItemEntry.Text, Math.Abs(Convert.ToDouble(QuantityEntry.Text)), MeasurementPicker.SelectedItem as string);
         }
 
         private void Minus_Clicked(object sender, EventArgs e)
