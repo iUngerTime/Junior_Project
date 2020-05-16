@@ -43,7 +43,7 @@ namespace PantryAid.OfficialViews.Pantry
         }
         private void QuantityChange_Clicked(object sender, EventArgs e)
         {
-            vm.QuantityChanged(sender);
+            vm.QuantityChanged(sender, QuantityEntry);
         }
         private void Minus_Clicked(object sender, EventArgs e)
         {

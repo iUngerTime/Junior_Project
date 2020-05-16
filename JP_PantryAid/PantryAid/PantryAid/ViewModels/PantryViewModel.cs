@@ -107,7 +107,7 @@ namespace PantryAid.ViewModels
 
             if (foundingr == null)
             {
-                
+                // Wrong way to display an alert, Breaks MVVM model.   
                 //await Application.Current.MainPage.DisplayAlert("Error", "The specified ingredient was not found", "OK");
                 return;
             }
@@ -145,7 +145,7 @@ namespace PantryAid.ViewModels
             if (Convert.ToDouble(QuantEntry.Text) > 1)
                 QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) - 1).ToString();
         }
-        public void QuantityChanged(object sender)
+        public void QuantityChanged(object sender, Entry QuantEntry)
         {
             Button b = (Button)sender;
             //Get Command param
@@ -157,9 +157,10 @@ namespace PantryAid.ViewModels
                 //Increment or decrement based on which button was clicked
                 double newquant = ob.Quantity;
                 if (b.Text == "+")
-                    newquant += 1;
+                    QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) + 1).ToString();
                 else if (b.Text == "-")
-                    newquant -= 1;
+                     if (Convert.ToDouble(QuantEntry.Text) > 1)
+                        QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) - 1).ToString();
 
                 ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, ob.ID, newquant);
                 //Replace the item in the list with a duplicate that has the changed quantity
