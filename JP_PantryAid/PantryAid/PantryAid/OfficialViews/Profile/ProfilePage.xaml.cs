@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CommonServiceLocator;
+using PantryAid.Core.Interfaces;
+using PantryAid.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +17,10 @@ namespace PantryAid.OfficialViews.Profile
     {
         public ProfilePage()
         {
+            //Connect View model
+            var vm = new UserPageViewModel(Navigation, ServiceLocator.Current.GetInstance<iUserDataRepo>());
+            this.BindingContext = vm;
+
             InitializeComponent();
         }
     }

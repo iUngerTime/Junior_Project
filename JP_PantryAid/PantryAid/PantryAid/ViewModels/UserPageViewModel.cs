@@ -32,10 +32,13 @@ namespace PantryAid.ViewModels
             //Injection of view model
             _userDatabaseAccess = databaseAccess;
 
-            //Set the user id of the form
+            //Get Info of user
             _userid = SqlServerDataAccess.UserID;
+            User currUser = GetUserInfoFromDB();
+            _email = currUser.Email;
         }
 
+        #region properties
         //Getters and setters
         public int UserId
         {
@@ -96,12 +99,13 @@ namespace PantryAid.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs("DislikedRecipes"));
             }
         }
+        #endregion
 
-        private string GetEmailFromDB()
+        private User GetUserInfoFromDB()
         {
             User usr =_userDatabaseAccess.GetUser(_userid);
 
-            return usr.Email;
+            return usr;
         }
     }
 }
