@@ -75,7 +75,11 @@ namespace PantryAid.OfficialViews.Grocery_List
 
         private void Dump_Clicked(object sender, EventArgs e)
         {
+            if (DisplayAlert("Move To Pantry", "This action may take a long time to complete\nAre you sure?", "YES", "NO").IsCanceled)
+                return;
+            
             vm.OnDump();
+            vm.RemovePopup(popup);
         }
     }
 }

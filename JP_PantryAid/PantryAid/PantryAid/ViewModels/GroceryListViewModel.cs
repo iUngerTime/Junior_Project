@@ -32,7 +32,7 @@ namespace PantryAid.ViewModels
         {
             FilePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + FileName;
 
-            if (File.Exists(FilePath))
+            if (!File.Exists(FilePath))
             {
                 File.WriteAllText(FilePath, ""); //Creates file
             }
@@ -186,29 +186,68 @@ namespace PantryAid.ViewModels
         {
             List<IngredientItem> LostIngredients = new List<IngredientItem>(); //Keeps track of the entries that are not dumped because they don't exist in the database
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
             foreach (IngredientItem item in Checks)
             {
                 Ingredient ingr = ingrdata.GetIngredient(item.Name.ToLower());
 
+                //If the ingredient is not a valid ingredient
                 if (ingr == null)
                     LostIngredients.Add(item);
                 else
-                    ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, ingr, item.Measurement, item.Quantity);
+                {
+                    IngredientItem dupingr = pantryingredients.FirstOrDefault(x => x.Name == item.Name);
+                    //If the ingredient is not already in the pantry
+                    if (dupingr == null)
+                    {
+                        ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, ingr, item.Measurement, item.Quantity);
+                    }
+                    else
+                    {
+                        if (item.Measurement == dupingr.Measurement)
+                        {
+                            ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, item.Quantity + dupingr.Quantity);
+                        }
+                        else
+                        {
+                            double OldToNewM = SqlServerDataAccess.ConvertM(dupingr.Measurement, item.Measurement, dupingr.Quantity);
+                            double NewToOldM = SqlServerDataAccess.ConvertM(item.Measurement, dupingr.Measurement, item.Quantity);
+
+                            if (OldToNewM == -1 || NewToOldM == -1)
+                            {
+                                LostIngredients.Add(item);
+                                continue;
+                            }
+
+                            if (NewToOldM + dupingr.Quantity < OldToNewM + item.Quantity) //Use the old measurement
+                            {
+                                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, NewToOldM + dupingr.Quantity);
+                            }
+                            else //Use the new measurement
+                            {
+                                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, OldToNewM + item.Quantity);
+                                ingrdata.UpdatePantryIngredientMeasurement(SqlServerDataAccess.UserID, dupingr.ID, item.Measurement);
+                            }
+                        }
+                    }
+                }
+
             }
 
             //Commented out until I can ask brent how to do alert displays in the vm
 
-            /*string alert = "The following ingredients could not be added to your pantry:\n";
+            string alert = "The following ingredients could not be added to your pantry:\n";
 
             foreach (IngredientItem item in LostIngredients)
             {
                 alert += item.Name + "\n";
             }
             if (LostIngredients.Count == 0)
-                alert = "Successfully dumped grocery list!";
+                alert = "Successfully moved grocery list to pantry!";
 
-            //await DisplayAlert("Grocery Dump", alert, "OK");*/
+            //Just for testing
+            await Application.Current.MainPage.DisplayAlert("Move To Pantry", alert, "OK");
             Checks.Clear();
         }
 
