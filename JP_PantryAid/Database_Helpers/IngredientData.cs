@@ -137,6 +137,13 @@ namespace Database_Helpers
             return _database.ExecuteQuery_NoReturnType(query);
         }
 
+        public int UpdatePantryIngredientMeasurement(int PantryID, int IngredientID, string NewMeasurement)
+        {
+            string query = String.Format("UPDATE PANTRY_INGREDIENTS SET Measurement='{0}' WHERE PantryID={1} AND IngredientID={2}", NewMeasurement, PantryID, IngredientID);
+
+            return _database.ExecuteQuery_NoReturnType(query);
+        }
+
         public int AddIngredientToPantry(int PantryID, Ingredient ingredient, string Measurement, double Quantity = 1.0f)
         {
             return this.AddIngredientToPantry(PantryID, ingredient.IngredientID, Measurement, Quantity);

@@ -32,7 +32,7 @@ namespace PantryAid.Core.Models
 		{
 			get
 			{
-				return Quantity.ToString() + " " + Measurement + "s";
+				return Math.Round(Quantity, 2, MidpointRounding.AwayFromZero).ToString() + " " + Measurement + "s";
 			}
 		}
 	}

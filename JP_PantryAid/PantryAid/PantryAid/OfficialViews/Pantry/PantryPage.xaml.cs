@@ -1,4 +1,5 @@
 ﻿using CommonServiceLocator;
+using Database_Helpers;
 using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
 using PantryAid.ViewModels;
@@ -28,8 +29,8 @@ namespace PantryAid.OfficialViews.Pantry
 
         private void AddButton_Clicked(object sender, EventArgs e)
         {
-            if (ItemEntry.Text != null)
-                vm.OnAdd(sender, ItemEntry.Text, QuantityEntry.Text, MeasurementPicker.SelectedItem as string);
+            if (!String.IsNullOrWhiteSpace(ItemEntry.Text))
+                vm.OnAdd(sender, SqlServerDataAccess.Sanitize(ItemEntry.Text.ToLower()), QuantityEntry.Text, MeasurementPicker.SelectedItem as string);
         }
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {

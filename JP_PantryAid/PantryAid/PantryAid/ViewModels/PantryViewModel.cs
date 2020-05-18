@@ -16,6 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms.Xaml;
 using PantryAid.Core;
+using System.Collections.ObjectModel;
 
 namespace PantryAid.ViewModels
 {
@@ -76,30 +77,9 @@ namespace PantryAid.ViewModels
 
         }
 
-        public async void OnAdd(object sender, string ingrName, string quant, string measure)
+        public async void OnAdd(object sender, string ingrname, string quant, string measure)
         {
-            string ingrname = ingrName;
-
-            if (ingrname == null) //User clicked cancel
-                return;
-
-            double quantity = 0.0f;
-            bool validquantity = false;
-            while (!validquantity)
-            {
-                string strquant = quant;
-
-                if (strquant == null) //User clicked cancel
-                    return;
-
-                quantity = Convert.ToDouble(strquant);
-
-                if (quantity <= 0)
-                    return; //await DisplayAlert("Error", "Quantity must be positive", "OK");
-                else
-                    validquantity = true;
-            }
-
+            double quantity = Math.Abs(Convert.ToDouble(quant));
 
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
 
@@ -112,16 +92,54 @@ namespace PantryAid.ViewModels
                 return;
             }
 
-            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
+            //List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
+            ObservableCollection<IngredientItem> pantryingredients = _ingredientList.ListView;
+            IngredientItem dupingr = pantryingredients.FirstOrDefault(x => x.Name == ingrname);
 
-            if (pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
+            //If ingrname already exists in the pantry then we need to combine
+            if (dupingr != null)
             {
-                //await DisplayAlert("Error", "The specified ingredient is already in your pantry", "OK");
-                return;
-            }
+                //If they are the same measurement
+                if (dupingr.Measurement == measure)
+                {
+                    int index = _ingredientList.ListView.IndexOf(dupingr);
+                    _ingredientList.ListView.RemoveAt(index);
+                    _ingredientList.ListView.Insert(index, new IngredientItem(foundingr, quantity + dupingr.Quantity, measure));
 
-            _ingredientList.Add(new IngredientItem(foundingr, quantity, measure));
-            ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr.IngredientID, measure, quantity);
+                    ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, foundingr.IngredientID, quantity + dupingr.Quantity);
+                }
+                //If they are not the same measurement
+                else
+                {
+                    double NewToOldM = SqlServerDataAccess.ConvertM(measure, dupingr.Measurement, quantity);
+                    double OldToNewM = SqlServerDataAccess.ConvertM(dupingr.Measurement, measure, dupingr.Quantity);
+                    if (NewToOldM == -1 || OldToNewM == -1) //Invalid conversion
+                        return;
+                    //Use whichever conversion results in the smaller number
+                    if (NewToOldM + dupingr.Quantity < OldToNewM + quantity) //Use the old measurement
+                    {
+                        ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, NewToOldM + dupingr.Quantity);
+
+                        int index = _ingredientList.ListView.IndexOf(dupingr);
+                        _ingredientList.ListView.RemoveAt(index);
+                        _ingredientList.ListView.Insert(index, new IngredientItem(foundingr, NewToOldM + dupingr.Quantity, dupingr.Measurement));
+                    }
+                    else //Use the new measurement
+                    {
+                        ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, quantity + OldToNewM);
+                        ingrdata.UpdatePantryIngredientMeasurement(SqlServerDataAccess.UserID, dupingr.ID, measure);
+
+                        int index = _ingredientList.ListView.IndexOf(dupingr);
+                        _ingredientList.ListView.RemoveAt(index);
+                        _ingredientList.ListView.Insert(index, new IngredientItem(foundingr, quantity + OldToNewM, measure));
+                    }
+                }
+            }
+            else //If the ingredient is not already in the pantry
+            {
+                _ingredientList.Add(new IngredientItem(foundingr, quantity, measure));
+                ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr.IngredientID, measure, quantity);
+            }
         }
 
         public void OnRemove()
