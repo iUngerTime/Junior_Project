@@ -17,7 +17,7 @@ namespace PantryAid.Views
     public partial class ShortRecipePage : ContentPage
     {
         //ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
-        ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
+        ListViewModel<ComplexResult> _list = new ListViewModel<ComplexResult>();
 
         int _offset;
         int _recipesPerPage;
@@ -32,7 +32,7 @@ namespace PantryAid.Views
             _offset = 0;
             _recipesPerPage = 5;
             this.BindingContext = _list;
-            m_filters = SpoonacularAPI.SpoonacularAPI.SetUpComplexParameters();
+            //m_filters = SpoonacularAPI.SpoonacularAPI.SetUpComplexParameters();
         }
 
         //displays a list of similar recipes
@@ -45,7 +45,7 @@ namespace PantryAid.Views
             _recipesPerPage = 5;
             this.BindingContext = _list;
             FindSimilarRecipes(similarID);
-            m_filters = SpoonacularAPI.SpoonacularAPI.SetUpComplexParameters();
+            //m_filters = SpoonacularAPI.SpoonacularAPI.SetUpComplexParameters();
         }
 
         /*
@@ -71,7 +71,7 @@ namespace PantryAid.Views
 
             SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
 
-            List<SpoonacularAPI.SpoonacularAPI.ComplexResult> list = new List<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
+            List<ComplexResult> list = new List<ComplexResult>();
             m_filters.query = Recipe_Search.Text;
             m_filters.offset = _offset;
             m_filters.number = _recipesPerPage;
@@ -142,7 +142,7 @@ namespace PantryAid.Views
             
                 _list.Add(rs);
                 */
-                SpoonacularAPI.SpoonacularAPI.ComplexResult result = new SpoonacularAPI.SpoonacularAPI.ComplexResult();
+                ComplexResult result = new ComplexResult();
                 result.title = list[i].title;
                 result.id = list[i].id;
                 result.image = list[i].image;

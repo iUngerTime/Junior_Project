@@ -1,6 +1,7 @@
 ﻿using PantryAid.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace PantryAid.OfficialViews.Recipe_Finder
     public partial class RecipeFinderPage : BaseNavigationPage
     {
         public RecipeFinderViewModel vm;
+
         //public ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
 
         public RecipeFinderPage()
@@ -35,7 +37,17 @@ namespace PantryAid.OfficialViews.Recipe_Finder
         private void Recipe_Search_OnCompleted(object sender, EventArgs e)
         {
             noResultsLabel.IsVisible = false;
-            vm.SearchByName(Recipe_Search.Text);
+            if (CheckBox_UseComplex.IsChecked)
+            {
+                vm.ComplexSearch(Recipe_Search.Text);
+                //ReadyInMinBox
+                vm.ShowReadyInMin = false;
+            }
+            else
+            {
+                vm.SearchByName(Recipe_Search.Text);
+                vm.ShowReadyInMin = true;
+            }
             //if there are no results, display that to the user
             if (vm._list.ListView.Count == 0)
             {
