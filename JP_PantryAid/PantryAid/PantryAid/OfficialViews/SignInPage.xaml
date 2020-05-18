@@ -25,10 +25,10 @@
                            TextColor="White"/>
                 </StackLayout>
             </Frame>
-            <Button Command="{Binding SubmitCommand}" Text="Login" TextColor="White"  
+            <Button Text="Login" TextColor="White"  
                     FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
                     BackgroundColor="#088da5" x:Name="LoginButton"/>
-            <Button Command="{Binding SubmitCommand}" Text="Sign Up" TextColor="White"  
+            <Button Text="Sign Up" TextColor="White"  
                     FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand"  
                     BackgroundColor="#088da5" x:Name="SignupButton"/>
         </StackLayout>
