@@ -27,6 +27,12 @@ namespace PantryAid.OfficialViews.Pantry
             vm.FillGrid();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            vm.FillGrid();
+        }
+
         private void AddButton_Clicked(object sender, EventArgs e)
         {
             if (!String.IsNullOrWhiteSpace(ItemEntry.Text))

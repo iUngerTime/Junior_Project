@@ -62,7 +62,7 @@ namespace PantryAid.ViewModels
         public async void FillGrid()
         {
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
-
+            _ingredientList.ListView.Clear();
             List<IngredientItem> results = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
             if (results == null)
@@ -102,10 +102,12 @@ namespace PantryAid.ViewModels
                 //If they are the same measurement
                 if (dupingr.Measurement == measure)
                 {
+                    //Replace the ingredient in the ListView with one that has the new quantity
                     int index = _ingredientList.ListView.IndexOf(dupingr);
                     _ingredientList.ListView.RemoveAt(index);
                     _ingredientList.ListView.Insert(index, new IngredientItem(foundingr, quantity + dupingr.Quantity, measure));
 
+                    //Change the quantity in the database
                     ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, foundingr.IngredientID, quantity + dupingr.Quantity);
                 }
                 //If they are not the same measurement
@@ -113,19 +115,21 @@ namespace PantryAid.ViewModels
                 {
                     double NewToOldM = SqlServerDataAccess.ConvertM(measure, dupingr.Measurement, quantity);
                     double OldToNewM = SqlServerDataAccess.ConvertM(dupingr.Measurement, measure, dupingr.Quantity);
+
                     if (NewToOldM == -1 || OldToNewM == -1) //Invalid conversion
                         return;
+
                     //Use whichever conversion results in the smaller number
-                    if (NewToOldM + dupingr.Quantity < OldToNewM + quantity) //Use the old measurement
-                    {
+                    if (NewToOldM + dupingr.Quantity < OldToNewM + quantity)
+                    { //Use the old measurement
                         ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, NewToOldM + dupingr.Quantity);
 
                         int index = _ingredientList.ListView.IndexOf(dupingr);
                         _ingredientList.ListView.RemoveAt(index);
                         _ingredientList.ListView.Insert(index, new IngredientItem(foundingr, NewToOldM + dupingr.Quantity, dupingr.Measurement));
                     }
-                    else //Use the new measurement
-                    {
+                    else
+                    { //Use the new measurement
                         ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, quantity + OldToNewM);
                         ingrdata.UpdatePantryIngredientMeasurement(SqlServerDataAccess.UserID, dupingr.ID, measure);
 
