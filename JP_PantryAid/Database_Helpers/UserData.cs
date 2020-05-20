@@ -92,6 +92,9 @@ namespace Database_Helpers
         /// <returns>0 if successful, 1 if failed</returns>
         public int DeleteUser(User delUser)
         {
+            //NOTE TO FUTURE SELF: THIS FUNCTION IS BROKE AS OF 5/13/2020
+            //THE ORDER OF THE QUERIES IS VERY OUT OF ORDER AND WILL GUARENTEED FAIL
+
             string query = String.Format("DELETE FROM PERSON WHERE UserID={0};", delUser.Id);
             string query2 = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0};", delUser.Id);
             string query3 = String.Format("DELETE FROM FROM ALERGIES WHERE UserID={0}", delUser.Id);
@@ -115,7 +118,8 @@ namespace Database_Helpers
         /// <returns>0 if successful, 1 if failed</returns>
         public int EditUserInfo(User currentInfo, User newInfo)
         {
-            string query = String.Format("UPDATE PERSON SET Email='{0}' WHERE UserID={1};", SqlServerDataAccess.Sanitize(newInfo.Email), currentInfo.Id);
+            string query = String.Format("UPDATE PERSON SET Email='{0}', PasswordHash = '{1}' WHERE UserID={2};",
+            SqlServerDataAccess.Sanitize(newInfo.Email), newInfo.Hash, currentInfo.Id);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }

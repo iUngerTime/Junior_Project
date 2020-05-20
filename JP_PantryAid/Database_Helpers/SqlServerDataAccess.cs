@@ -14,6 +14,7 @@ namespace Database_Helpers
     /// </summary>
     public class SqlServerDataAccess : iSqlServerDataAccess
     {
+        #region private variables
         private static string _serverAddress = "aura.cset.oit.edu";
         private static string _serverPort = "5433";
         private static string _databaseName = "JBNT";
@@ -23,6 +24,13 @@ namespace Database_Helpers
         private static bool _debugMode = true;
 
         /// <summary>
+        /// Definition of return types
+        /// </summary>
+        private int FAIL = 0;
+        private int PASS = 1;
+        #endregion
+
+        /// <summary>
         /// Returns The connection string for the database
         /// </summary>
         public static string GetConnectionString()
@@ -30,6 +38,7 @@ namespace Database_Helpers
             return "server=" + ServerAddress + ", " + ServerPort + "; database=" + ServerDatabaseName + "; UID=" + ServerUsername + "; password=" + ServerPassword;
         }
 
+        #region SQL queries
         /// <summary>
         /// Execute a Query on a sql database that has no return type
         /// </summary>
@@ -127,7 +136,9 @@ namespace Database_Helpers
                 return new User() { Id = usrId, Email = email, Hash = hash };
             }
         }
+        #endregion
 
+        #region public properties
         /// <summary>
         /// The server address of the SQL server
         /// </summary>
@@ -196,12 +207,7 @@ namespace Database_Helpers
         /// Sets Debug mode for application
         /// </summary>
         public static bool DebugMode { get => _debugMode; }
-
-        /// <summary>
-        /// Definition of return types
-        /// </summary>
-        private int FAIL = 0;
-        private int PASS = 1;
+        #endregion
 
         public static string Sanitize(string str)
         {
