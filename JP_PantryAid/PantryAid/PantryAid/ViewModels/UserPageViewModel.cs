@@ -188,7 +188,5 @@ namespace PantryAid.ViewModels
             return usr;
         }
         #endregion
-
-
     }
 }
