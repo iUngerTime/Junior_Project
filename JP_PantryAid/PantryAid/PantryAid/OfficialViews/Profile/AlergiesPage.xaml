@@ -16,7 +16,7 @@
                         <ViewCell>
                             <ViewCell.View>
                                 <FlexLayout Direction="Row">
-                                    <CheckBox IsEnabled="False"/>
+                                    <CheckBox IsEnabled="False" IsChecked="{Binding IsSelected}"/>
                                     <Label Text="{Binding Name}" FontSize="25" VerticalTextAlignment="Center"/>
                                 </FlexLayout>
                             </ViewCell.View>
