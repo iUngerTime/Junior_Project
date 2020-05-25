@@ -21,6 +21,7 @@ namespace Database_Helpers
         private static string _serverUsername = "JBNT";
         private static string _serverPassword = "Hootie123";
         private static int _curuserid;
+        private static User _currentUser;
         private static bool _debugMode = true;
 
         /// <summary>
@@ -133,7 +134,19 @@ namespace Database_Helpers
                 }
                 catch (Exception) { return null; }
 
-                return new User() { Id = usrId, Email = email, Hash = hash };
+                //Create the New user
+                User newUser = new User
+                {
+                    Id = usrId,
+                    Email = email,
+                    Hash = hash,
+                    Allergies = new List<Alergens>(),
+                    DietaryPreferences = new List<DietPreferences>(),
+                    DislikedRecipes = new List<int>(),
+                    FavoriteRecipes = new List<int>()
+                };
+
+                return newUser;
             }
         }
         #endregion
@@ -201,6 +214,14 @@ namespace Database_Helpers
             { return _curuserid; }
             set
             { _curuserid = value; }
+        }
+
+        public static User CurrentUser
+        {
+            get
+            { return _currentUser; }
+            set
+            { _currentUser = value; }
         }
 
         /// <summary>

@@ -15,11 +15,13 @@ namespace PantryAid.Core.Interfaces
         int AddUser(User newUser);
         int EditUserInfo(User currentInfo, User newInfo);
         int DeleteUser(User delUser);
-        int AddAlergy(User currUser, Ingredient newAlergy);
-        int RemoveAlergy(User currUser, Ingredient alergy);
-        int AddFavoriteRecipe(User currUser, Recipe_Short newFavorite);
-        int RemoveFavoriteRecipe(User currUser, Recipe_Short nonFavorite);
-        int AddDislikedRecipe(User currUser, Recipe_Short newDisliked);
-        int RemoveDislikedRecipe(User currUser, Recipe_Short nonDisliked);
+        int AddAlergy(User currUser, Alergens newAlergy);
+        int RemoveAlergy(User currUser, Alergens oldAlergy);
+        int AddDietPreference(User currUser, DietPreferences newPreference);
+        int RemoveDietPreference(User currUser, DietPreferences newPreference);
+        int AddFavoriteRecipe(User currUser, int newFavorite);
+        int RemoveFavoriteRecipe(User currUser, int nonFavorite);
+        int AddDislikedRecipe(User currUser, int newDisliked);
+        int RemoveDislikedRecipe(User currUser, int nonDisliked);
     }
 }

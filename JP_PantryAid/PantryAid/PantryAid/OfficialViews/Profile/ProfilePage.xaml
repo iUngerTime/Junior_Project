@@ -25,7 +25,7 @@
     <StackLayout Orientation="Vertical">
         <Label Text="Account Settings" FontSize="40" HorizontalOptions="Center" FontAttributes="Italic"/>
         <BoxView BackgroundColor="DimGray" HeightRequest="2"/>
-        <Grid>
+        <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -56,20 +56,20 @@
             <Button Grid.Row="1" Grid.Column="1" Text="Edit" Command="{Binding ChangePassword}"/>
 
             <!--third row is prefered recipies-->
-            <Label Text="Prefered Recipies" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="2" Grid.Column="1" Text="View"/>
+            <Label Text="Prefered Recipes" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="2" Grid.Column="1" Text="View" Command="{Binding NavigatePreferedRecipes}"/>
 
             <!--fouth row is disliked recipies-->
-            <Label Text="Disliked Recipies" FontAttributes="Bold" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="3" Grid.Column="1" Text="View"/>
+            <Label Text="Disliked Recipes" FontAttributes="Bold" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="3" Grid.Column="1" Text="View" Command="{Binding NavigateDislikedRecipes}"/>
 
             <!--Fifth row is alergies-->
             <Label Text="Alergies" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="4" Grid.Column="1" Text="View"/>
+            <Button Grid.Row="4" Grid.Column="1" Text="View" Command="{Binding NavigateAlergies}"/>
 
             <!--sixth row is ditary options-->
             <Label Text="Dietary Options" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="5" Grid.Column="1" Text="View"/>
+            <Button Grid.Row="5" Grid.Column="1" Text="View" Command="{Binding NavigateDietaryOptions}"/>
         </Grid>
     </StackLayout>
 </ContentPage>
