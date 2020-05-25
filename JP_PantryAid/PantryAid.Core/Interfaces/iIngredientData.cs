@@ -23,6 +23,7 @@ namespace PantryAid.Core.Interfaces
         int RemoveIngredientFromPantry(int PantryID, int IngredientID);
         int RemoveIngredientFromPantry(int PantryID, Ingredient ingredient);
         int UpdatePantryIngredientQuantity(int PantryID, int IngredientID, double NewQuantity);
+        int UpdatePantryIngredientMeasurement(int PantryID, int IngredientID, string NewMeasurement);
         int AddIngredientsFromRecipeShort(Recipe_Short recipe);
         int AddIngredientsFromRecipeFull(Recipe_Full recipe);
     }

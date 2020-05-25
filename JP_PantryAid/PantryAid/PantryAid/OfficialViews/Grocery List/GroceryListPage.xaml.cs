@@ -43,7 +43,7 @@ namespace PantryAid.OfficialViews.Grocery_List
         private void AddButton_Clicked(object sender, EventArgs e)
         {
             if (ItemEntry.Text != null)
-                vm.OnAdd(ItemEntry.Text, Convert.ToDouble(QuantityEntry.Text), MeasurementPicker.SelectedItem as string);
+                vm.OnAdd(ItemEntry.Text, Math.Abs(Convert.ToDouble(QuantityEntry.Text)), MeasurementPicker.SelectedItem as string);
         }
 
         private void Minus_Clicked(object sender, EventArgs e)
@@ -73,9 +73,14 @@ namespace PantryAid.OfficialViews.Grocery_List
             }
         }
 
-        private void Dump_Clicked(object sender, EventArgs e)
+        private async void Dump_Clicked(object sender, EventArgs e)
         {
+            bool answer = (await DisplayAlert("Move To Pantry", "This action may take a long time to complete\nAre you sure?", "YES", "NO"));
+            if (answer == false)
+                return;
+            
             vm.OnDump();
+            vm.RemovePopup(popup);
         }
     }
 }

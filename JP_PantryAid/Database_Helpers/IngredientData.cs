@@ -56,7 +56,7 @@ namespace Database_Helpers
         public List<IngredientItem> GetIngredientsFromPantry(int PantryID)
         {
             SqlConnection con = new SqlConnection(SqlServerDataAccess.GetConnectionString());
-            string query = String.Format("SELECT IngredientID, IngredientName, Quantity FROM PANTRY_INGREDIENTS WHERE PantryID={0};", PantryID);
+            string query = String.Format("SELECT IngredientID, IngredientName, Quantity, Measurement FROM PANTRY_INGREDIENTS WHERE PantryID={0};", PantryID);
             SqlCommand comm = new SqlCommand(query, con);
 
             List<IngredientItem> pantryingredients = new List<IngredientItem>();
@@ -87,7 +87,7 @@ namespace Database_Helpers
                         quant = read.GetDouble(2);
                         measure = read.GetString(3);
                         Ingredient ing = new Ingredient(id, name);
-                        IngredientItem ingi = new IngredientItem(ing, quant, "Serving");
+                        IngredientItem ingi = new IngredientItem(ing, quant, measure);
 
                         pantryingredients.Add(ingi);
                     }
@@ -133,6 +133,13 @@ namespace Database_Helpers
                 query = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0} AND IngredientID={1};", PantryID, IngredientID);
             else
                 query = String.Format("UPDATE PANTRY_INGREDIENTS SET Quantity={2} WHERE PantryID={0} AND IngredientID={1};", PantryID, IngredientID, NewQuantity);
+
+            return _database.ExecuteQuery_NoReturnType(query);
+        }
+
+        public int UpdatePantryIngredientMeasurement(int PantryID, int IngredientID, string NewMeasurement)
+        {
+            string query = String.Format("UPDATE PANTRY_INGREDIENTS SET Measurement='{0}' WHERE PantryID={1} AND IngredientID={2}", NewMeasurement, PantryID, IngredientID);
 
             return _database.ExecuteQuery_NoReturnType(query);
         }
