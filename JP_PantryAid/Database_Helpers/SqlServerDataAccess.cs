@@ -149,6 +149,106 @@ namespace Database_Helpers
                 return newUser;
             }
         }
+
+        public void ExecuteQuery_GetUserAlergies(User user)
+        {
+            string query = "SELECT AlergyID FROM ALERGIES WHERE UserID = '" + user.Id + "';";
+
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(query, con);
+
+                int alergy = 0;
+
+                con.Open();
+                SqlDataReader read = comm.ExecuteReader();
+
+                //Read all rows
+                while (read.Read())
+                {
+                    //per row
+                    alergy = read.GetInt32(0);
+                    user.Allergies.Add((Alergens)alergy);
+                }
+
+                read.Close();
+            }
+        }
+
+        public void ExecuteQuery_GetUserDietaryPreferences(User user)
+        {
+            string query = "SELECT DietaryPreferenceID FROM DIETARY_PREFERENCES WHERE UserID = '" + user.Id + "';";
+
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(query, con);
+
+                int dietaryPreference = 0;
+
+                con.Open();
+                SqlDataReader read = comm.ExecuteReader();
+
+                //Read all rows
+                while (read.Read())
+                {
+                    //per row
+                    dietaryPreference = read.GetInt32(0);
+                    user.DietaryPreferences.Add((DietPreferences)dietaryPreference);
+                }
+
+                read.Close();
+            }
+        }
+
+        public void ExecuteQuery_GetUserDislikedRecipes(User user)
+        {
+            string query = "SELECT RecipeID FROM DISLIKED_RECIPE WHERE UserID = '" + user.Id + "';";
+
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(query, con);
+
+                int recipeID = 0;
+
+                con.Open();
+                SqlDataReader read = comm.ExecuteReader();
+
+                //Read all rows
+                while (read.Read())
+                {
+                    //per row
+                    recipeID = read.GetInt32(0);
+                    user.DislikedRecipes.Add(recipeID);
+                }
+
+                read.Close();
+            }
+        }
+
+        public void ExecuteQuery_GetUserFavoriteRecipes(User user)
+        {
+            string query = "SELECT RecipeID FROM FAVORITE_RECIPE WHERE UserID = '" + user.Id + "';";
+
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(query, con);
+
+                int recipeID = 0;
+
+                con.Open();
+                SqlDataReader read = comm.ExecuteReader();
+
+                //Read all rows
+                while (read.Read())
+                {
+                    //per row
+                    recipeID = read.GetInt32(0);
+                    user.FavoriteRecipes.Add(recipeID);
+                }
+
+                read.Close();
+            }
+        }
         #endregion
 
         #region public properties

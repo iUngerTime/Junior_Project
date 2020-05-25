@@ -5,6 +5,7 @@ using PantryAid.OfficialViews.Profile;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -37,10 +38,9 @@ namespace PantryAid.ViewModels
             _userDatabaseAccess = databaseAccess;
 
             //Get Info of user
-            _userid = SqlServerDataAccess.UserID;
-            User currUser = GetUserInfoFromDB();
-            _email = currUser.Email;
-            _password = currUser.Hash;
+            _userid = SqlServerDataAccess.CurrentUser.Id;
+            _email = SqlServerDataAccess.CurrentUser.Email;
+            _password = SqlServerDataAccess.CurrentUser.Hash;
 
             //Command binding
             ChangeEmail = new Command(OnChangeEmailPress);

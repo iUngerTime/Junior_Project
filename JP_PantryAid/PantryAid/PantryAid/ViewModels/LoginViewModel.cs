@@ -103,6 +103,7 @@ namespace PantryAid.ViewModels
 
             if (auth)
             {
+                SqlServerDataAccess.CurrentUser = usr;
                 SqlServerDataAccess.UserID = usr.Id;
             }
 

@@ -246,7 +246,17 @@ namespace Database_Helpers
         {
             string query = "SELECT UserID, Email, PasswordHash FROM PERSON WHERE LOWER(Email) = '" + SqlServerDataAccess.Sanitize(email) + "';";
 
-            return _database.ExecuteQuery_SingleUser(query);
+            User usr = _database.ExecuteQuery_SingleUser(query);
+
+            if(usr != null)
+            {
+                _database.ExecuteQuery_GetUserAlergies(usr);
+                _database.ExecuteQuery_GetUserDietaryPreferences(usr);
+                _database.ExecuteQuery_GetUserFavoriteRecipes(usr);
+                _database.ExecuteQuery_GetUserDislikedRecipes(usr);
+            }
+
+            return usr;
         }
 
         /// <summary>
@@ -258,7 +268,17 @@ namespace Database_Helpers
         {
             string query = "SELECT UserID, Email, PasswordHash FROM PERSON WHERE UserID = '" + usrid + "';";
 
-            return _database.ExecuteQuery_SingleUser(query);
+            User usr = _database.ExecuteQuery_SingleUser(query);
+
+            if (usr != null)
+            {
+                _database.ExecuteQuery_GetUserAlergies(usr);
+                _database.ExecuteQuery_GetUserDietaryPreferences(usr);
+                _database.ExecuteQuery_GetUserFavoriteRecipes(usr);
+                _database.ExecuteQuery_GetUserDislikedRecipes(usr);
+            }
+
+            return usr;
         }
 
         private int FAIL = 0;
