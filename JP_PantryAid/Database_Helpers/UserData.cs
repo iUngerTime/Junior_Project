@@ -16,6 +16,7 @@ namespace Database_Helpers
     /// </summary>
     public class UserData : iUserDataRepo
     {
+        #region injection info
         //Database we perform functions on
         private iSqlServerDataAccess _database;
 
@@ -27,51 +28,163 @@ namespace Database_Helpers
         {
             _database = database;
         }
+        #endregion
 
+        #region alergies
         /// <summary>
         /// Adds an alergy to the list of alergies associated with a user
         /// </summary>
         /// <param name="currUser">The current user to add a new alergy to</param>
         /// <param name="newAlergy">The ingredient that is the alergy</param>
         /// <returns>0 if successful, 1 if failed</returns>
-        public int AddAlergy(User currUser, Ingredient newAlergy)
+        public int AddAlergy(User currUser, Alergens newAlergy)
         {
-            currUser.Allergies.Add(newAlergy);
+            if (!currUser.Allergies.Contains(newAlergy))
+            {
+                currUser.Allergies.Add(newAlergy);
 
-            string query = String.Format("INSERT INTO ALERGIES VALUES({0}, {1})", SqlServerDataAccess.UserID, newAlergy.IngredientID);
+                string query = String.Format("INSERT INTO ALERGIES VALUES({0}, {1})", SqlServerDataAccess.UserID, (int)newAlergy);
 
-            return _database.ExecuteQuery_NoReturnType(query);
+                return _database.ExecuteQuery_NoReturnType(query);
+            }
+
+            return 0;
         }
 
+        /// <summary>
+        /// Removes an alergy from a user's list of alergies
+        /// </summary>
+        /// <param name="currUser">User to operate on</param>
+        /// <param name="oldAlergy">Alergy to be removed from list of alergies</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
+        public int RemoveAlergy(User currUser, Alergens oldAlergy)
+        {
+            if (currUser.Allergies.Contains(oldAlergy))
+            {
+                currUser.Allergies.Remove(oldAlergy);
+
+                string query = String.Format("DELETE FROM ALERGIES WHERE UserID={0} AND AlergyID={1};", SqlServerDataAccess.UserID, (int)oldAlergy);
+
+                return _database.ExecuteQuery_NoReturnType(query);
+            }
+
+            return 0;
+        }
+        #endregion
+
+        #region disliked recipes
         /// <summary>
         /// Adds a recipe to a user's list of dislikes
         /// </summary>
         /// <param name="currUser">The user to operate on</param>
         /// <param name="newDisliked">The disliked recipe to add to database</param>
         /// <returns>Returns 1 if pass, 0 if failed</returns>
-        public int AddDislikedRecipe(User currUser, Recipe_Short newDisliked)
+        public int AddDislikedRecipe(User currUser, int newDisliked)
         {
-            currUser.DislikedRecipes.Add(newDisliked);
+            if(!currUser.DislikedRecipes.Contains(newDisliked))
+            {
+                currUser.DislikedRecipes.Add(newDisliked);
 
-            string query = String.Format("INSERT INTO DISLIKED_RECIPE VALUES({0}, {1})", SqlServerDataAccess.UserID, newDisliked.id);
+                string query = String.Format("INSERT INTO DISLIKED_RECIPE VALUES({0}, {1})", SqlServerDataAccess.UserID, newDisliked);
 
-            return _database.ExecuteQuery_NoReturnType(query);
+                return _database.ExecuteQuery_NoReturnType(query);
+            }
+
+            return 0;
         }
 
+        /// <summary>
+        /// Removes a disliked recipe from a user's list of dislikes
+        /// </summary>
+        /// <param name="currUser">User to operate on</param>
+        /// <param name="nonDisliked">Recipe that is not a disliked recipe</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
+        public int RemoveDislikedRecipe(User currUser, int nonDisliked)
+        {
+            if (currUser.DislikedRecipes.Contains(nonDisliked))
+            {
+                currUser.DislikedRecipes.Remove(nonDisliked);
+
+                string query = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlServerDataAccess.UserID, nonDisliked);
+
+                return _database.ExecuteQuery_NoReturnType(query);
+            }
+
+            return 0;
+        }
+        #endregion
+
+        #region favorite recipes
         /// <summary>
         /// Adds a favorite recipe to an existing user in the database
         /// </summary>
         /// <param name="currUser">The user to operate on</param>
         /// <param name="newFavorite">New favorite recipe to add into database</param>
         /// <returns>Returns 1 if pass, 0 if failed</returns>
-        public int AddFavoriteRecipe(User currUser, Recipe_Short newFavorite)
+        public int AddFavoriteRecipe(User currUser, int newFavorite)
         {
-            currUser.FavoriteRecipes.Add(newFavorite);
+            if(!currUser.FavoriteRecipes.Contains(newFavorite))
+            {
+                currUser.FavoriteRecipes.Add(newFavorite);
 
-            string query = String.Format("INSERT INTO FAVORITE_RECIPE VALUES({0}, {1})", SqlServerDataAccess.UserID, newFavorite.id);
+                string query = String.Format("INSERT INTO FAVORITE_RECIPE VALUES({0}, {1})", SqlServerDataAccess.UserID, newFavorite);
 
-            return _database.ExecuteQuery_NoReturnType(query);
+                return _database.ExecuteQuery_NoReturnType(query);
+            }
+
+            return 0;
         }
+
+        /// <summary>
+        /// Removes a favorited recipe from the list
+        /// </summary>
+        /// <param name="currUser">User to remove data from</param>
+        /// <param name="nonFavorite">Recipe in the user's list of favorites</param>
+        /// <returns>Returns 1 if pass, 0 if failed</returns>
+        public int RemoveFavoriteRecipe(User currUser, int nonFavorite)
+        {
+            if (currUser.FavoriteRecipes.Contains(nonFavorite))
+            {
+                currUser.FavoriteRecipes.Remove(nonFavorite);
+
+                string query = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlServerDataAccess.UserID, nonFavorite);
+
+                return _database.ExecuteQuery_NoReturnType(query);
+            }
+
+            return 0;
+        }
+        #endregion
+
+        #region diet preferences
+        public int AddDietPreference(User currUser, DietPreferences newPreference)
+        {
+            if (!currUser.DietaryPreferences.Contains(newPreference))
+            {
+                currUser.DietaryPreferences.Add(newPreference);
+
+                string query = String.Format("INSERT INTO DIETARY_PREFERENCES VALUES({0}, {1})", SqlServerDataAccess.UserID, (int)newPreference);
+
+                return _database.ExecuteQuery_NoReturnType(query);
+            }
+
+            return 0;
+        }
+
+        public int RemoveDietPreference(User currUser, DietPreferences oldPreference)
+        {
+            if (currUser.DietaryPreferences.Contains(oldPreference))
+            {
+                currUser.DietaryPreferences.Remove(oldPreference);
+
+                string query = String.Format("DELETE FROM DIETARY_PREFERENCES WHERE UserID={0} AND DietaryPreferenceID={1};", SqlServerDataAccess.UserID, (int)oldPreference);
+
+                return _database.ExecuteQuery_NoReturnType(query);
+            }
+
+            return 0;
+        }
+        #endregion
 
         /// <summary>
         /// Adds a user to a sql database
@@ -125,51 +238,6 @@ namespace Database_Helpers
         }
 
         /// <summary>
-        /// Removes an alergy from a user's list of alergies
-        /// </summary>
-        /// <param name="currUser">User to operate on</param>
-        /// <param name="alergy">Alergy to be removed from list of alergies</param>
-        /// <returns>Returns 1 if pass, 0 if failed</returns>
-        public int RemoveAlergy(User currUser, Ingredient alergy)
-        {
-            currUser.Allergies.Remove(alergy);
-
-            string query = String.Format("DELETE FROM ALERGIES WHERE UserID={0} AND RecipeID={1};", SqlServerDataAccess.UserID, alergy.IngredientID);
-
-            return _database.ExecuteQuery_NoReturnType(query);
-        }
-
-        /// <summary>
-        /// Removes a disliked recipe from a user's list of dislikes
-        /// </summary>
-        /// <param name="currUser">User to operate on</param>
-        /// <param name="nonDisliked">Recipe that is not a disliked recipe</param>
-        /// <returns>Returns 1 if pass, 0 if failed</returns>
-        public int RemoveDislikedRecipe(User currUser, Recipe_Short nonDisliked)
-        {
-            currUser.DislikedRecipes.Remove(nonDisliked);
-
-            string query = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlServerDataAccess.UserID, nonDisliked.id);
-
-            return _database.ExecuteQuery_NoReturnType(query);
-        }
-
-        /// <summary>
-        /// Removes a favorited recipe from the list
-        /// </summary>
-        /// <param name="currUser">User to remove data from</param>
-        /// <param name="nonFavorite">Recipe in the user's list of favorites</param>
-        /// <returns>Returns 1 if pass, 0 if failed</returns>
-        public int RemoveFavoriteRecipe(User currUser, Recipe_Short nonFavorite)
-        {
-            currUser.DislikedRecipes.Remove(nonFavorite);
-
-            string query = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0} AND RecipeID={1};", SqlServerDataAccess.UserID, nonFavorite.id);
-
-            return _database.ExecuteQuery_NoReturnType(query);
-        }
-
-        /// <summary>
         /// Get the user
         /// </summary>
         /// <param name="email">Email of a user</param>
@@ -178,7 +246,17 @@ namespace Database_Helpers
         {
             string query = "SELECT UserID, Email, PasswordHash FROM PERSON WHERE LOWER(Email) = '" + SqlServerDataAccess.Sanitize(email) + "';";
 
-            return _database.ExecuteQuery_SingleUser(query);
+            User usr = _database.ExecuteQuery_SingleUser(query);
+
+            if(usr != null)
+            {
+                _database.ExecuteQuery_GetUserAlergies(usr);
+                _database.ExecuteQuery_GetUserDietaryPreferences(usr);
+                _database.ExecuteQuery_GetUserFavoriteRecipes(usr);
+                _database.ExecuteQuery_GetUserDislikedRecipes(usr);
+            }
+
+            return usr;
         }
 
         /// <summary>
@@ -190,7 +268,17 @@ namespace Database_Helpers
         {
             string query = "SELECT UserID, Email, PasswordHash FROM PERSON WHERE UserID = '" + usrid + "';";
 
-            return _database.ExecuteQuery_SingleUser(query);
+            User usr = _database.ExecuteQuery_SingleUser(query);
+
+            if (usr != null)
+            {
+                _database.ExecuteQuery_GetUserAlergies(usr);
+                _database.ExecuteQuery_GetUserDietaryPreferences(usr);
+                _database.ExecuteQuery_GetUserFavoriteRecipes(usr);
+                _database.ExecuteQuery_GetUserDislikedRecipes(usr);
+            }
+
+            return usr;
         }
 
         private int FAIL = 0;

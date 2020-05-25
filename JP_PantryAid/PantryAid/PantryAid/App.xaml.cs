@@ -2,6 +2,7 @@ using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
 using Database_Helpers;
 using PantryAid.Configuration;
+using PantryAid.Core.Utilities;
 using PantryAid.OfficialViews;
 using PantryAid.Views;
 using Xamarin.Forms;
@@ -25,8 +26,13 @@ namespace PantryAid
             //Sets start up page based on debug mode set or not
             if (SqlServerDataAccess.DebugMode)
             {
-                //Set user to user id of Brenton
+                //Set user to user id to first one in DB
+                UserData dataRepo = new UserData(ServiceLocator.Current.GetInstance<iSqlServerDataAccess>());
+                SqlServerDataAccess.CurrentUser = dataRepo.GetUser(1);                
+
+                //depricated line
                 SqlServerDataAccess.UserID = 1;
+
                 MainPage = new SignInPage();
                 MainPage.Navigation.PushModalAsync(new TabbedMasterPage());
             }

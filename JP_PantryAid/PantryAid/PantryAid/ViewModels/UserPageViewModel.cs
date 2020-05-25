@@ -1,9 +1,11 @@
 ﻿using Database_Helpers;
 using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
+using PantryAid.OfficialViews.Profile;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -36,14 +38,17 @@ namespace PantryAid.ViewModels
             _userDatabaseAccess = databaseAccess;
 
             //Get Info of user
-            _userid = SqlServerDataAccess.UserID;
-            User currUser = GetUserInfoFromDB();
-            _email = currUser.Email;
-            _password = currUser.Hash;
+            _userid = SqlServerDataAccess.CurrentUser.Id;
+            _email = SqlServerDataAccess.CurrentUser.Email;
+            _password = SqlServerDataAccess.CurrentUser.Hash;
 
             //Command binding
             ChangeEmail = new Command(OnChangeEmailPress);
             ChangePassword = new Command(OnChangePasswordPress);
+            NavigatePreferedRecipes = new Command(OnPreferedRecipesPress);
+            NavigateDislikedRecipes = new Command(OnDislikedRecipesPress);
+            NavigateAlergies = new Command(OnAlergiesPress);
+            NavigateDietaryOptions = new Command(OnDietaryOptionsPress);
         }
 
         #region public properties
@@ -112,6 +117,10 @@ namespace PantryAid.ViewModels
         #region public commands
         public ICommand ChangeEmail { protected set; get; }
         public ICommand ChangePassword { protected set; get; }
+        public ICommand NavigatePreferedRecipes { protected set; get; }
+        public ICommand NavigateDislikedRecipes { protected set; get; }
+        public ICommand NavigateAlergies { protected set; get; }
+        public ICommand NavigateDietaryOptions { protected set; get; }
         #endregion
 
         #region command implementation
@@ -177,6 +186,26 @@ namespace PantryAid.ViewModels
                     }
                 }
             }
+        }
+
+        async public void OnPreferedRecipesPress()
+        {
+            await navigation.PushModalAsync(new PreferedRecipesPage());
+        }
+
+        async public void OnDislikedRecipesPress()
+        {
+            await navigation.PushModalAsync(new DislikedRecipesPage());
+        }
+
+        async public void OnAlergiesPress()
+        {
+            await navigation.PushModalAsync(new AlergiesPage());
+        }
+
+        async public void OnDietaryOptionsPress()
+        {
+            await navigation.PushModalAsync(new DietaryOptionsPage());
         }
         #endregion
 
