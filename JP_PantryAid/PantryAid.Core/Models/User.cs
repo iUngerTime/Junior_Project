@@ -34,7 +34,7 @@ namespace PantryAid.Core.Models
         Peanut,
         Seafood,
         Sesame,
-        Shellfish,
+        Shellfish = 14,
         Soy,
         Sulfite,
         TreeNut,
