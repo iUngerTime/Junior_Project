@@ -5,6 +5,7 @@ using System.Text;
 using PantryAid.Core.Models;
 using RecipeAPI;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace PantryAid.ViewModels
 {
@@ -39,11 +40,31 @@ namespace PantryAid.ViewModels
             }
 
         }
+
+        private int bgOpacity;
+        public int BG_Opacity
+        {
+            get { return bgOpacity; }
+            set
+            {
+                bgOpacity = value;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
+            }
+        }
         public INavigation navigation { get; set; }
 
         public RecipeFinderViewModel(INavigation nav)
         {
             navigation = nav;
+
+            if (Preferences.Get("Images", false) == false)
+            {
+                BG_Opacity = 0;
+            }
+            else
+            {
+                BG_Opacity = 100;
+            }
         }
 
         //searches for short recipes from names
@@ -90,7 +111,13 @@ namespace PantryAid.ViewModels
             navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
         }
 
-
+        public void OnAppear()
+        {
+            if (Preferences.Get("Images", false) == false)
+                BG_Opacity = 0;
+            else
+                BG_Opacity = 100;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

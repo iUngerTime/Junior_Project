@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,10 +18,14 @@ namespace PantryAid.OfficialViews.Profile
         public ProfilePage()
         {
             //Connect View model
+            InitializeComponent();
             var vm = new UserPageViewModel(Navigation, ServiceLocator.Current.GetInstance<iUserDataRepo>());
             this.BindingContext = vm;
+        }
 
-            InitializeComponent();
+        private void ImageToggle_Toggled(object sender, ToggledEventArgs e)
+        {
+            Preferences.Set("Images", e.Value);
         }
     }
 }

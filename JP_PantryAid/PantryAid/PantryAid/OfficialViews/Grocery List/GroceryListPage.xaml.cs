@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
 
 /*
 The file that holds ingredients for the grocery list is in the format
@@ -38,6 +39,13 @@ namespace PantryAid.OfficialViews.Grocery_List
             //vm.DisplayCommand += (string title, string msg, string cancel) => DisplayAlert(title, msg, cancel);
             this.BindingContext = vm;
             vm.FillGrid();
+            
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            vm.OnAppear();
         }
 
         private void AddButton_Clicked(object sender, EventArgs e)

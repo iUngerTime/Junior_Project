@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using System.Linq;
+using Xamarin.Essentials;
 
 namespace PantryAid.ViewModels
 {
@@ -43,6 +44,15 @@ namespace PantryAid.ViewModels
 
             // Dependency injection
             _ingredientDatabaseAccess = databaseAccess;
+
+            if (Preferences.Get("Images", false) == false)
+            {
+                BG_Opacity = 0;
+            }
+            else
+            {
+                BG_Opacity = 100;
+            }
         }
 
         // View Model getter and setters and properties
@@ -69,6 +79,16 @@ namespace PantryAid.ViewModels
             }
         }
 
+        private int bgOpacity;
+        public int BG_Opacity
+        {
+            get { return bgOpacity; }
+            set
+            {
+                bgOpacity = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
+            }
+        }
         //
         // end Properties
 
@@ -286,6 +306,14 @@ namespace PantryAid.ViewModels
             {
                 RemovePopup(popup);
             }
+        }
+
+        public void OnAppear()
+        {
+            if (Preferences.Get("Images", false) == false)
+                BG_Opacity = 0;
+            else
+                BG_Opacity = 100;
         }
 
         public async void RemovePopup(Frame popup)
