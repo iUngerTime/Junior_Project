@@ -210,15 +210,18 @@ namespace Database_Helpers
 
             string query = String.Format("DELETE FROM PERSON WHERE UserID={0};", delUser.Id);
             string query2 = String.Format("DELETE FROM PANTRY_INGREDIENTS WHERE PantryID={0};", delUser.Id);
-            string query3 = String.Format("DELETE FROM FROM ALERGIES WHERE UserID={0}", delUser.Id);
-            string query4 = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0}", delUser.Id);
-            string query5 = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0}", delUser.Id);
+            string query3 = String.Format("DELETE FROM DIETARY_PREFERENCES WHERE UserID={0}", delUser.Id);
+            string query4 = String.Format("DELETE FROM FROM ALERGIES WHERE UserID={0}", delUser.Id);
+            string query5 = String.Format("DELETE FROM FAVORITE_RECIPE WHERE UserID={0}", delUser.Id);
+            string query6 = String.Format("DELETE FROM DISLIKED_RECIPE WHERE UserID={0}", delUser.Id);
+            
 
             int failed = _database.ExecuteQuery_NoReturnType(query);
             if (failed != 0) { _database.ExecuteQuery_NoReturnType(query2); }
             if (failed != 0) { _database.ExecuteQuery_NoReturnType(query3); }
             if (failed != 0) { _database.ExecuteQuery_NoReturnType(query4); }
             if (failed != 0) { _database.ExecuteQuery_NoReturnType(query5); }
+            if (failed != 0) { _database.ExecuteQuery_NoReturnType(query6); }
 
             return (failed == 1 ? PASS : FAIL);
         }
