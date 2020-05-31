@@ -64,7 +64,7 @@
             <Button Grid.Row="3" Grid.Column="1" Text="View" Command="{Binding NavigateDislikedRecipes}"/>
 
             <!--Fifth row is alergies-->
-            <Label Text="Alergies" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Label Text="Allergies" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
             <Button Grid.Row="4" Grid.Column="1" Text="View" Command="{Binding NavigateAlergies}"/>
 
             <!--sixth row is ditary options-->
