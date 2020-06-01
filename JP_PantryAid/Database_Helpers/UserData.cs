@@ -43,7 +43,7 @@ namespace Database_Helpers
             {
                 currUser.Allergies.Add(newAlergy);
 
-                string query = String.Format("INSERT INTO ALERGIES VALUES({0}, {1})", SqlServerDataAccess.UserID, newAlergy);
+                string query = String.Format("INSERT INTO ALERGIES VALUES({0}, {1})", SqlServerDataAccess.UserID, (int)newAlergy);
 
                 return _database.ExecuteQuery_NoReturnType(query);
             }
@@ -55,7 +55,7 @@ namespace Database_Helpers
         /// Removes an alergy from a user's list of alergies
         /// </summary>
         /// <param name="currUser">User to operate on</param>
-        /// <param name="alergy">Alergy to be removed from list of alergies</param>
+        /// <param name="oldAlergy">Alergy to be removed from list of alergies</param>
         /// <returns>Returns 1 if pass, 0 if failed</returns>
         public int RemoveAlergy(User currUser, Alergens oldAlergy)
         {
@@ -63,7 +63,7 @@ namespace Database_Helpers
             {
                 currUser.Allergies.Remove(oldAlergy);
 
-                string query = String.Format("DELETE FROM ALERGIES WHERE UserID={0} AND AlergyID={1};", SqlServerDataAccess.UserID, oldAlergy);
+                string query = String.Format("DELETE FROM ALERGIES WHERE UserID={0} AND AlergyID={1};", SqlServerDataAccess.UserID, (int)oldAlergy);
 
                 return _database.ExecuteQuery_NoReturnType(query);
             }
@@ -163,7 +163,7 @@ namespace Database_Helpers
             {
                 currUser.DietaryPreferences.Add(newPreference);
 
-                string query = String.Format("INSERT INTO DIETARY_PREFERENCES VALUES({0}, {1})", SqlServerDataAccess.UserID, newPreference);
+                string query = String.Format("INSERT INTO DIETARY_PREFERENCES VALUES({0}, {1})", SqlServerDataAccess.UserID, (int)newPreference);
 
                 return _database.ExecuteQuery_NoReturnType(query);
             }
@@ -171,13 +171,13 @@ namespace Database_Helpers
             return 0;
         }
 
-        public int RemoveDietPreference(User currUser, DietPreferences newPreference)
+        public int RemoveDietPreference(User currUser, DietPreferences oldPreference)
         {
-            if (currUser.DietaryPreferences.Contains(newPreference))
+            if (currUser.DietaryPreferences.Contains(oldPreference))
             {
-                currUser.DietaryPreferences.Remove(newPreference);
+                currUser.DietaryPreferences.Remove(oldPreference);
 
-                string query = String.Format("DELETE FROM DIETARY_PREFERENCES WHERE UserID={0} AND DietaryPreferenceID={1};", SqlServerDataAccess.UserID, newPreference);
+                string query = String.Format("DELETE FROM DIETARY_PREFERENCES WHERE UserID={0} AND DietaryPreferenceID={1};", SqlServerDataAccess.UserID, (int)oldPreference);
 
                 return _database.ExecuteQuery_NoReturnType(query);
             }

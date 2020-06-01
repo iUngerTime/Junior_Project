@@ -22,13 +22,6 @@ namespace PantryAid
             set { _imageUrl = "https://spoonacular.com/recipeImages/" + value; }
         }
 
-        public RecipePage()
-        {
-            InitializeComponent();
-        }
-
-
-
         //Called from ShortRecipePage
         public RecipePage(int RecipeID)
         {
@@ -40,7 +33,7 @@ namespace PantryAid
             SetLabels(_recipeFull);
         }
 
-        private async void AddButton_Clicked(object sender, EventArgs e)
+        private void AddButton_Clicked(object sender, EventArgs e)
         {
             Query();
         }

@@ -10,14 +10,14 @@
             <Label Text="Allergies" FontSize="40" HorizontalTextAlignment="Start" Padding="10,0,0,0" FontAttributes="Bold"/>
             <BoxView BackgroundColor="DimGray" HeightRequest="2"/>
 
-            <ListView x:Name="AlergyList">
+            <ListView x:Name="AlergyList" SelectionMode="None" ItemTapped="AlergyList_ItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.View>
                                 <FlexLayout Direction="Row">
-                                    <CheckBox CheckedChanged="CheckBox_CheckedChanged"/>
-                                    <Label x:Name="testlabel" Text="{Binding Name}" FontSize="25" VerticalTextAlignment="Center"/>
+                                    <CheckBox IsEnabled="False" IsChecked="{Binding IsSelected}"/>
+                                    <Label Text="{Binding Name}" FontSize="25" VerticalTextAlignment="Center"/>
                                 </FlexLayout>
                             </ViewCell.View>
                         </ViewCell>

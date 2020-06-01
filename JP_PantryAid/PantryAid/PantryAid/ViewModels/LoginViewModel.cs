@@ -89,23 +89,19 @@ namespace PantryAid.ViewModels
         /// <returns>True if user was authenticated correctly, False if not</returns>
         private bool AuthenticateUser()
         {
-            bool auth = false;
+            bool auth;
 
             //Run SQL command to get user's email
             User usr = _userDatabaseAccess.GetUser(email);
 
-            if (usr == null)
-                auth = false;
-            else if (Database_Helpers.Hashing.VerifyPassword(password, usr.Hash) == false)
+            if (usr == null || Database_Helpers.Hashing.VerifyPassword(password, usr.Hash) == false)
                 auth = false;
             else
-                auth = true;
-
-            if (auth)
             {
                 SqlServerDataAccess.CurrentUser = usr;
                 SqlServerDataAccess.UserID = usr.Id;
-            }
+                auth = true;
+            }   
 
             return auth;
         }

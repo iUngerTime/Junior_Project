@@ -1,4 +1,5 @@
 ﻿using CommonServiceLocator;
+using Database_Helpers;
 using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
 using PantryAid.ViewModels;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
 
 namespace PantryAid.OfficialViews.Pantry
 {
@@ -26,10 +28,17 @@ namespace PantryAid.OfficialViews.Pantry
             vm.FillGrid();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            vm.OnAppear();
+            vm.FillGrid();
+        }
+
         private void AddButton_Clicked(object sender, EventArgs e)
         {
-            if (ItemEntry.Text != null)
-                vm.OnAdd(sender, ItemEntry.Text, QuantityEntry.Text, MeasurementPicker.SelectedItem as string);
+            if (!String.IsNullOrWhiteSpace(ItemEntry.Text))
+                vm.OnAdd(sender, SqlServerDataAccess.Sanitize(ItemEntry.Text.ToLower()), QuantityEntry.Text, MeasurementPicker.SelectedItem as string);
         }
         private async void RemoveButton_Clicked(object sender, EventArgs e)
         {
