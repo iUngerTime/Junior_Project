@@ -17,9 +17,15 @@
                    Completed="Recipe_Search_OnCompleted" 
                    VerticalOptions="Start" 
                    HorizontalOptions="FillAndExpand" 
-                   AnchorY="0"/>
+                   AnchorY="0" />
+            <StackLayout Orientation="Horizontal">
+                <CheckBox x:Name="CheckBox_UseComplex"/>
+                <Label Text="Use Complex"></Label>
+            </StackLayout>
+
             <ListView ItemsSource="{Binding List.ListView}" SeparatorVisibility="None"  
-                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" RowHeight="60">
+                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" 
+                      RowHeight="60" x:Name="RecipeResultsList">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -37,9 +43,10 @@
                                        HorizontalOptions="FillAndExpand"/>
                                 <StackLayout Orientation="Vertical" Grid.Column="1"  >
                                     <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}"   
-                                                   VerticalOptions="Center" MaxLines="1" TextColor="GhostWhite"/>
-                                    <StackLayout Orientation="Horizontal" Margin="15,0,10,0">
-                                            <Label x:Name="ReadyInMinLabel" Text="Ready in:" StyleClass="readyInMinLabel" TextColor="GhostWhite"/>
+                                                   VerticalOptions="Center" MaxLines="1"/>
+                                    <StackLayout Orientation="Horizontal" Margin="15,0,10,0" x:Name="ReadyInMinBox" BindingContext="{Binding }" IsVisible="{ Binding ShowReadyInMin }">
+                                        <Label x:Name="ReadyInMinLabel" Text="Ready in:" StyleClass="readyInMinLabel" IsVisible="{ Binding ShowReadyInMin }"/>
+
                                         <!--<Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />-->
                                             <Label Text="{Binding readyInMinutes}" FontSize="Micro" TextColor="GhostWhite"/>
                                             <Label Text="min" FontSize="Micro" TextColor="GhostWhite"/>
@@ -56,7 +63,7 @@
                 <BoxView WidthRequest="200"></BoxView>
                 <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="End" StyleClass="recipePageNavButtons"/>
             </StackLayout>
-
+            <Label x:Name="noResultsLabel" IsVisible="False">Nothing found</Label>
         </StackLayout>
         </Grid>
     </ContentPage.Content>

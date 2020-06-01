@@ -15,6 +15,33 @@ namespace PantryAid.ViewModels
     //TODO: pass in some way to control whether it searches online or locally for testing
     public class RecipeFinderViewModel : INotifyPropertyChanged
     {
+
+        public ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
+        public enum Search_State
+        {
+            None = 0, //no search has been done
+            Normal, //search by name
+            Complex //complex search
+        }
+        //this state keeps track of whether the current search's state'
+        private Search_State _state = Search_State.None;
+
+        public Search_State State
+        {
+            get { return _state; }
+        }
+
+        private bool _showReadyInMin;
+        public bool ShowReadyInMin
+        {
+            get { return _showReadyInMin; }
+            set
+            {
+                _showReadyInMin = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("ShowReadyInMin"));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         int _offset;
         int _recipesPerPage = 10;
@@ -31,7 +58,7 @@ namespace PantryAid.ViewModels
             _userDatabaseAccess = databaseAccess;
         }
 
-        private ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
+
 
         public ListViewModel<Recipe_Short> List
         {
@@ -105,20 +132,99 @@ namespace PantryAid.ViewModels
                 _list.Add(list[i]);
             }
 
+            _state = Search_State.Normal;
+            return _list;
+        }
+
+        public ListViewModel<Recipe_Short> ComplexSearch(string recipeSearch)
+        {
+            _list.ListView.Clear();
+            _currentSearch = recipeSearch;
+
+            SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
+            SpoonacularAPI.SpoonacularAPI.ComplexParameters param = new SpoonacularAPI.SpoonacularAPI.ComplexParameters();
+            //set up the default values for the complex search
+            param = api.SetUpComplexParameters();
+            
+            param.query = _currentSearch;
+            param.number = _recipesPerPage;
+            param.offset = _offset;
+            //TODO: Add filters here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            //get the results of the search
+            SpoonacularAPI.SpoonacularAPI.Recipe_Complex_Results result =
+                api.FindComplexRecipe(param);
+            //IEnumerable<ComplexResult> list = result.results;
+
+            
+            List<Recipe_Short> list = new List<Recipe_Short>();
+            //Converting the complex results to short results via constructors
+            //I tries inheritance but it didn't work
+            //these two do however have implicit conversions
+            foreach (ComplexResult res in result.results)
+            {
+                list.Add(new Recipe_Short(res));
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                //cover nulls
+                if (list[i].image == null)
+                    list[i].image = "";
+                //list[i].image = "https://spoonacular.com/recipeImages/" + list[i].image;
+                if (list[i].author == null)
+                    list[i].author = "";
+                if (list[i].imageUrls == null)
+                    list[i].imageUrls = new List<string>() { "" };
+                _list.Add(list[i]);
+                
+            }
+
+            _state = Search_State.Complex;
             return _list;
         }
 
 
         public void NextPage()
         {
-            _offset += _recipesPerPage;
-            SearchByName(CurrentSearch);
+            //if (_list.ListView.Count > 0 && CurrentSearch.Length > 0)
+            if (_state == Search_State.Normal
+                && _list.ListView.Count > 0 && CurrentSearch.Length > 0)
+            {
+                _offset += _recipesPerPage;
+                SearchByName(CurrentSearch);
+            }
+            else if (_state == Search_State.Complex
+                     && _list.ListView.Count > 0 && CurrentSearch.Length > 0)
+            {
+                _offset += _recipesPerPage;
+                ComplexSearch(CurrentSearch);
+            }
+            
+
         }
         public void PrevPage()
         {
-            if (_offset >= 5)
-                _offset -= _recipesPerPage;
-            SearchByName(CurrentSearch);
+            //if (_list.ListView.Count > 0 && CurrentSearch.Length > 0)
+            if(_state == Search_State.Normal
+               && _list.ListView.Count > 0 && CurrentSearch.Length > 0)
+            {
+                if (_offset >= 5)
+                {
+                    _offset -= _recipesPerPage;
+                    SearchByName(CurrentSearch);
+                }
+                    
+            }
+            else if(_state == Search_State.Complex
+                    && _list.ListView.Count > 0 && CurrentSearch.Length > 0)
+            {
+                if (_offset >= 5)
+                {
+                    _offset -= _recipesPerPage;
+                    ComplexSearch(CurrentSearch);
+                }
+            }
         }
 
         public void ItemTapped(int index)

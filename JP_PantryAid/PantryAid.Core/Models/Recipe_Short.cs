@@ -62,6 +62,20 @@ namespace PantryAid.Core.Models
             author = "";
         }
 
+        public Recipe_Short(ComplexResult res)
+        {
+            id = (int)res.id;
+            imageUrls = new List<string>(){res.image};
+            title = res.title;
+            readyInMinutes = -1;
+            servings = -1;
+            image = res.image;
+            author = "";
+
+        }
+        //public static implicit operator Recipe_Short(ComplexResult res) => new Recipe_Short((int)res.id, res.title, 0, 0, res.image, new List<string>() { res.image }, "");
+        //public static implicit operator ComplexResult(Recipe_Short res) => new ComplexResult(res.id, -1, -1, -1, res.title, res.image, "", new ComplexResult.Nutrition[1]);
+
 
     }
 }
