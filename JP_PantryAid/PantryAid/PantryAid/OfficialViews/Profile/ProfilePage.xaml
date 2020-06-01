@@ -45,7 +45,7 @@
                 <Label Text="{Binding Email}" FontSize="20"/>
             </StackLayout>
 
-            <Button Grid.Row="0" Grid.Column="1" Text="Edit" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="1" Command="{Binding ChangeEmail}"/>
+            <Button Grid.Row="0" Grid.Column="1" Text="Edit" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding ChangeEmail}"/>
 
             <!--second row is password-->
             <StackLayout Orientation="Horizontal" VerticalOptions="Center" Grid.Row="1" Grid.Column="0">
@@ -53,23 +53,23 @@
                 <Label Text="*************" FontSize="20"/>
             </StackLayout>
 
-            <Button Grid.Row="1" Grid.Column="1" Text="Edit" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="1" Command="{Binding ChangePassword}"/>
+            <Button Grid.Row="1" Grid.Column="1" Text="Edit" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding ChangePassword}"/>
 
             <!--third row is prefered recipies-->
             <Label Text="Prefered Recipes" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="2" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="1" Command="{Binding NavigatePreferedRecipes}"/>
+            <Button Grid.Row="2" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding NavigatePreferedRecipes}"/>
 
             <!--fouth row is disliked recipies-->
             <Label Text="Disliked Recipes" FontAttributes="Bold" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="3" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="1"  Command="{Binding NavigateDislikedRecipes}"/>
+            <Button Grid.Row="3" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5"  Command="{Binding NavigateDislikedRecipes}"/>
 
             <!--Fifth row is alergies-->
             <Label Text="Allergies" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="4" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="1" Command="{Binding NavigateAlergies}"/>
+            <Button Grid.Row="4" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding NavigateAlergies}"/>
 
             <!--sixth row is ditary options-->
             <Label Text="Dietary Options" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="5" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="1" Command="{Binding NavigateDietaryOptions}"/>
+            <Button Grid.Row="5" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding NavigateDietaryOptions}"/>
         </Grid>
     </StackLayout>
 </ContentPage>
