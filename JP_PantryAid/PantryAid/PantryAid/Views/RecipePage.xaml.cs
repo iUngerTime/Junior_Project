@@ -88,5 +88,15 @@ namespace PantryAid
         {
             Navigation.PushModalAsync(new ShortRecipePage(_recipeFull.id.ToString()));
         }
+
+        private void Button_Liked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Button_Disliked(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

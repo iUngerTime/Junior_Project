@@ -94,6 +94,7 @@ namespace PantryAid.ViewModels
         }
         #endregion
 
+        #region Ctor, OnAppear()
         public RecipeFinderViewModel(INavigation nav)
         {
             navigation = nav;
@@ -107,6 +108,15 @@ namespace PantryAid.ViewModels
                 BG_Opacity = 100;
             }
         }
+
+        public void OnAppear()
+        {
+            if (Preferences.Get("Images", false) == false)
+                BG_Opacity = 0;
+            else
+                BG_Opacity = 100;
+        }
+        #endregion
 
         #region Search Functions
 
@@ -254,13 +264,7 @@ namespace PantryAid.ViewModels
         #endregion
 
 
-        public void OnAppear()
-        {
-            if (Preferences.Get("Images", false) == false)
-                BG_Opacity = 0;
-            else
-                BG_Opacity = 100;
-        }
+        
 
         #region Like Disliked FUnctions
         public void AddRecipeToDislikedList(int index)

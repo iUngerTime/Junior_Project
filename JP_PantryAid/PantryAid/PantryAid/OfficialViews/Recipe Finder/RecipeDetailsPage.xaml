@@ -10,24 +10,28 @@
             <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
                 <Label Text="Recipe Details Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
 
-                    <Label  Text="Recipe Name" Margin="10" 
+                <Label  Text="Recipe Name" Margin="10" 
                             HorizontalOptions="StartAndExpand" VerticalOptions="Start" FontSize="20" />
-                    <Label  Text="{ Binding RecipeFull.name}" 
+                <Label  Text="{ Binding RecipeFull.name}" 
                             Margin="10" 
                             HorizontalOptions="CenterAndExpand" 
                             VerticalOptions="Start" FontSize="20" />
-                    <Image Source="{Binding RecipeFull.image}"/>
-                    <Label  TextType="Html" Text="Instructions" 
+                <Image Source="{Binding RecipeFull.image}"/>
+                <Label  TextType="Html" Text="Instructions" 
                             Margin="10" 
                             HorizontalOptions="StartAndExpand" 
                             VerticalOptions="StartAndExpand" 
                             FontSize="20" />
-                    <Label TextType="Html" Text="{ Binding RecipeFull.instructions}" 
+                <StackLayout Orientation="Horizontal">
+                    <CheckBox x:Name="CheckBox_Disliked" BackgroundColor="Red"  IsChecked="{Binding Disliked }" CheckedChanged="CheckBox_DislikedCheckedChanged"/>
+                    <CheckBox x:Name="CheckBox_Liked" BackgroundColor="LightGreen" IsChecked="{ Binding Liked }" CheckedChanged="CheckBox_LikedCheckedChanged"/>
+                </StackLayout>
+                <Label TextType="Html" Text="{ Binding RecipeFull.instructions}" 
                            Margin="10" 
                            HorizontalOptions="StartAndExpand" 
                            VerticalOptions="StartAndExpand" 
                            FontSize="20" />
-                    <Label  TextType="Html" Text="Ingredients:" 
+                <Label  TextType="Html" Text="Ingredients:" 
                             Margin="10" 
                             HorizontalOptions="StartAndExpand" 
                             VerticalOptions="StartAndExpand" 
@@ -36,30 +40,30 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                               <Grid >
-                                   <Grid.ColumnDefinitions>
-                                       <ColumnDefinition Width="4*"/>
-                                       <ColumnDefinition Width="5*"/>
-                                       <ColumnDefinition Width="5*"/>
-                                       
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="4*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                        <ColumnDefinition Width="5*"/>
+
                                     </Grid.ColumnDefinitions>
-                                   <Image Source="{ Binding image }" Grid.Column="0"/>
+                                    <Image Source="{ Binding image }" Grid.Column="0"/>
                                     <StackLayout Grid.Column="1" Orientation="Horizontal">
-                                       <Label Text="{ Binding amount }" HorizontalOptions="Start" 
+                                        <Label Text="{ Binding amount }" HorizontalOptions="Start" 
                                               FontSize="Medium" />
-                                       <Label Text="{ Binding unit }" HorizontalOptions="Start" 
+                                        <Label Text="{ Binding unit }" HorizontalOptions="Start" 
                                               FontSize="Medium" />
                                     </StackLayout>
-                                   <Label Text="{ Binding name }" FontSize="Medium" Grid.Column="2" 
+                                    <Label Text="{ Binding name }" FontSize="Medium" Grid.Column="2" 
                                           HorizontalTextAlignment="Start"
                                           HorizontalOptions="Start"/>
-                                   
-                               </Grid>
+
+                                </Grid>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                
+
                 <Button HorizontalOptions="End"  Text="Find Similar" Clicked="B_SimilarClicked"></Button>
             </StackLayout>
         </ScrollView>
