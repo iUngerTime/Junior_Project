@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
 
 namespace PantryAid.OfficialViews.Pantry
 {
@@ -30,6 +31,7 @@ namespace PantryAid.OfficialViews.Pantry
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            vm.OnAppear();
             vm.FillGrid();
         }
 

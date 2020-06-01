@@ -33,6 +33,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -70,6 +71,9 @@
             <!--sixth row is ditary options-->
             <Label Text="Dietary Options" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
             <Button Grid.Row="5" Grid.Column="1" Text="View" Command="{Binding NavigateDietaryOptions}"/>
+
+            <Label Text="Use Background Images" FontAttributes="Bold" Grid.Row="6" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Switch x:Name="ImageToggle" Grid.Row="6" Grid.Column="1" IsToggled="{Binding ImagesSwitchToggled}" Toggled="ImageToggle_Toggled" ThumbColor="Blue" OnColor="LightBlue"/>
         </Grid>
     </StackLayout>
 </ContentPage>

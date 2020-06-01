@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms.Xaml;
 using PantryAid.Core;
 using System.Collections.ObjectModel;
+using Xamarin.Essentials;
 
 namespace PantryAid.ViewModels
 {
@@ -34,6 +35,15 @@ namespace PantryAid.ViewModels
 
             //Injection of view model
             _ingredientDatabaseAccess = databaseAccess;
+
+            if (Preferences.Get("Images", false) == false)
+            {
+                BG_Opacity = 0;
+            }
+            else
+            {
+                BG_Opacity = 100;
+            }
         }
 
         //  View Model Getter and Setters and properties
@@ -59,6 +69,16 @@ namespace PantryAid.ViewModels
             }
         }
 
+        private int bgOpacity;
+        public int BG_Opacity
+        {
+            get { return bgOpacity; }
+            set
+            {
+                bgOpacity = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
+            }
+        }
         public async void FillGrid()
         {
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
@@ -224,6 +244,14 @@ namespace PantryAid.ViewModels
                 (
                 popup.FadeTo(0, 25, Easing.SinInOut)
                 );
+        }
+
+        public void OnAppear()
+        {
+            if (Preferences.Get("Images", false) == false)
+                BG_Opacity = 0;
+            else
+                BG_Opacity = 100;
         }
     }
 }

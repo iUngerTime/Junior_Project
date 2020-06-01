@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace PantryAid.ViewModels
@@ -26,6 +27,7 @@ namespace PantryAid.ViewModels
         private List<Ingredient> _alergies;
         private List<Recipe_Short> _favoriteRecipes;
         private List<Recipe_Short> _dislikedRecipes;
+        private bool _imagesSwitchToggled;
         //PLACEHOLDER FOR private list<preferences> DietaryOptions;
         #endregion
 
@@ -49,6 +51,8 @@ namespace PantryAid.ViewModels
             NavigateDislikedRecipes = new Command(OnDislikedRecipesPress);
             NavigateAlergies = new Command(OnAlergiesPress);
             NavigateDietaryOptions = new Command(OnDietaryOptionsPress);
+
+            ImagesSwitchToggled = Preferences.Get("Images", false);
         }
 
         #region public properties
@@ -110,6 +114,16 @@ namespace PantryAid.ViewModels
             {
                 _dislikedRecipes = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("DislikedRecipes"));
+            }
+        }
+
+        public bool ImagesSwitchToggled
+        {
+            get { return _imagesSwitchToggled; }
+            set
+            {
+                _imagesSwitchToggled = value;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("ImagesSwitchToggled"));
             }
         }
         #endregion
@@ -206,6 +220,11 @@ namespace PantryAid.ViewModels
         async public void OnDietaryOptionsPress()
         {
             await navigation.PushModalAsync(new DietaryOptionsPage());
+        }
+
+        async public void OnImageSwitchToggle()
+        {
+            //Preferences.Set("Images", );
         }
         #endregion
 

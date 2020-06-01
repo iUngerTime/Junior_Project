@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.StyleSheets;
 using Xamarin.Forms.Xaml;
@@ -26,6 +26,16 @@ namespace PantryAid.OfficialViews.Recipe_Finder
             //this.BindingContext = vm._list;
             InitializeComponent();
             //this.Resources.Add(StyleSheet.FromResource("Assets/StyleSheets.css",this.GetType().Assembly));
+            if (Preferences.Get("Images", false) == false)
+            {
+                BGImage.Opacity = 0;
+            }
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            vm.OnAppear();
         }
 
         private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e) 

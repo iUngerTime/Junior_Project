@@ -8,6 +8,7 @@ using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
 using RecipeAPI;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace PantryAid.ViewModels
 {
@@ -54,7 +55,32 @@ namespace PantryAid.ViewModels
             }
 
         }
+        
+        private int bgOpacity;
+        public int BG_Opacity
+        {
+            get { return bgOpacity; }
+            set
+            {
+                bgOpacity = value;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
+            }
+        }
+        public INavigation navigation { get; set; }
 
+        public RecipeFinderViewModel(INavigation nav)
+        {
+            navigation = nav;
+
+            if (Preferences.Get("Images", false) == false)
+            {
+                BG_Opacity = 0;
+            }
+            else
+            {
+                BG_Opacity = 100;
+            }
+        }
 
         //searches for short recipes from names
         public ListViewModel<Recipe_Short> SearchByName(string recipeSearch)
@@ -100,6 +126,14 @@ namespace PantryAid.ViewModels
             navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
             //AddRecipeToPreferedList(_list.ListView[index].id);
         }
+        
+        public void OnAppear()
+        {
+            if (Preferences.Get("Images", false) == false)
+                BG_Opacity = 0;
+            else
+                BG_Opacity = 100;
+        }
 
         public void AddRecipeToDislikedList(int index)
         {
@@ -108,12 +142,10 @@ namespace PantryAid.ViewModels
         public void RemoveRecipeFromDislikedList(int index)
         {
             _userDatabaseAccess.RemoveDislikedRecipe(SqlServerDataAccess.CurrentUser, index);
-
         }
         public void AddRecipeToPreferedList(int index)
         {
             _userDatabaseAccess.AddFavoriteRecipe(SqlServerDataAccess.CurrentUser, index);
-
         }
         public void RemoveRecipeFromPreferedList(int index)
         {
