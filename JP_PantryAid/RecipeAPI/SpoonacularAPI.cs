@@ -102,13 +102,21 @@ namespace SpoonacularAPI
             RecipeSearchParams param = SetUpParams(query, maxResults, offset);
             SpoonacularRecipeShortSearchResult result = QueryAPI(param);
 
-            foreach (Recipe_Short recipe_s in result.results)
+            if(result != null && result.results != null)
             {
-                if (recipe_s.author == null)
-                    recipe_s.author = "";
-                if(recipe_s.imageUrls == null)
-                    recipe_s.imageUrls = new List<string>();
+                foreach (Recipe_Short recipe_s in result.results)
+                {
+                    if (recipe_s.author == null)
+                        recipe_s.author = "";
+                    if (recipe_s.imageUrls == null)
+                        recipe_s.imageUrls = new List<string>();
+                }
             }
+            else
+            {
+                result.results = new List<Recipe_Short>();
+            }
+            
             return result.results;
             //List<RecipeInformationRootObject> recipeInfoList = ToRecipeInformationList(result);
             //return ToRecipeShortList(recipeInfoList);
@@ -605,8 +613,13 @@ namespace SpoonacularAPI
             {
                 ret += item + ",";
             }
-            //Cut off the last comma
-            return ret.Substring(0, ret.Length - 1);
+            if(ret.Length > 1 && ret[ret.Length] == ',')
+            {
+                //Cut off the last comma
+                return ret.Substring(0, ret.Length - 1);
+            }
+            else
+                return ret; //if there is no comma
         }
 
 
