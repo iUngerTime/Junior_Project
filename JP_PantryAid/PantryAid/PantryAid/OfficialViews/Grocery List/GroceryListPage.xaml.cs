@@ -10,6 +10,21 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
+
+/*
+The file that holds ingredients for the grocery list is in the format
+<Name>-<Quantity>-<Measurement>
+<Name>-<Quantity>-<Measurement>
+<Name>-<Quantity>-<Measurement>
+...
+
+ex.
+Milk-1-Quarts
+Eggs-5-Servings
+Cookies-7-Servings
+...
+*/
 
 namespace PantryAid.OfficialViews.Grocery_List
 {
@@ -24,11 +39,19 @@ namespace PantryAid.OfficialViews.Grocery_List
             //vm.DisplayCommand += (string title, string msg, string cancel) => DisplayAlert(title, msg, cancel);
             this.BindingContext = vm;
             vm.FillGrid();
+            
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            vm.OnAppear();
         }
 
         private void AddButton_Clicked(object sender, EventArgs e)
         {
-            vm.OnAdd(ItemEntry.Text, Convert.ToInt32(QuantityEntry.Text), MeasurementPicker.SelectedItem as string);
+            if (ItemEntry.Text != null)
+                vm.OnAdd(ItemEntry.Text, Math.Abs(Convert.ToDouble(QuantityEntry.Text)), MeasurementPicker.SelectedItem as string);
         }
 
         private void Minus_Clicked(object sender, EventArgs e)
@@ -44,17 +67,28 @@ namespace PantryAid.OfficialViews.Grocery_List
         private async void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             var ob = ((CheckBox)sender).BindingContext as IngredientItem;
-            vm.OnChecked((CheckBox)sender, ob.Name, popup);
+            vm.OnChecked((CheckBox)sender, ob, popup);
         }
 
-        private void Delete_Clicked(object sender, EventArgs e)
+        private async void Delete_Clicked(object sender, EventArgs e)
         {
-            vm.OnDelete();
+            bool answer = await DisplayAlert("Are You Sure?", "Do you want to delete all checked items?", "Yes", "No");
+            if (answer == true)
+            {
+                vm.OnDelete();
+                //Remove the popup manually since the checks have been cleared
+                vm.RemovePopup(popup);
+            }
         }
 
-        private void Dump_Clicked(object sender, EventArgs e)
+        private async void Dump_Clicked(object sender, EventArgs e)
         {
+            bool answer = (await DisplayAlert("Move To Pantry", "This action may take a long time to complete\nAre you sure?", "YES", "NO"));
+            if (answer == false)
+                return;
+            
             vm.OnDump();
+            vm.RemovePopup(popup);
         }
     }
 }

@@ -24,6 +24,11 @@ namespace PantryAid.Core.Models
             ListView.Add(item);
         }
 
+        public void Remove(T item)
+        {
+            ListView.Remove(item);
+        }
+
         //INotifyPropertyChanged Boilerplate code
         #region ListViewImplementation
         public event PropertyChangedEventHandler PropertyChanged;

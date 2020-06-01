@@ -22,12 +22,14 @@ namespace PantryAid.ViewModels
             //Navigation and command binding
             this.navigation = nav;
             SubmitCommand = new Command(OnSubmit);
+            SignupCommand = new Command(OnSignup);
 
             //Injection of view model
             _userDatabaseAccess = databaseAccess;
         }
 
         public Action DisplayInvalidLoginPrompt;
+        public Action DisplaySuccessfulSignupPrompt;
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         private string email;
 
@@ -54,6 +56,7 @@ namespace PantryAid.ViewModels
         }
 
         public ICommand SubmitCommand { protected set; get; }
+        public ICommand SignupCommand { protected set; get; }
 
         public void OnSubmit()
         {
@@ -71,23 +74,34 @@ namespace PantryAid.ViewModels
             }
         }
 
+        public void OnSignup()
+        {
+            string newpass = Hashing.HashPassword(Password);
+
+            _userDatabaseAccess.AddUser(new User(Email, newpass));
+
+            DisplaySuccessfulSignupPrompt();
+        }
+
         /// <summary>
         /// Authenticates a user against a SQL database
         /// </summary>
         /// <returns>True if user was authenticated correctly, False if not</returns>
         private bool AuthenticateUser()
         {
-            bool auth = false;
+            bool auth;
 
             //Run SQL command to get user's email
             User usr = _userDatabaseAccess.GetUser(email);
 
-            auth = (usr == null ? false : true);
-
-            if (auth)
+            if (usr == null || Database_Helpers.Hashing.VerifyPassword(password, usr.Hash) == false)
+                auth = false;
+            else
             {
+                SqlServerDataAccess.CurrentUser = usr;
                 SqlServerDataAccess.UserID = usr.Id;
-            }
+                auth = true;
+            }   
 
             return auth;
         }

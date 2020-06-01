@@ -16,7 +16,7 @@ namespace PantryAid.OfficialViews
 
         private async void NavigateToAccountPage(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new ProfilePage());
+            await Navigation.PushModalAsync(new NavigationPage(new ProfilePage()));
         }
 
         private async void NavigateToAboutPage(object sender, EventArgs e)

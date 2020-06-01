@@ -14,13 +14,22 @@ namespace Database_Helpers
     /// </summary>
     public class SqlServerDataAccess : iSqlServerDataAccess
     {
+        #region private variables
         private static string _serverAddress = "aura.cset.oit.edu";
         private static string _serverPort = "5433";
         private static string _databaseName = "JBNT";
         private static string _serverUsername = "JBNT";
         private static string _serverPassword = "Hootie123";
         private static int _curuserid;
+        private static User _currentUser;
         private static bool _debugMode = true;
+
+        /// <summary>
+        /// Definition of return types
+        /// </summary>
+        private int FAIL = 0;
+        private int PASS = 1;
+        #endregion
 
         /// <summary>
         /// Returns The connection string for the database
@@ -30,6 +39,7 @@ namespace Database_Helpers
             return "server=" + ServerAddress + ", " + ServerPort + "; database=" + ServerDatabaseName + "; UID=" + ServerUsername + "; password=" + ServerPassword;
         }
 
+        #region SQL queries
         /// <summary>
         /// Execute a Query on a sql database that has no return type
         /// </summary>
@@ -101,6 +111,7 @@ namespace Database_Helpers
 
                 int usrId = 0;
                 string email = "";
+                string hash = "";
 
                 //Open Connection
                 try { con.Open(); }
@@ -115,6 +126,7 @@ namespace Database_Helpers
                     {
                         usrId = read.GetInt32(0);
                         email = read.GetString(1);
+                        hash = read.GetString(2);
                     }
                     else { return null; }
 
@@ -122,10 +134,124 @@ namespace Database_Helpers
                 }
                 catch (Exception) { return null; }
 
-                return new User() { Id = usrId, Email = email };
+                //Create the New user
+                User newUser = new User
+                {
+                    Id = usrId,
+                    Email = email,
+                    Hash = hash,
+                    Allergies = new List<Alergens>(),
+                    DietaryPreferences = new List<DietPreferences>(),
+                    DislikedRecipes = new List<int>(),
+                    FavoriteRecipes = new List<int>()
+                };
+
+                return newUser;
             }
         }
 
+        public void ExecuteQuery_GetUserAlergies(User user)
+        {
+            string query = "SELECT AlergyID FROM ALERGIES WHERE UserID = '" + user.Id + "';";
+
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(query, con);
+
+                int alergy = 0;
+
+                con.Open();
+                SqlDataReader read = comm.ExecuteReader();
+
+                //Read all rows
+                while (read.Read())
+                {
+                    //per row
+                    alergy = read.GetInt32(0);
+                    user.Allergies.Add((Alergens)alergy);
+                }
+
+                read.Close();
+            }
+        }
+
+        public void ExecuteQuery_GetUserDietaryPreferences(User user)
+        {
+            string query = "SELECT DietaryPreferenceID FROM DIETARY_PREFERENCES WHERE UserID = '" + user.Id + "';";
+
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(query, con);
+
+                int dietaryPreference = 0;
+
+                con.Open();
+                SqlDataReader read = comm.ExecuteReader();
+
+                //Read all rows
+                while (read.Read())
+                {
+                    //per row
+                    dietaryPreference = read.GetInt32(0);
+                    user.DietaryPreferences.Add((DietPreferences)dietaryPreference);
+                }
+
+                read.Close();
+            }
+        }
+
+        public void ExecuteQuery_GetUserDislikedRecipes(User user)
+        {
+            string query = "SELECT RecipeID FROM DISLIKED_RECIPE WHERE UserID = '" + user.Id + "';";
+
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(query, con);
+
+                int recipeID = 0;
+
+                con.Open();
+                SqlDataReader read = comm.ExecuteReader();
+
+                //Read all rows
+                while (read.Read())
+                {
+                    //per row
+                    recipeID = read.GetInt32(0);
+                    user.DislikedRecipes.Add(recipeID);
+                }
+
+                read.Close();
+            }
+        }
+
+        public void ExecuteQuery_GetUserFavoriteRecipes(User user)
+        {
+            string query = "SELECT RecipeID FROM FAVORITE_RECIPE WHERE UserID = '" + user.Id + "';";
+
+            using (SqlConnection con = new SqlConnection(GetConnectionString()))
+            {
+                SqlCommand comm = new SqlCommand(query, con);
+
+                int recipeID = 0;
+
+                con.Open();
+                SqlDataReader read = comm.ExecuteReader();
+
+                //Read all rows
+                while (read.Read())
+                {
+                    //per row
+                    recipeID = read.GetInt32(0);
+                    user.FavoriteRecipes.Add(recipeID);
+                }
+
+                read.Close();
+            }
+        }
+        #endregion
+
+        #region public properties
         /// <summary>
         /// The server address of the SQL server
         /// </summary>
@@ -190,16 +316,19 @@ namespace Database_Helpers
             { _curuserid = value; }
         }
 
+        public static User CurrentUser
+        {
+            get
+            { return _currentUser; }
+            set
+            { _currentUser = value; }
+        }
+
         /// <summary>
         /// Sets Debug mode for application
         /// </summary>
         public static bool DebugMode { get => _debugMode; }
-
-        /// <summary>
-        /// Definition of return types
-        /// </summary>
-        private int FAIL = 0;
-        private int PASS = 1;
+        #endregion
 
         public static string Sanitize(string str)
         {
@@ -221,6 +350,88 @@ namespace Database_Helpers
             str.Replace("/", "");
             str.Replace("|", "");
             return str;
+        }
+
+        //Converts one measurement to another
+        //Converts all liquid measurements to cups and all mass/weight measurements to grams
+        //then converts to the desired measurement from there
+        //Returns -1 if not convertable
+        public static double ConvertM(string From, string To, double val)
+        {
+            if (From == To)
+                return val;
+
+            if (To == "Serving")
+                return -1;
+
+            switch (From)
+            {
+                case "Tbsp":
+                    return ConvertM("Cup", To, val / 16);
+                case "Tsp":
+                    return ConvertM("Cup", To, val / 48);
+                case "Cup":
+                    switch (To)
+                    {
+                        case "Tbsp":
+                            return val * 16;
+                        case "Tsp":
+                            return val * 48;
+                        case "Pint":
+                            return val / 2;
+                        case "Quart":
+                            return val / 4;
+                        case "Gallon":
+                            return val / 16;
+                        case "Liter":
+                            return val / 4.227;
+                        case "Milliliter":
+                            return val / 237;
+                        case "Fluid Ounce":
+                            return val * 8;
+                        default:
+                            return -1;
+                    }
+                case "Pint":
+                    return ConvertM("Cup", To, val * 2);
+                case "Quart":
+                    return ConvertM("Cup", To, val * 4);
+                case "Gallon":
+                    return ConvertM("Cup", To, val * 16);
+                case "Liter":
+                    return ConvertM("Cup", To, val * 4.227);
+                case "Milliliter":
+                    return ConvertM("Cup", To, val / 237);
+                case "Fluid Ounce":
+                    return ConvertM("Cup", To, val / 8);
+
+                case "Ounce":
+                    return ConvertM("Gram", To, val * 28.35);
+                case "Lb":
+                    return ConvertM("Gram", To, val * 454);
+                case "Milligram":
+                    return ConvertM("Gram", To, val / 1000);
+                case "Gram":
+                    switch(To)
+                    {
+                        case "Ounce":
+                            return val / 28.35;
+                        case "Lb":
+                            return val / 454;
+                        case "Milligram":
+                            return val * 1000;
+                        case "Kilogram":
+                            return val / 1000;
+                        default:
+                            return -1;
+                    }
+                case "Kilogram":
+                    return ConvertM("Gram", To, val * 1000);
+
+                case "Serving":
+                default:
+                    return -1;
+            }
         }
     }
 }

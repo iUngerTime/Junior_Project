@@ -16,6 +16,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms.Xaml;
 using PantryAid.Core;
+using System.Collections.ObjectModel;
+using Xamarin.Essentials;
 
 namespace PantryAid.ViewModels
 {
@@ -33,6 +35,15 @@ namespace PantryAid.ViewModels
 
             //Injection of view model
             _ingredientDatabaseAccess = databaseAccess;
+
+            if (Preferences.Get("Images", false) == false)
+            {
+                BG_Opacity = 0;
+            }
+            else
+            {
+                BG_Opacity = 100;
+            }
         }
 
         //  View Model Getter and Setters and properties
@@ -43,14 +54,35 @@ namespace PantryAid.ViewModels
             set
             {
                 _ingredientList = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Ingredient"));
+                PropertyChanged(this, new PropertyChangedEventArgs("IngredientList"));
             }
         }
 
+        private List<IngredientItem> checks = new List<IngredientItem>();
+        public List<IngredientItem> Checks
+        {
+            get { return checks; }
+            set
+            {
+                checks = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Checks"));
+            }
+        }
+
+        private int bgOpacity;
+        public int BG_Opacity
+        {
+            get { return bgOpacity; }
+            set
+            {
+                bgOpacity = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
+            }
+        }
         public async void FillGrid()
         {
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
-
+            _ingredientList.ListView.Clear();
             List<IngredientItem> results = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
             if (results == null)
@@ -65,94 +97,161 @@ namespace PantryAid.ViewModels
 
         }
 
-        // Commands
-        public ICommand AddCommand { protected set; get; }
-        public void OnAdd(object sender, string ingrName, string quant)
+        public async void OnAdd(object sender, string ingrname, string quant, string measure)
         {
-            string ingrname = ingrName;//await DisplayPromptAsync("Add", "Enter an ingredient name", "Add", "Cancel", "eg. Apple", 500);
+            double quantity = Math.Abs(Convert.ToDouble(quant));
 
-            if (ingrname == null) //User clicked cancel
-                return;
+            IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
 
-            double quantity = 0.0f;
-            bool validquantity = false;
-            while (!validquantity)
+            Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
+
+            if (foundingr == null)
             {
-                string strquant = quant;//await DisplayPromptAsync("How much?", "Enter a quantity", "Add", "Cancel", "eg. 3", 10, Keyboard.Numeric);
+                // Wrong way to display an alert, Breaks MVVM model.   
+                //await Application.Current.MainPage.DisplayAlert("Error", "The specified ingredient was not found", "OK");
+                return;
+            }
 
-                if (strquant == null) //User clicked cancel
-                    return;
+            //List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
+            ObservableCollection<IngredientItem> pantryingredients = _ingredientList.ListView;
+            IngredientItem dupingr = pantryingredients.FirstOrDefault(x => x.Name == ingrname);
 
-                quantity = Convert.ToDouble(strquant);
+            //If ingrname already exists in the pantry then we need to combine
+            if (dupingr != null)
+            {
+                //If they are the same measurement
+                if (dupingr.Measurement == measure)
+                {
+                    //Replace the ingredient in the ListView with one that has the new quantity
+                    int index = _ingredientList.ListView.IndexOf(dupingr);
+                    _ingredientList.ListView.RemoveAt(index);
+                    _ingredientList.ListView.Insert(index, new IngredientItem(foundingr, quantity + dupingr.Quantity, measure));
 
-                if (quantity <= 0)
-                    return; //await DisplayAlert("Error", "Quantity must be positive", "OK");
+                    //Change the quantity in the database
+                    ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, foundingr.IngredientID, quantity + dupingr.Quantity);
+                }
+                //If they are not the same measurement
                 else
-                    validquantity = true;
+                {
+                    double NewToOldM = SqlServerDataAccess.ConvertM(measure, dupingr.Measurement, quantity);
+                    double OldToNewM = SqlServerDataAccess.ConvertM(dupingr.Measurement, measure, dupingr.Quantity);
+
+                    if (NewToOldM == -1 || OldToNewM == -1) //Invalid conversion
+                        return;
+
+                    //Use whichever conversion results in the smaller number
+                    if (NewToOldM + dupingr.Quantity < OldToNewM + quantity)
+                    { //Use the old measurement
+                        ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, NewToOldM + dupingr.Quantity);
+
+                        int index = _ingredientList.ListView.IndexOf(dupingr);
+                        _ingredientList.ListView.RemoveAt(index);
+                        _ingredientList.ListView.Insert(index, new IngredientItem(foundingr, NewToOldM + dupingr.Quantity, dupingr.Measurement));
+                    }
+                    else
+                    { //Use the new measurement
+                        ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, quantity + OldToNewM);
+                        ingrdata.UpdatePantryIngredientMeasurement(SqlServerDataAccess.UserID, dupingr.ID, measure);
+
+                        int index = _ingredientList.ListView.IndexOf(dupingr);
+                        _ingredientList.ListView.RemoveAt(index);
+                        _ingredientList.ListView.Insert(index, new IngredientItem(foundingr, quantity + OldToNewM, measure));
+                    }
+                }
             }
-
-
-            IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
-
-            Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
-
-
-            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
-
-            if (pantryingredients.Exists(x => x.ID == foundingr.IngredientID))
+            else //If the ingredient is not already in the pantry
             {
-                //await DisplayAlert("Error", "The specified ingredient is already in your pantry", "OK");
-                return;
+                _ingredientList.Add(new IngredientItem(foundingr, quantity, measure));
+                ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr.IngredientID, measure, quantity);
             }
-
-            //_ingredientList.Add(new IngredientItem(foundingr, quantity, Measurements));
-            //ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, foundingr, quantity);
         }
 
-
-        public ICommand RemoveCommand { protected set; get; }
-        public async void OnRemove(string ingrName)
+        public void OnRemove()
         {
-            string ingrname = ingrName;// = await DisplayPromptAsync("Remove", "Enter an ingredient name", "OK", "Cancel", "eg. Apple", 500);
-
-            if (ingrname == null) //User clicked cancel
-                return;
-
             IngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
-            Ingredient foundingr = ingrdata.GetIngredient(ingrname.ToLower());
-
-           IngredientItem item = _ingredientList.ListView.Single(x => x.ID == foundingr.IngredientID);
-            _ingredientList.ListView.Remove(item);
+            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
+            foreach (IngredientItem ingr in Checks)
+            {
+                _ingredientList.ListView.Remove(ingr);
+                ingrdata.RemoveIngredientFromPantry(SqlServerDataAccess.UserID, ingr.ID);
+            }
         }
 
-        /// Authenticate an ingedient against a SQL database
-        /// returns true is ingredient was authenticated, false if not
-        
-        //private bool AuthenticateIngredient()
-        //{
-        //    bool auth = false;
-
-        //    //Ingredient ing = _ingredientDatabaseAccess.GetIngredient(_ingredientItem.ToLower());
-
-        //    //auth = (ing == null ? false : true);
-
-        //    if (auth)
-        //    {
-
-        //    }
-
-        //    return auth;
-        //}
-
-        private void QuantityIncrement()
+        public void OnPlus(Entry QuantEntry)
         {
-
+            QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) + 1).ToString();
         }
-        
 
-        private void QuantityDecrement()
+        public void OnMinus(Entry QuantEntry)
         {
+            if (Convert.ToDouble(QuantEntry.Text) > 1)
+                QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) - 1).ToString();
+        }
+        public void QuantityChanged(object sender, Entry QuantEntry)
+        {
+            Button b = (Button)sender;
+            //Get Command param
+            IngredientItem ob = b.CommandParameter as IngredientItem;
 
+            if (ob != null)
+            {
+                iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+                //Increment or decrement based on which button was clicked
+                double newquant = ob.Quantity;
+                if (b.Text == "+")
+                    QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) + 1).ToString();
+                else if (b.Text == "-")
+                     if (Convert.ToDouble(QuantEntry.Text) > 1)
+                        QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) - 1).ToString();
+
+                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, ob.ID, newquant);
+                //Replace the item in the list with a duplicate that has the changed quantity
+                int index = _ingredientList.ListView.IndexOf(ob);
+                _ingredientList.ListView.Remove(ob);
+                if (newquant > 0)
+                    _ingredientList.ListView.Insert(index, new IngredientItem(ob.Ingredient, newquant, ob.Measurement));
+            }
+        }
+        public async void OnChecked(CheckBox sender, IngredientItem ingr, Frame popup)
+        {
+            if (sender.IsChecked)
+                Checks.Add(ingr);
+            else
+                Checks.Remove(ingr);
+
+            //If the popup isn't there and there's at least one item checked
+            if (!popup.IsVisible && Checks.Count > 0)
+            {
+                popup.IsVisible = true;
+                popup.AnchorX = 1;
+                popup.AnchorY = 1;
+
+                Animation scaleAnimation = new Animation(f => popup.Scale = f, 0.5, 1, Easing.SinInOut);
+                Animation fadeAnimation = new Animation(f => popup.Opacity = f, 0.2, 1, Easing.SinInOut);
+
+                scaleAnimation.Commit(popup, "popupScaleAnimation", 25, 25);
+                fadeAnimation.Commit(popup, "popupFadeAnimation", 25, 50);
+            }
+            else if (Checks.Count < 1)
+            {
+                RemovePopup(popup);
+            }
+        }
+        public async void RemovePopup(Frame popup)
+        {
+            popup.IsVisible = false;
+            await Task.WhenAny<bool>
+                (
+                popup.FadeTo(0, 25, Easing.SinInOut)
+                );
+        }
+
+        public void OnAppear()
+        {
+            if (Preferences.Get("Images", false) == false)
+                BG_Opacity = 0;
+            else
+                BG_Opacity = 100;
         }
     }
 }

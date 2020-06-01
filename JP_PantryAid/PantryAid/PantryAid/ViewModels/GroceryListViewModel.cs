@@ -11,6 +11,8 @@ using System.Data.SqlClient;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Linq;
+using Xamarin.Essentials;
 
 namespace PantryAid.ViewModels
 {
@@ -42,6 +44,15 @@ namespace PantryAid.ViewModels
 
             // Dependency injection
             _ingredientDatabaseAccess = databaseAccess;
+
+            if (Preferences.Get("Images", false) == false)
+            {
+                BG_Opacity = 0;
+            }
+            else
+            {
+                BG_Opacity = 100;
+            }
         }
 
         // View Model getter and setters and properties
@@ -57,8 +68,8 @@ namespace PantryAid.ViewModels
         }
 
         //Keeps track of which ingredients have their boxes checked
-        private List<string> checks = new List<string>();
-        public List<string> Checks
+        private List<IngredientItem> checks = new List<IngredientItem>();
+        public List<IngredientItem> Checks
         {
             get { return checks; }
             set
@@ -68,6 +79,16 @@ namespace PantryAid.ViewModels
             }
         }
 
+        private int bgOpacity;
+        public int BG_Opacity
+        {
+            get { return bgOpacity; }
+            set
+            {
+                bgOpacity = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
+            }
+        }
         //
         // end Properties
 
@@ -77,7 +98,7 @@ namespace PantryAid.ViewModels
         {
             GList.ListView.Clear();
 
-            /*string[] contents = File.ReadAllLines(FilePath);
+            string[] contents = File.ReadAllLines(FilePath);
 
             foreach (string line in contents)
             {
@@ -85,39 +106,156 @@ namespace PantryAid.ViewModels
 
                 IngredientItem I = new IngredientItem(new Ingredient(-1, temp[0]), Convert.ToDouble(temp[1]), temp[2]);
                 GList.Add(I);
-            }*/
+            }
         }
 
         public async void OnAdd(string ingrname, double quant, string measure)
         {
+            ingrname = ingrname.ToLower();
+            ingrname = SqlServerDataAccess.Sanitize(ingrname);
 
-            /*//ingrname = SqlHelper.Sanitize(ingrname);
-            
-            IngredientItem item = new IngredientItem(new Ingredient(-1, ingrname), quant, measure);
-            GList.Add(item);
+            //Below is the code for converting measurements
+            double newquant = -1.0;
+            string[] lines = File.ReadAllLines(FilePath);
+            List<string> newlines = new List<string>();
 
-            File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));*/
+            //Check if this ingredient already exists in the list
+            foreach (string line in lines)
+            {
+                string[] items = line.Split('-'); //items[0] is name, items[1] is quantity, items[2] is measurement
+                
+                //If two ingredients match and have the same measurement
+                if (items[0] == ingrname && items[2] == measure)
+                {
+                    newquant = Convert.ToDouble(items[1]) + quant;
+                    newquant = Math.Round(newquant, 2, MidpointRounding.AwayFromZero);
+                    newlines.Add(String.Format("{0}-{1}-{2}", ingrname, newquant, measure));
+
+                    IngredientItem olditem = GList.ListView.First(x => x.Name == ingrname);
+                    int oldindex = GList.ListView.IndexOf(olditem);
+                    olditem.Quantity = newquant;
+                    GList.ListView.RemoveAt(oldindex);
+                    GList.ListView.Insert(oldindex, olditem);
+                }
+                //Else if the two ingredients have the same name only
+                else if (items[0] == ingrname)
+                {
+                    double result1 = SqlServerDataAccess.ConvertM(items[2], measure, Convert.ToDouble(items[1]));
+                    double result2 = SqlServerDataAccess.ConvertM(measure, items[2], quant);
+                    IngredientItem olditem = GList.ListView.First(x => x.Name == ingrname);
+                    int oldindex = GList.ListView.IndexOf(olditem);
+
+                    if (result1 == -1 || result2 == -1)
+                        return;
+                    if (result1 + quant > result2 + Convert.ToDouble(items[1]))
+                    {
+                        newquant = result2 + Convert.ToDouble(items[1]);
+                        newquant = Math.Round(newquant, 2, MidpointRounding.AwayFromZero);
+                        newlines.Add(String.Format("{0}-{1}-{2}", ingrname, newquant, items[2]));
+
+                        olditem.Measurement = items[2];
+                        olditem.Quantity = newquant;
+                    }
+                    else
+                    {
+                        newquant = result1 + quant;
+                        newquant = Math.Round(newquant, 2, MidpointRounding.AwayFromZero);
+                        newlines.Add(String.Format("{0}-{1}-{2}", ingrname, newquant, measure));
+
+                        olditem.Measurement = measure;
+                        olditem.Quantity = newquant;
+                    }
+                    GList.ListView.RemoveAt(oldindex);
+                    GList.ListView.Insert(oldindex, olditem);
+                }
+                else //Otherwise it isn't, it can stay in the file like it was before
+                    newlines.Add(line);
+            }
+            //Rewrite back to the file
+            File.WriteAllLines(FilePath, newlines.ToArray());
+
+            if (newquant == -1.0) //If newquant is its default value, then the name didn't already exist in the list just append the new item
+            {
+                IngredientItem item = new IngredientItem(new Ingredient(-1, ingrname), quant, measure);
+                GList.Add(item);
+
+                File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
+            }
         }
 
         public async void OnDelete()
         {
+            //Remove the items from the GList that were checked
+            foreach (IngredientItem ingr in Checks)
+            {
+                GList.ListView.Remove(ingr);
+            }
 
+            //Wipe the file
+            File.WriteAllText(FilePath, "");
+
+            //Rewrite the file from the contents of the list view model
+            foreach (IngredientItem item in GList.ListView)
+            {
+                File.AppendAllText(FilePath, String.Format("{0}-{1}-{2}\n", item.Name, item.Quantity, item.Measurement));
+            }
+            Checks.Clear();
         }
 
         public async void OnDump()
         {
-            /*List<IngredientItem> LostIngredients = new List<IngredientItem>(); //Keeps track of the entries that are not dumped because they don't exist in the database
+            List<IngredientItem> LostIngredients = new List<IngredientItem>(); //Keeps track of the entries that are not dumped because they don't exist in the database
             iIngredientData ingrdata = new IngredientData(new SqlServerDataAccess());
+            List<IngredientItem> pantryingredients = ingrdata.GetIngredientsFromPantry(SqlServerDataAccess.UserID);
 
-            foreach (IngredientItem item in _glist.ListView)
+            foreach (IngredientItem item in Checks)
             {
                 Ingredient ingr = ingrdata.GetIngredient(item.Name.ToLower());
 
+                //If the ingredient is not a valid ingredient
                 if (ingr == null)
                     LostIngredients.Add(item);
                 else
-                    ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, ingr, item.Measurement, item.Quantity);
+                {
+                    IngredientItem dupingr = pantryingredients.FirstOrDefault(x => x.Name == item.Name);
+                    //If the ingredient is not already in the pantry
+                    if (dupingr == null)
+                    {
+                        ingrdata.AddIngredientToPantry(SqlServerDataAccess.UserID, ingr, item.Measurement, item.Quantity);
+                    }
+                    else
+                    {
+                        if (item.Measurement == dupingr.Measurement)
+                        {
+                            ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, item.Quantity + dupingr.Quantity);
+                        }
+                        else
+                        {
+                            double OldToNewM = SqlServerDataAccess.ConvertM(dupingr.Measurement, item.Measurement, dupingr.Quantity);
+                            double NewToOldM = SqlServerDataAccess.ConvertM(item.Measurement, dupingr.Measurement, item.Quantity);
+
+                            if (OldToNewM == -1 || NewToOldM == -1)
+                            {
+                                LostIngredients.Add(item);
+                                continue;
+                            }
+
+                            if (NewToOldM + dupingr.Quantity < OldToNewM + item.Quantity) //Use the old measurement
+                            {
+                                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, NewToOldM + dupingr.Quantity);
+                            }
+                            else //Use the new measurement
+                            {
+                                ingrdata.UpdatePantryIngredientQuantity(SqlServerDataAccess.UserID, dupingr.ID, OldToNewM + item.Quantity);
+                                ingrdata.UpdatePantryIngredientMeasurement(SqlServerDataAccess.UserID, dupingr.ID, item.Measurement);
+                            }
+                        }
+                    }
+                }
+
             }
+
+            //Commented out until I can ask brent how to do alert displays in the vm
 
             string alert = "The following ingredients could not be added to your pantry:\n";
 
@@ -126,28 +264,30 @@ namespace PantryAid.ViewModels
                 alert += item.Name + "\n";
             }
             if (LostIngredients.Count == 0)
-                alert = "Successfully dumped grocery list!";
+                alert = "Successfully moved grocery list to pantry!";
 
-            //await DisplayAlert("Grocery Dump", alert, "OK");*/
+            //Just for testing
+            await Application.Current.MainPage.DisplayAlert("Move To Pantry", alert, "OK");
+            Checks.Clear();
         }
 
         public void OnPlus(Entry QuantEntry)
         {
-            QuantEntry.Text = (Convert.ToInt32(QuantEntry.Text) + 1).ToString();
+            QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) + 1).ToString();
         }
 
         public void OnMinus(Entry QuantEntry)
         {
-            if (Convert.ToInt32(QuantEntry.Text) > 1)
-                QuantEntry.Text = (Convert.ToInt32(QuantEntry.Text) - 1).ToString();
+            if (Convert.ToDouble(QuantEntry.Text) > 1)
+                QuantEntry.Text = (Convert.ToDouble(QuantEntry.Text) - 1).ToString();
         }
 
-        public async void OnChecked(CheckBox sender, string Name, Frame popup)
+        public async void OnChecked(CheckBox sender, IngredientItem ingr, Frame popup)
         {
             if (sender.IsChecked)
-                Checks.Add(Name);
+                Checks.Add(ingr);
             else
-                Checks.Remove(Name);
+                Checks.Remove(ingr);
 
             //If the popup isn't there and there's at least one item checked
             if (!popup.IsVisible && Checks.Count > 0)
@@ -156,24 +296,33 @@ namespace PantryAid.ViewModels
                 popup.AnchorX = 1;
                 popup.AnchorY = 1;
 
-                //Animation scaleXAnimation = new Animation(f => popup.ScaleX = f, 0.5, 1, Easing.SinInOut);
-                Animation scaleYAnimation = new Animation(f => popup.Scale = f, 0.5, 1, Easing.SinInOut);
-
+                Animation scaleAnimation = new Animation(f => popup.Scale = f, 0.5, 1, Easing.SinInOut);
                 Animation fadeAnimation = new Animation(f => popup.Opacity = f, 0.2, 1, Easing.SinInOut);
 
-                //scaleXAnimation.Commit(popup, "popupScaleAnimation", 75);
-                scaleYAnimation.Commit(popup, "popupScaleAnimation", 25, 25);
+                scaleAnimation.Commit(popup, "popupScaleAnimation", 25, 25);
                 fadeAnimation.Commit(popup, "popupFadeAnimation", 25, 50);
             }
             else if (Checks.Count < 1)
             {
-                popup.IsVisible = false;
-                await Task.WhenAny<bool>
-                    (
-                    popup.FadeTo(0, 25, Easing.SinInOut)
-                    );
-
+                RemovePopup(popup);
             }
+        }
+
+        public void OnAppear()
+        {
+            if (Preferences.Get("Images", false) == false)
+                BG_Opacity = 0;
+            else
+                BG_Opacity = 100;
+        }
+
+        public async void RemovePopup(Frame popup)
+        {
+            popup.IsVisible = false;
+            await Task.WhenAny<bool>
+                (
+                popup.FadeTo(0, 25, Easing.SinInOut)
+                );
         }
     }
 }

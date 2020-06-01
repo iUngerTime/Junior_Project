@@ -5,26 +5,75 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.Profile.ProfilePage">
-    <ContentPage.Content>
-        <ScrollView>
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,0">
+            <Image Source="pantryAid.png"
+                   HeightRequest="50"
+                   WidthRequest="50"/>
+            <StackLayout Spacing="0" Orientation="Horizontal" VerticalOptions="Center">
+                <Label Text="Pantry"
+                   TextColor="White"
+                   FontSize="30"
+                   FontAttributes="Bold"/>
+                <Label Text="Aid"
+                   TextColor="Red"
+                   FontSize="30"
+                   FontAttributes="Bold"/>
+            </StackLayout>
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <StackLayout Orientation="Vertical">
+        <Label Text="Account Settings" FontSize="40" HorizontalOptions="Center" FontAttributes="Italic"/>
+        <BoxView BackgroundColor="DimGray" HeightRequest="2"/>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
 
-            <StackLayout BackgroundColor="{DynamicResource Gray-100}" Spacing="0">
-
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                </Grid>
+            <!--first row is email-->
+            <StackLayout Orientation="Horizontal" VerticalOptions="Center" Grid.Row="0" Grid.Column="0">
+                <Label Text="Email:" FontAttributes="Bold" FontSize="20"/>
+                <Label Text="{Binding Email}" FontSize="20"/>
             </StackLayout>
 
-        </ScrollView>
-    </ContentPage.Content>
+            <Button Grid.Row="0" Grid.Column="1" Text="Edit" Command="{Binding ChangeEmail}"/>
+
+            <!--second row is password-->
+            <StackLayout Orientation="Horizontal" VerticalOptions="Center" Grid.Row="1" Grid.Column="0">
+                <Label Text="Password:" FontAttributes="Bold" FontSize="20"/>
+                <Label Text="*************" FontSize="20"/>
+            </StackLayout>
+
+            <Button Grid.Row="1" Grid.Column="1" Text="Edit" Command="{Binding ChangePassword}"/>
+
+            <!--third row is prefered recipies-->
+            <Label Text="Prefered Recipes" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="2" Grid.Column="1" Text="View" Command="{Binding NavigatePreferedRecipes}"/>
+
+            <!--fouth row is disliked recipies-->
+            <Label Text="Disliked Recipes" FontAttributes="Bold" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="3" Grid.Column="1" Text="View" Command="{Binding NavigateDislikedRecipes}"/>
+
+            <!--Fifth row is alergies-->
+            <Label Text="Alergies" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="4" Grid.Column="1" Text="View" Command="{Binding NavigateAlergies}"/>
+
+            <!--sixth row is ditary options-->
+            <Label Text="Dietary Options" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="5" Grid.Column="1" Text="View" Command="{Binding NavigateDietaryOptions}"/>
+
+            <Label Text="Use Background Images" FontAttributes="Bold" Grid.Row="6" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Switch x:Name="ImageToggle" Grid.Row="6" Grid.Column="1" IsToggled="{Binding ImagesSwitchToggled}" Toggled="ImageToggle_Toggled" ThumbColor="Blue" OnColor="LightBlue"/>
+        </Grid>
+    </StackLayout>
 </ContentPage>

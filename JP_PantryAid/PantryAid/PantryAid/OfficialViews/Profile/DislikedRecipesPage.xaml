@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PantryAid.OfficialViews.Profile.DislikedRecipesPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Disliked Recipes" FontSize="40" HorizontalOptions="Center" FontAttributes="Italic"/>
+            <BoxView BackgroundColor="DimGray" HeightRequest="2"/>
+
+            <ListView ItemsSource="{Binding DisplayList.ListView}" SeparatorVisibility="None"
+                      SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_ItemTapped" RowHeight="60">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <!--The Grid holds the image and the title-->
+                            <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" Margin="5,0,0,5" IsClippedToBounds="True" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Image Source="{Binding image}" Grid.Column="0" x:Name="Recipe_Image"
+                                       VerticalOptions="FillAndExpand" 
+                                       HorizontalOptions="FillAndExpand"/>
+                                <StackLayout Orientation="Vertical" Grid.Column="1"  >
+                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}"   
+                                                   VerticalOptions="Center" MaxLines="1"/>
+                                    <StackLayout Orientation="Horizontal" Margin="15,0,10,0">
+                                        <Label x:Name="ReadyInMinLabel" Text="Ready in:" StyleClass="readyInMinLabel"/>
+                                        <!--<Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />-->
+                                        <Label Text="{Binding readyInMinutes}" FontSize="Micro"/>
+                                        <Label Text="min" FontSize="Micro"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" IsEnabled="{Binding NotStartOfList}" HorizontalOptions="Start" StyleClass="recipePageNavButtons" />
+                <BoxView WidthRequest="200"></BoxView>
+                <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" IsEnabled="{Binding NotEndOfList}" HorizontalOptions="End" StyleClass="recipePageNavButtons"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
