@@ -93,7 +93,6 @@ namespace PantryAid.ViewModels
                 if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
             }
         }
-        public INavigation navigation { get; set; }
 
         public RecipeFinderViewModel(INavigation nav)
         {
