@@ -11,5 +11,9 @@ namespace PantryAid.Core.Utilities
         List<IngredientItem> ExecuteQuery_GetPantry(string sql);
         Ingredient ExecuteQuery_SingleIngredientItem(string sql);
         User ExecuteQuery_SingleUser(string sql);
+        void ExecuteQuery_GetUserAlergies(User user);
+        void ExecuteQuery_GetUserDietaryPreferences(User user);
+        void ExecuteQuery_GetUserDislikedRecipes(User user);
+        void ExecuteQuery_GetUserFavoriteRecipes(User user);
     }
 }
