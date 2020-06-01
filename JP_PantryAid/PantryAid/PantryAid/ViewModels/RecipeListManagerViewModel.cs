@@ -24,7 +24,8 @@ namespace PantryAid.ViewModels
         bool _startOfList;
         bool _notEndOfList;
         bool _notStartOfList;
-        private ListViewModel<Recipe_Full> _list = new ListViewModel<Recipe_Full>();
+        private ListViewModel<Recipe_Full> _displayList = new ListViewModel<Recipe_Full>();
+        private List<Recipe_Full> _fullList = new List<Recipe_Full>();
         #endregion
 
         public RecipeListManagerViewModel(INavigation nav, iUserDataRepo userDataAccess, List<int> ListToManage)
@@ -37,10 +38,11 @@ namespace PantryAid.ViewModels
             _userDatabaseAccess = userDataAccess;
 
             //Load the list of IDs into the view
+            LoadFullList();
             LoadDisplayList();
         }
 
-        private void LoadDisplayList()
+        public void LoadDisplayList()
         {
             //start at the beginning unless already displayed that
             int startIndex = _offset * _recipesPerPage;
@@ -48,13 +50,13 @@ namespace PantryAid.ViewModels
 
             if (_offset == 0)
             {
-                _startOfList = true;
-                _notStartOfList = !_startOfList;
+                StartOfList = true;
+                NotStartOfList = !StartOfList;
             }
             else
             {
-                _startOfList = false;
-                _notStartOfList = !_startOfList;
+                StartOfList = false;
+                NotStartOfList = !StartOfList;
             }
 
             if(numLeft != 0)
@@ -64,33 +66,43 @@ namespace PantryAid.ViewModels
                 if (numLeft > 10)
                 {
                     endIndex = startIndex + 10;
-                    _endOfList = false;
-                    _notEndOfList = !_endOfList;
+                    EndOfList = false;
+                    NotEndOfList = !EndOfList;
                 }
                 else
                 {
                     endIndex = startIndex + numLeft;
-                    _endOfList = true;
-                    _notEndOfList = !_endOfList;
+                    EndOfList = true;
+                    NotEndOfList = !EndOfList;
                 }
 
                 //Set the display list
-                _list.ListView.Clear();
+                _displayList.ListView.Clear();
                 for (int currInd = startIndex; currInd < endIndex; currInd++)
                 {
-                    SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
-                    _list.Add(api.GetRecipeFull(_listToManage[currInd]));
+                    _displayList.Add(_fullList[currInd]);
                 }
+            }
+        }
+
+        private void LoadFullList()
+        {
+            //Set the display list
+            _displayList.ListView.Clear();
+            for (int currInd = 0; currInd < _listToManage.Count; currInd++)
+            {
+                SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
+                _fullList.Add(api.GetRecipeFull(_listToManage[currInd]));
             }
         }
 
         #region public properties
         public ListViewModel<Recipe_Full> DisplayList
         {
-            get { return _list; }
+            get { return _displayList; }
             set
             {
-                _list = value;
+                _displayList = value;
                 NotifyPropertyChanged("DisplayList");
             }
         }
@@ -157,7 +169,7 @@ namespace PantryAid.ViewModels
 
         public void ItemTapped(int index)
         {
-            navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
+            navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_displayList.ListView[index].id)));
         }
 
         public void AddRecipeToDislikedList(int index)

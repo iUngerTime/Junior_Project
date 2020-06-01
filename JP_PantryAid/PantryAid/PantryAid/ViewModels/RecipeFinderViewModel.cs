@@ -98,6 +98,7 @@ namespace PantryAid.ViewModels
         public void ItemTapped(int index)
         {
             navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
+            //AddRecipeToPreferedList(_list.ListView[index].id);
         }
 
         public void AddRecipeToDislikedList(int index)
