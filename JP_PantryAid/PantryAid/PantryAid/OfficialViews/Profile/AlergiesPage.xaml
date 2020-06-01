@@ -25,7 +25,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Button Text="Update Preferences" FontAttributes="Bold" WidthRequest="100" HeightRequest="50" Clicked="UpdateUserAlergyPreferences"/>
+            <Button Text="Update Preferences" FontAttributes="Bold" WidthRequest="100" HeightRequest="50" BackgroundColor="Transparent" BorderColor="Black" BorderWidth="2" Clicked="UpdateUserAlergyPreferences"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
