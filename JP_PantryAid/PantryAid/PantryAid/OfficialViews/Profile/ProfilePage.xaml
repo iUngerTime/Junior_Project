@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.Profile.ProfilePage">
     <NavigationPage.TitleView>
-        <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,0">
+        <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Start" Margin="0,0,10,0">
             <Image Source="pantryAid.png"
                    HeightRequest="50"
                    WidthRequest="50"/>
@@ -23,7 +23,7 @@
         </StackLayout>
     </NavigationPage.TitleView>
     <StackLayout Orientation="Vertical">
-        <Label Text="Account Settings" FontSize="40" HorizontalOptions="Center" FontAttributes="Italic"/>
+        <Label Text="Account Settings" FontSize="40" HorizontalTextAlignment="Start" Padding="10,0,0,0" FontAttributes="Bold"/>
         <BoxView BackgroundColor="DimGray" HeightRequest="2"/>
         <Grid Margin="10">
             <Grid.RowDefinitions>
