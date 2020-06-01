@@ -1,4 +1,6 @@
-﻿using PantryAid.ViewModels;
+﻿using CommonServiceLocator;
+using PantryAid.Core.Interfaces;
+using PantryAid.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +21,7 @@ namespace PantryAid.OfficialViews.Recipe_Finder
 
         public RecipeFinderPage()
         {
-            vm = new RecipeFinderViewModel(Navigation);
+            vm = new RecipeFinderViewModel(Navigation, ServiceLocator.Current.GetInstance<iUserDataRepo>());
             this.BindingContext = vm;
             //this.BindingContext = vm._list;
             InitializeComponent();
