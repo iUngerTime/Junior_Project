@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeDetailsPage">
+    <ContentPage.Content>
+        <ScrollView >
+            <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
+                <Label Text="Recipe Details Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
+
+                    <Label  Text="Recipe Name" Margin="10" 
+                            HorizontalOptions="StartAndExpand" VerticalOptions="Start" FontSize="20" />
+                    <Label  Text="{ Binding RecipeFull.name}" 
+                            Margin="10" 
+                            HorizontalOptions="CenterAndExpand" 
+                            VerticalOptions="Start" FontSize="20" />
+                    <Image Source="{Binding RecipeFull.image}"/>
+                    <Label  TextType="Html" Text="Instructions" 
+                            Margin="10" 
+                            HorizontalOptions="StartAndExpand" 
+                            VerticalOptions="StartAndExpand" 
+                            FontSize="20" />
+                    <Label TextType="Html" Text="{ Binding RecipeFull.instructions}" 
+                           Margin="10" 
+                           HorizontalOptions="StartAndExpand" 
+                           VerticalOptions="StartAndExpand" 
+                           FontSize="20" />
+                    <Label  TextType="Html" Text="Ingredients:" 
+                            Margin="10" 
+                            HorizontalOptions="StartAndExpand" 
+                            VerticalOptions="StartAndExpand" 
+                            FontSize="20" />
+                <ListView ItemsSource="{ Binding RecipeFull.extendedIngredients }" IsEnabled="False" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                               <Grid >
+                                   <Grid.ColumnDefinitions>
+                                       <ColumnDefinition Width="4*"/>
+                                       <ColumnDefinition Width="5*"/>
+                                       <ColumnDefinition Width="5*"/>
+                                       
+                                    </Grid.ColumnDefinitions>
+                                   <Image Source="{ Binding image }" Grid.Column="0"/>
+                                    <StackLayout Grid.Column="1" Orientation="Horizontal">
+                                       <Label Text="{ Binding amount }" HorizontalOptions="Start" 
+                                              FontSize="Medium" />
+                                       <Label Text="{ Binding unit }" HorizontalOptions="Start" 
+                                              FontSize="Medium" />
+                                    </StackLayout>
+                                   <Label Text="{ Binding name }" FontSize="Medium" Grid.Column="2" 
+                                          HorizontalTextAlignment="Start"
+                                          HorizontalOptions="Start"/>
+                                   
+                               </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+                <Button HorizontalOptions="End"  Text="Find Similar" Clicked="B_SimilarClicked"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

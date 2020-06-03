@@ -80,6 +80,12 @@ namespace SpoonacularAPI
             public bool instructionsRequired;
         }
 
+        string SanitizeInput(string str)
+        {
+            string result = str.Replace(" ", "+");
+            return result;
+        }
+
 
 
         /// <summary>
@@ -95,6 +101,7 @@ namespace SpoonacularAPI
         {
             RecipeSearchParams param = SetUpParams(query, maxResults, offset);
             SpoonacularRecipeShortSearchResult result = QueryAPI(param);
+
             foreach (Recipe_Short recipe_s in result.results)
             {
                 if (recipe_s.author == null)
@@ -130,7 +137,7 @@ namespace SpoonacularAPI
             string diet = "",
             string excludeIngredients = "",
             string intolerances = "",
-            bool limitLicense = true,
+            bool limitLicense = false,
             bool instructionsRequired = true)
         {
             RecipeSearchParams param = SetUpParams(query, number, offset, cuisine, diet, excludeIngredients, intolerances, limitLicense,
@@ -139,7 +146,7 @@ namespace SpoonacularAPI
             return result.results;
         }
 
-        public List<Recipe_Shorter> FindSimilarRecipes(string id, int number = 5, bool limitLicense = true)
+        public List<Recipe_Shorter> FindSimilarRecipes(string id, int number = 5, bool limitLicense = false)
         {//Broken
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeInformationURL + id + "/similar", Method.GET);
@@ -176,7 +183,7 @@ namespace SpoonacularAPI
         /// <param name="ignorePantry">Whether to ignore typical pantry items, such as water, salt, flo</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public List<RecipeByIngredient> FindRecipeByIngredients(List<string> ingredients, int number, bool limitLicense = true, int ranking = 2, bool ignorePantry = true)
+        public List<RecipeByIngredient> FindRecipeByIngredients(List<string> ingredients, int number, bool limitLicense = false, int ranking = 2, bool ignorePantry = true)
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeSearchByIngredientsURL, Method.GET);
@@ -244,7 +251,7 @@ namespace SpoonacularAPI
 
 
         //sets up a struct with default values
-        public static ComplexParameters SetUpComplexParameters()
+        public ComplexParameters SetUpComplexParameters()
         {
             ComplexParameters par = new ComplexParameters();
             par.query = "";
@@ -265,11 +272,11 @@ namespace SpoonacularAPI
             par.ignorePantry = true;
             par.sort = "";
             par.sortDirection = "";
-            par.limitLicense = true;
+            par.limitLicense = false;
             return par;
         }
 
-        public Recipe_Complex FindComplexRecipe(ComplexParameters par)
+        public Recipe_Complex_Results FindComplexRecipe(ComplexParameters par)
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_ComplexRecipeURL, Method.GET);
@@ -313,13 +320,13 @@ namespace SpoonacularAPI
             request.AddParameter("apiKey", m_APYKey);
 
             //Execute the query
-            Recipe_Complex result;
+            Recipe_Complex_Results result;
             try
             {
                 RestResponse response = client.Execute(request);
                 //try to get the data out of the response
 
-                result = JsonConvert.DeserializeObject<Recipe_Complex>(response.Content);
+                result = JsonConvert.DeserializeObject<Recipe_Complex_Results>(response.Content);
                 return result;
             }
             catch (Exception) //I don't know what this exception handling does, I copied it from Nick's stuff
@@ -332,7 +339,7 @@ namespace SpoonacularAPI
 
 
 
-        public Recipe_Complex FindComplexRecipe(string query,
+        public Recipe_Complex_Results FindComplexRecipe(string query,
             int offset = 0,
             int number = 5,
             string cuisine = "", 
@@ -350,7 +357,7 @@ namespace SpoonacularAPI
             bool ignorePantry = true, 
             string sort = "", 
             string sortDirection = "", 
-            bool limitLicense = true
+            bool limitLicense = false
             )
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
@@ -395,13 +402,13 @@ namespace SpoonacularAPI
             request.AddParameter("apiKey", m_APYKey);
 
             //Execute the query
-            Recipe_Complex result;
+            Recipe_Complex_Results result;
             try
             {
                 RestResponse response = client.Execute(request);
                 //try to get the data out of the response
 
-                result = JsonConvert.DeserializeObject<Recipe_Complex>(response.Content);
+                result = JsonConvert.DeserializeObject<Recipe_Complex_Results>(response.Content);
                 return result;
             }
             catch (Exception) //I don't know what this exception handling does, I copied it from Nick's stuff
@@ -420,6 +427,7 @@ namespace SpoonacularAPI
         {
             RestClient client = new RestClient(SpoonacularAPI.m_URL);
             RestRequest request = new RestRequest(SpoonacularAPI.m_RecipeSearchURL, Method.GET);
+            param.query = SanitizeInput(param.query);
 
             //Set up the query parameters
             request.AddParameter("query", param.query);
@@ -481,6 +489,12 @@ namespace SpoonacularAPI
             catch (Exception e)
             {
                 throw e;
+            }
+
+            //recipe.image = "https://spoonacular.com/recipeImages/" + recipe.image;
+            foreach (Recipe_Full.RecipeFullIngredient ingred in recipe.extendedIngredients)
+            {
+                ingred.image = "https://spoonacular.com/cdn/ingredients_100x100/" + ingred.image;
             }
             return recipe;
         }
@@ -563,7 +577,7 @@ namespace SpoonacularAPI
             string diet = "",
             string excludeIngredients = "",
             string intolerances = "",
-            bool limitLicense = true,
+            bool limitLicense = false,
             bool instructionsRequired = true)
         {
             RecipeSearchParams param = new RecipeSearchParams

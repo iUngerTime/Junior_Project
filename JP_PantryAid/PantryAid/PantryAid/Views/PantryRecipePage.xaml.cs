@@ -17,7 +17,7 @@ namespace PantryAid.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PantryRecipePage : ContentPage
     {
-        ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult> _list = new ListViewModel<SpoonacularAPI.SpoonacularAPI.ComplexResult>();
+        ListViewModel<ComplexResult> _list = new ListViewModel<ComplexResult>();
         int _offset = 0;
         int _recipesPerPage = 5;
         public PantryRecipePage()
@@ -41,9 +41,9 @@ namespace PantryAid.Views
             }
 
             SpoonacularAPI.SpoonacularAPI api = SpoonacularAPI.SpoonacularAPI.GetInstance();
-            SpoonacularAPI.SpoonacularAPI.Recipe_Complex complex = api.FindComplexRecipe("", _offset, _recipesPerPage, "", null, "", null, ingredients);
+            SpoonacularAPI.SpoonacularAPI.Recipe_Complex_Results complexResults = api.FindComplexRecipe("", _offset, _recipesPerPage, "", null, "", null, ingredients);
 
-            foreach (SpoonacularAPI.SpoonacularAPI.ComplexResult r in complex.results)
+            foreach (ComplexResult r in complexResults.results)
             {
                 _list.Add(r);
             }
