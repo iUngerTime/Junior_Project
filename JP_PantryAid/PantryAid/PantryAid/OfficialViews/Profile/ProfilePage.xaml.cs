@@ -21,6 +21,8 @@ namespace PantryAid.OfficialViews.Profile
             InitializeComponent();
             var vm = new UserPageViewModel(Navigation, ServiceLocator.Current.GetInstance<iUserDataRepo>());
             this.BindingContext = vm;
+
+            ImageToggle.IsToggled = Preferences.Get("Images", false);
         }
 
         private void ImageToggle_Toggled(object sender, ToggledEventArgs e)
