@@ -72,7 +72,6 @@
                             HorizontalOptions="End" StyleClass="recipePageNavButtons"
                             BackgroundColor="#088da5" TextColor="GhostWhite"/>
                 </StackLayout>
-
             </StackLayout>
         </Grid>
     </ContentPage.Content>

@@ -4,34 +4,50 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PantryAid.OfficialViews.AboutPage">
+             x:Class="PantryAid.OfficialViews.AboutPage"
+             BackgroundColor="LightSlateGray">
     <ContentPage.Content>
+        <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="85"/>
-                <RowDefinition Height="250"/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="65"/>
+                    <RowDefinition/>
             </Grid.RowDefinitions>
-            <FlexLayout Grid.Row="0" Direction="Row" JustifyContent="Center" BackgroundColor="LightGray">
+                <FlexLayout Grid.Row="0" Direction="Row" JustifyContent="Start" BackgroundColor="#0093d1">
                 <Image Source="pantryAid.png" WidthRequest="80" HeightRequest="80" FlexLayout.AlignSelf="Start"/>
-                <Label Text="About Our App"
-                    Margin="10"
+                <Label Text="About"
+                    Margin="10, 0, 10, 0"
                     FontAttributes="Bold"
-                    FontSize="40"
+                    FontSize="35"
+                       TextColor="GhostWhite"
                     HorizontalTextAlignment="Center"
                     VerticalTextAlignment="Center"/>
-            </FlexLayout>
-            <Frame BorderColor="Black" Grid.Row="1" Padding="0" WidthRequest="350" Margin="10">
-                <Label HorizontalOptions="Center" FontSize="Title" Margin="5" HorizontalTextAlignment="Center">
+                    <Label Text="App"
+                    FontAttributes="Bold"
+                    FontSize="35"
+                           TextColor="Red"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"/>
+                </FlexLayout>
+                <Frame BorderColor="Black" Grid.Row="1" Padding="0" WidthRequest="350" Margin="10" BackgroundColor="#BF043055">
+                <Label HorizontalOptions="Center" FontSize="Title" Margin="5" HorizontalTextAlignment="Center" TextColor="GhostWhite">
                     <Label.FormattedText>
                         We are a team of college students going to school at Oregon Institute of Technology. As part of our schooling, we are required to create several projects. When our group got together, we decided to make this project as our requisite 3rd year project. We hope you enjoy it and feel free to give us feedback!
                     </Label.FormattedText>
                 </Label>
             </Frame>
-            <FlexLayout Grid.Row="2" BackgroundColor="LightSlateGray" Direction="Column">
-                <Label Text="Meet Our Team" TextColor="NavajoWhite" FontSize="40" FontAttributes="Italic" HorizontalTextAlignment="Center"/>
-                <BoxView HorizontalOptions="CenterAndExpand" HeightRequest="2" Color="DarkGray" Margin="10"/>
-                <Grid>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="2" Margin="0,15,0,0">
+                    <Label Text="Meet Our" TextColor="GhostWhite" FontSize="40" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                    <Label Text="Team" TextColor="Red" FontSize="40" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                </StackLayout>
+
+                
+                <FlexLayout Grid.Row="3" BackgroundColor="LightSlateGray" Direction="Column">
+                    <BoxView HorizontalOptions="CenterAndExpand" HeightRequest="2" Color="DarkGray" Margin="10"/>
+
+                    <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="80"/>
                         <RowDefinition Height="80"/>
@@ -61,10 +77,11 @@
                     <Frame Grid.Column="0" Grid.Row="3" CornerRadius="100" HeightRequest="75" WidthRequest="75" HorizontalOptions="Center" Padding="0" IsClippedToBounds="True">
                         <Image Source="thomasAbout.jpg" HorizontalOptions="Center" VerticalOptions="Center"/>
                     </Frame>
-                    <Label Grid.Column="1" Grid.Row="3" Text="Thomas Eberhart" FontSize="30" FontAttributes="Bold" VerticalTextAlignment="Center" TextColor="GhostWhite"/>
+                    <Label Grid.Column="1" Grid.Row="3" Text="Thomas Eberhart" FontSize="28" FontAttributes="Bold" VerticalTextAlignment="Center" TextColor="GhostWhite"/>
 
                 </Grid>
             </FlexLayout>
         </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

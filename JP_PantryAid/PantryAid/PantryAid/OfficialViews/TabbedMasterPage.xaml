@@ -9,7 +9,6 @@
              xmlns:grocery="clr-namespace:PantryAid.OfficialViews.Grocery_List"
              xmlns:recipe="clr-namespace:PantryAid.OfficialViews.Recipe_Finder"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-             BackgroundColor="#BF043055"
              android:TabbedPage.ToolbarPlacement="Bottom" UnselectedTabColor="GhostWhite" SelectedTabColor="#ed5858">
 
     <TabbedPage.Children>

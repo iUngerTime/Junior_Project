@@ -113,7 +113,7 @@
             AbsoluteLayout.LayoutBounds="1,-25,0.5,0.5"
 >
                     <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                        <Button Text="Delete From List" Clicked="RemoveButton_Clicked"/>
+                        <Button Text="Delete From List" Clicked="RemoveButton_Clicked" BackgroundColor="#088da5" TextColor="GhostWhite"/>
                     </StackLayout>
                 </Frame>
             </StackLayout>
