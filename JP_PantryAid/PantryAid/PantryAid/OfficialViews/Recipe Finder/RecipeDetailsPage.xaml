@@ -4,38 +4,45 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeDetailsPage">
+             x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeDetailsPage" BackgroundColor="LightBlue">
     <ContentPage.Content>
         <ScrollView >
             <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Padding="0">
-                <Label Text="Recipe Details Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
+                <!--<Label Text="Recipe Details Page" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />-->
 
-                <Label  Text="Recipe Name" Margin="10" 
-                            HorizontalOptions="StartAndExpand" VerticalOptions="Start" FontSize="20" />
-                <Label  Text="{ Binding RecipeFull.name}" 
+                <!--<Label  Text="Recipe Name" Margin="10" 
+                            HorizontalOptions="StartAndExpand" VerticalOptions="Start" FontSize="20" />-->
+                <Label  Text="{ Binding RecipeFull.title}" 
                             Margin="10" 
                             HorizontalOptions="CenterAndExpand" 
-                            VerticalOptions="Start" FontSize="20" />
-                <Image Source="{Binding RecipeFull.image}"/>
-                <Label  TextType="Html" Text="Instructions" 
-                            Margin="10" 
+                            VerticalOptions="Start" FontSize="24" />
+                <Image Source="{Binding RecipeFull.image}" Margin="0,0,0,20"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <CheckBox x:Name="CheckBox_Disliked" BackgroundColor="Red"  IsChecked="{Binding Disliked }" 
+                              CheckedChanged="CheckBox_DislikedCheckedChanged"
+                              HorizontalOptions="Start"/>
+                    <Label Text="Dislike" VerticalOptions="Center"/>
+                    <CheckBox x:Name="CheckBox_Liked" BackgroundColor="LightGreen" IsChecked="{ Binding Liked }" 
+                              CheckedChanged="CheckBox_LikedCheckedChanged"
+                              HorizontalOptions="End"/>
+                    <Label Text="Like" VerticalOptions="Center"/>
+                </StackLayout>
+                <Label  TextType="Html" Text="Instructions:" 
+                            Margin="5" 
                             HorizontalOptions="StartAndExpand" 
                             VerticalOptions="StartAndExpand" 
-                            FontSize="20" />
-                <StackLayout Orientation="Horizontal">
-                    <CheckBox x:Name="CheckBox_Disliked" BackgroundColor="Red"  IsChecked="{Binding Disliked }" CheckedChanged="CheckBox_DislikedCheckedChanged"/>
-                    <CheckBox x:Name="CheckBox_Liked" BackgroundColor="LightGreen" IsChecked="{ Binding Liked }" CheckedChanged="CheckBox_LikedCheckedChanged"/>
-                </StackLayout>
+                            FontSize="24" />
+                
                 <Label TextType="Html" Text="{ Binding RecipeFull.instructions}" 
-                           Margin="10" 
+                           Margin="10,1,10,5" 
                            HorizontalOptions="StartAndExpand" 
                            VerticalOptions="StartAndExpand" 
-                           FontSize="20" />
+                           FontSize="18" />
                 <Label  TextType="Html" Text="Ingredients:" 
                             Margin="10" 
                             HorizontalOptions="StartAndExpand" 
                             VerticalOptions="StartAndExpand" 
-                            FontSize="20" />
+                            FontSize="24" />
                 <ListView ItemsSource="{ Binding RecipeFull.extendedIngredients }" IsEnabled="False" >
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -50,7 +57,7 @@
                                     <Image Source="{ Binding image }" Grid.Column="0"/>
                                     <StackLayout Grid.Column="1" Orientation="Horizontal">
                                         <Label Text="{ Binding amount }" HorizontalOptions="Start" 
-                                              FontSize="Medium" />
+                                              FontSize="Medium" MaxLines="1"/>
                                         <Label Text="{ Binding unit }" HorizontalOptions="Start" 
                                               FontSize="Medium" />
                                     </StackLayout>
@@ -64,7 +71,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Button HorizontalOptions="End"  Text="Find Similar" Clicked="B_SimilarClicked"></Button>
+                <!--<Button HorizontalOptions="End"  Text="Find Similar" Clicked="B_SimilarClicked"></Button>-->
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

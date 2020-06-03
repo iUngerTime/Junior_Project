@@ -20,6 +20,10 @@ namespace PantryAid.OfficialViews.Recipe_Finder
             vm = new RecipeDetailsPageViewModel(Navigation, ServiceLocator.Current.GetInstance<iUserDataRepo>(), RecipeId);
             this.BindingContext = vm;
             InitializeComponent();
+            foreach (var Amount in vm.RecipeFull.extendedIngredients)
+            {
+                Amount.amount = Math.Round(Amount.amount, 2);
+            }
             
         }
 

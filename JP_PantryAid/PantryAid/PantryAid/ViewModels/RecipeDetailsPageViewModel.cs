@@ -70,7 +70,7 @@ namespace PantryAid.ViewModels
         }
 
 
-        #region Like Disliked FUnctions
+        #region Like/Disliked FUnctions
         public void AddRecipeToDislikedList(int index)
         {
             _userDatabaseAccess.AddDislikedRecipe(SqlServerDataAccess.CurrentUser, index);

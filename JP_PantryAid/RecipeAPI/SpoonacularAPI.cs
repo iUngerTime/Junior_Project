@@ -613,10 +613,10 @@ namespace SpoonacularAPI
             {
                 ret += item + ",";
             }
-            if(ret.Length > 1 && ret[ret.Length] == ',')
+            if(ret.Length > 1 && ret[(ret.Length - 1)] == ',')
             {
                 //Cut off the last comma
-                return ret.Substring(0, ret.Length - 1);
+                return ret.Substring(0, ret.Length - 2);
             }
             else
                 return ret; //if there is no comma

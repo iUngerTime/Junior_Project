@@ -9,6 +9,7 @@ using PantryAid.Core.Models;
 using RecipeAPI;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using PantryAid.OfficialViews.Recipe_Finder;
 
 namespace PantryAid.ViewModels
 {
@@ -140,6 +141,7 @@ namespace PantryAid.ViewModels
                     list[i].author = "";
                 if (list[i].imageUrls == null)
                     list[i].imageUrls = new List<string>() { "" };
+                list[i].servings = 255; //using servings for opacity
                 _list.Add(list[i]);
             }
 
@@ -182,6 +184,7 @@ namespace PantryAid.ViewModels
                 //these two do however have implicit conversions
                 foreach (ComplexResult res in result.results)
                 {
+                    
                     list.Add(new Recipe_Short(res));
                 }
 
@@ -195,8 +198,8 @@ namespace PantryAid.ViewModels
                         list[i].author = "";
                     if (list[i].imageUrls == null)
                         list[i].imageUrls = new List<string>() { "" };
+                    list[i].servings = 0; //using servings for opacity
                     _list.Add(list[i]);
-
                 }
                 _state = Search_State.Complex;
 
@@ -258,7 +261,7 @@ namespace PantryAid.ViewModels
 
         public void ItemTapped(int index)
         {
-            navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
+            navigation.PushModalAsync(new RecipeDetailsPage(Convert.ToInt32(_list.ListView[index].id)));
             //AddRecipeToPreferedList(_list.ListView[index].id);
         }
         #endregion
