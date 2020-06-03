@@ -29,6 +29,15 @@ namespace PantryAid.ViewModels
 
             //injection of database access
             _userDatabaseAccess = databaseAccess;
+
+            if (Preferences.Get("Images", false) == false)
+            {
+                BG_Opacity = 0;
+            }
+            else
+            {
+                BG_Opacity = 100;
+            }
         }
 
         private ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
@@ -64,21 +73,6 @@ namespace PantryAid.ViewModels
             {
                 bgOpacity = value;
                 if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
-            }
-        }
-        public INavigation navigation { get; set; }
-
-        public RecipeFinderViewModel(INavigation nav)
-        {
-            navigation = nav;
-
-            if (Preferences.Get("Images", false) == false)
-            {
-                BG_Opacity = 0;
-            }
-            else
-            {
-                BG_Opacity = 100;
             }
         }
 
