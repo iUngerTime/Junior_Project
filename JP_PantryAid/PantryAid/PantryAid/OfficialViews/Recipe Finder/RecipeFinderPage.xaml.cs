@@ -33,6 +33,10 @@ namespace PantryAid.OfficialViews.Recipe_Finder
             {
                 BGImage.Opacity = 0;
             }
+            else
+            {
+                BGImage.Opacity = 100;
+            }
 
         }
 

@@ -42,9 +42,10 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Image Source="{Binding image}" Grid.Column="0" x:Name="Recipe_Image" Margin="5,0,0,0"
+                                    <Image Source="{Binding image}" Grid.Column="0" x:Name="Recipe_Image" Margin="0,0,0,0"
                                        VerticalOptions="FillAndExpand" 
-                                       HorizontalOptions="FillAndExpand"/>
+                                       HorizontalOptions="FillAndExpand"
+                                           Aspect="AspectFill"/>
                                     <StackLayout Orientation="Vertical" Grid.Column="1">
                                         <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" TextColor="GhostWhite"  
                                                    VerticalOptions="Center" MaxLines="1"/>
