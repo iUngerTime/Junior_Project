@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PantryAid.OfficialViews.Profile.PreferedRecipesPage">
+             x:Class="PantryAid.OfficialViews.Profile.PreferedRecipesPage"
+             BackgroundColor="#BF043055">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Prefered Recipes" FontSize="40" HorizontalOptions="Center" FontAttributes="Italic"/>

@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PantryAid.OfficialViews.Profile.ProfilePage">
+             x:Class="PantryAid.OfficialViews.Profile.ProfilePage"
+             BackgroundColor="#BF043055">
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Start" Margin="0,0,10,0">
             <Image Source="pantryAid.png"
@@ -23,7 +24,10 @@
         </StackLayout>
     </NavigationPage.TitleView>
     <StackLayout Orientation="Vertical">
-        <Label Text="Account Settings" FontSize="40" HorizontalTextAlignment="Start" Padding="10,0,0,0" FontAttributes="Bold"/>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Label Text="Account" FontSize="40" HorizontalTextAlignment="Center" Padding="10,0,0,0" FontAttributes="Bold" TextColor="GhostWhite"/>
+            <Label Text="Settings" FontSize="40" HorizontalTextAlignment="Center" Padding="10,0,0,0" FontAttributes="Bold" TextColor="Red"/>
+        </StackLayout>
         <BoxView BackgroundColor="DimGray" HeightRequest="2"/>
         <Grid Margin="10">
             <Grid.RowDefinitions>
@@ -42,35 +46,35 @@
 
             <!--first row is email-->
             <StackLayout Orientation="Horizontal" VerticalOptions="Center" Grid.Row="0" Grid.Column="0">
-                <Label Text="Email:" FontAttributes="Bold" FontSize="20"/>
-                <Label Text="{Binding Email}" FontSize="20"/>
+                <Label Text="Email:" FontAttributes="Bold" FontSize="20" TextColor="GhostWhite"/>
+                <Label Text="{Binding Email}" FontSize="20" TextColor="LightSteelBlue"/>
             </StackLayout>
 
-            <Button Grid.Row="0" Grid.Column="1" Text="Edit" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding ChangeEmail}"/>
+            <Button Grid.Row="0" Grid.Column="1" Text="Edit" BorderColor="DarkCyan" BorderWidth="2" CornerRadius="5" Command="{Binding ChangeEmail}" BackgroundColor="#088da5" TextColor="GhostWhite"/>
 
             <!--second row is password-->
             <StackLayout Orientation="Horizontal" VerticalOptions="Center" Grid.Row="1" Grid.Column="0">
-                <Label Text="Password:" FontAttributes="Bold" FontSize="20"/>
-                <Label Text="*************" FontSize="20"/>
+                <Label Text="Password:" FontAttributes="Bold" FontSize="20" TextColor="GhostWhite"/>
+                <Label Text="*************" FontSize="20" TextColor="LightSteelBlue"/>
             </StackLayout>
 
-            <Button Grid.Row="1" Grid.Column="1" Text="Edit" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding ChangePassword}"/>
+            <Button Grid.Row="1" Grid.Column="1" Text="Edit" BorderColor="DarkCyan" BorderWidth="2" CornerRadius="5" Command="{Binding ChangePassword}" BackgroundColor="#088da5" TextColor="GhostWhite"/>
 
             <!--third row is prefered recipies-->
-            <Label Text="Prefered Recipes" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="2" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding NavigatePreferedRecipes}"/>
+            <Label Text="Prefered Recipes" TextColor="GhostWhite" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="2" Grid.Column="1" Text="View" BorderColor="DarkCyan" BorderWidth="2" CornerRadius="5" Command="{Binding NavigatePreferedRecipes}" BackgroundColor="#088da5" TextColor="GhostWhite"/>
 
             <!--fouth row is disliked recipies-->
-            <Label Text="Disliked Recipes" FontAttributes="Bold" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="3" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5"  Command="{Binding NavigateDislikedRecipes}"/>
+            <Label Text="Disliked Recipes" TextColor="GhostWhite" FontAttributes="Bold" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="3" Grid.Column="1" Text="View" BorderColor="DarkCyan" BorderWidth="2" CornerRadius="5"  Command="{Binding NavigateDislikedRecipes}" BackgroundColor="#088da5" TextColor="GhostWhite"/>
 
             <!--Fifth row is alergies-->
-            <Label Text="Allergies" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="4" Grid.Column="1" Text="View" BackgroundColor="Transparent" BorderColor="DimGray" BorderWidth="2" CornerRadius="5" Command="{Binding NavigateAlergies}"/>
+            <Label Text="Allergies" TextColor="GhostWhite" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="4" Grid.Column="1" Text="View" BorderColor="DarkCyan" BorderWidth="2" CornerRadius="5" Command="{Binding NavigateAlergies}" BackgroundColor="#088da5" TextColor="GhostWhite"/>
 
             <!--sixth row is ditary options-->
-            <Label Text="Dietary Options" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
-            <Button Grid.Row="5" Grid.Column="1" Text="View" Command="{Binding NavigateDietaryOptions}"/>
+            <Label Text="Dietary Options" TextColor="GhostWhite" FontAttributes="Bold" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" FontSize="20"/>
+            <Button Grid.Row="5" Grid.Column="1" Text="View" BorderWidth="2" CornerRadius="5" Command="{Binding NavigateDietaryOptions}" BorderColor="DarkCyan" BackgroundColor="#088da5" TextColor="GhostWhite"/>
         </Grid>
     </StackLayout>
 </ContentPage>

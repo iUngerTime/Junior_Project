@@ -58,10 +58,10 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" HorizontalOptions="Start" StyleClass="recipePageNavButtons" />
-                <BoxView WidthRequest="200"></BoxView>
-                <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="End" StyleClass="recipePageNavButtons"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
+                <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" HorizontalOptions="Start" StyleClass="recipePageNavButtons" BackgroundColor="#088da5" TextColor="GhostWhite"/>
+                
+                <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="EndAndExpand" StyleClass="recipePageNavButtons" BackgroundColor="#088da5" TextColor="GhostWhite"/>
             </StackLayout>
             <Label x:Name="noResultsLabel" IsVisible="False">Nothing found</Label>
         </StackLayout>
