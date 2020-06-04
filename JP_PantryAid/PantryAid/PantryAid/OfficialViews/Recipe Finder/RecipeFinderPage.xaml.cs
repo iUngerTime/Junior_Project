@@ -29,15 +29,6 @@ namespace PantryAid.OfficialViews.Recipe_Finder
             //this.BindingContext = vm._list;
             InitializeComponent();
             //this.Resources.Add(StyleSheet.FromResource("Assets/StyleSheets.css",this.GetType().Assembly));
-            if (Preferences.Get("Images", false) == false)
-            {
-                BGImage.Opacity = 0;
-            }
-            else
-            {
-                BGImage.Opacity = 100;
-            }
-
         }
 
         protected override void OnAppearing()
