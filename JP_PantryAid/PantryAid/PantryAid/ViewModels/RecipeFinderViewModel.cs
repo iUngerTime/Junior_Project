@@ -267,7 +267,7 @@ namespace PantryAid.ViewModels
         #endregion
 
 
-        
+
 
         #region Like Disliked FUnctions
         public void AddRecipeToDislikedList(int index)
