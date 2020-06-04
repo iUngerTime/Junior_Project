@@ -90,7 +90,7 @@ namespace PantryAid.ViewModels
             set
             {
                 bgOpacity = value;
-                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
+                PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
             }
         }
         #endregion

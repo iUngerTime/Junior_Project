@@ -10,7 +10,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75"/>
-                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <FlexLayout Grid.Row="0" Direction="Row" JustifyContent="Center" BackgroundColor="LightGray">
@@ -62,7 +62,7 @@
                         <Frame Grid.Column="0" Grid.Row="3" CornerRadius="100" HeightRequest="75" WidthRequest="75" HorizontalOptions="Center" Padding="0" IsClippedToBounds="True">
                             <Image Source="thomasAbout.jpg" HorizontalOptions="Center" VerticalOptions="Center"/>
                         </Frame>
-                        <Label Grid.Column="1" Grid.Row="3" Text="Thomas Eberhart" FontSize="30" FontAttributes="Bold" VerticalTextAlignment="Center" TextColor="GhostWhite"/>
+                        <Label Grid.Column="1" Grid.Row="3" Text="Thomas Eberhart" FontSize="29" FontAttributes="Bold" VerticalTextAlignment="Center" TextColor="GhostWhite"/>
 
                     </Grid>
                 </FlexLayout>
