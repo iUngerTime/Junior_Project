@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PantryAid.OfficialViews.Profile.ProfilePage"
-             BackgroundColor="#BF043055">
+             BackgroundColor="LightSlateGray">
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Start" Margin="0,0,10,0">
             <Image Source="pantryAid.png"
@@ -28,7 +28,7 @@
             <Label Text="Account" FontSize="40" HorizontalTextAlignment="Center" Padding="10,0,0,0" FontAttributes="Bold" TextColor="GhostWhite"/>
             <Label Text="Settings" FontSize="40" HorizontalTextAlignment="Center" Padding="10,0,0,0" FontAttributes="Bold" TextColor="Red"/>
         </StackLayout>
-        <BoxView BackgroundColor="DimGray" HeightRequest="2"/>
+        <BoxView BackgroundColor="DarkGray" HeightRequest="2"/>
         <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition/>

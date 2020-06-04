@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeDetailsPage" BackgroundColor="LightBlue">
+             x:Class="PantryAid.OfficialViews.Recipe_Finder.RecipeDetailsPage" BackgroundColor="LightSlateGray">
     <ContentPage.Content>
         <ScrollView >
             <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Padding="0">

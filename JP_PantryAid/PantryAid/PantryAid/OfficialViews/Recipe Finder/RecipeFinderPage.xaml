@@ -13,16 +13,23 @@
         <Grid>
             <Image x:Name="BGImage" Source="https://www.thechunkychef.com/wp-content/uploads/2017/09/Chicken-Stroganoff-skillet-680x980.jpg" Aspect="AspectFill" Opacity="{Binding BG_Opacity}"/>
             <StackLayout>
-                <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  
+                <Frame BackgroundColor="#BF043055" BorderColor="Black" HasShadow="True" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                    <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  
                        PlaceholderColor="GhostWhite"
                    Completed="Recipe_Search_OnCompleted" 
                    VerticalOptions="Start" 
                    HorizontalOptions="FillAndExpand" 
                    AnchorY="0" 
-                   TextColor="GhostWhite"/>
+                   TextColor="GhostWhite"
+                   Margin="0,0,0,0"/>
+                </Frame>
                 <StackLayout Orientation="Horizontal">
-                    <CheckBox x:Name="CheckBox_UseComplex" VerticalOptions="Center"/>
-                    <Label VerticalOptions="Center" Text="Use Filters" TextColor="GhostWhite" Margin="0,0,0,0" Padding="0"></Label>
+                    <Frame BackgroundColor="#BF043055" BorderColor="Black" HasShadow="True">
+                        <StackLayout Orientation="Horizontal" >
+                            <CheckBox x:Name="CheckBox_UseComplex" VerticalOptions="Center"/>
+                            <Label VerticalOptions="Center" Text="Use Filters" TextColor="GhostWhite" Margin="0,0,0,0" Padding="0"></Label>
+                        </StackLayout>
+                    </Frame>
                     <Button x:Name="Button_Filters" Clicked="Button_Filters_Clicked" Text="Filters"  HorizontalOptions="EndAndExpand"
                             BackgroundColor="#088da5" TextColor="GhostWhite"/>
                 </StackLayout>
