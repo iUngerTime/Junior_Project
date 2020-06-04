@@ -42,8 +42,10 @@ namespace PantryAid.ViewModels
             //_recipeFull.image = "https://spoonacular.com/recipeImages/" + _recipeFull.image;
         }
 
-
-
+        public RecipeDetailsPageViewModel(INavigation nav, Recipe_Full recipe)
+        {
+            _recipeFull = recipe;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
