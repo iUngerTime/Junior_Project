@@ -9,6 +9,7 @@ using PantryAid.Core.Models;
 using RecipeAPI;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using PantryAid.OfficialViews.Recipe_Finder;
 
 namespace PantryAid.ViewModels
 {
@@ -17,6 +18,19 @@ namespace PantryAid.ViewModels
     {
 
         public ListViewModel<Recipe_Short> _list = new ListViewModel<Recipe_Short>();
+        public event PropertyChangedEventHandler PropertyChanged;
+        int _offset;
+        int _recipesPerPage = 10;
+        public INavigation navigation { get; set; }
+        private iUserDataRepo _userDatabaseAccess;
+
+        #region INotify Getters/Setters
+
+        private Search_State _state = Search_State.None;
+        public Search_State State
+        {
+            get { return _state; }
+        }
         public enum Search_State
         {
             None = 0, //no search has been done
@@ -24,12 +38,6 @@ namespace PantryAid.ViewModels
             Complex //complex search
         }
         //this state keeps track of whether the current search's state'
-        private Search_State _state = Search_State.None;
-
-        public Search_State State
-        {
-            get { return _state; }
-        }
 
         private bool _showReadyInMin;
         public bool ShowReadyInMin
@@ -42,12 +50,6 @@ namespace PantryAid.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        int _offset;
-        int _recipesPerPage = 10;
-        public INavigation navigation { get; set; }
-        private iUserDataRepo _userDatabaseAccess;
-
         public RecipeFinderViewModel(INavigation nav, iUserDataRepo databaseAccess)
         {
             //Navigation and command binding
@@ -58,8 +60,6 @@ namespace PantryAid.ViewModels
             _userDatabaseAccess = databaseAccess;
         }
 
-
-
         public ListViewModel<Recipe_Short> List
         {
             get { return _list; }
@@ -69,7 +69,7 @@ namespace PantryAid.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs("List"));
             }
         }
-        
+
         //save the current search for paging
         private string _currentSearch;
         public string CurrentSearch
@@ -82,7 +82,7 @@ namespace PantryAid.ViewModels
             }
 
         }
-        
+
         private int bgOpacity;
         public int BG_Opacity
         {
@@ -90,10 +90,12 @@ namespace PantryAid.ViewModels
             set
             {
                 bgOpacity = value;
-                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
+                PropertyChanged(this, new PropertyChangedEventArgs("BG_Opacity"));
             }
         }
+        #endregion
 
+        #region Ctor, OnAppear()
         public RecipeFinderViewModel(INavigation nav)
         {
             navigation = nav;
@@ -107,6 +109,17 @@ namespace PantryAid.ViewModels
                 BG_Opacity = 100;
             }
         }
+
+        public void OnAppear()
+        {
+            if (Preferences.Get("Images", false) == false)
+                BG_Opacity = 0;
+            else
+                BG_Opacity = 100;
+        }
+        #endregion
+
+        #region Search Functions
 
         //searches for short recipes from names
         public ListViewModel<Recipe_Short> SearchByName(string recipeSearch)
@@ -126,8 +139,9 @@ namespace PantryAid.ViewModels
                 list[i].image = "https://spoonacular.com/recipeImages/" + list[i].image;
                 if (list[i].author == null)
                     list[i].author = "";
-                if(list[i].imageUrls == null)
-                    list[i].imageUrls = new List<string>(){""};
+                if (list[i].imageUrls == null)
+                    list[i].imageUrls = new List<string>() { "" };
+                list[i].servings = 255; //using servings for opacity
                 _list.Add(list[i]);
             }
 
@@ -144,46 +158,65 @@ namespace PantryAid.ViewModels
             SpoonacularAPI.SpoonacularAPI.ComplexParameters param = new SpoonacularAPI.SpoonacularAPI.ComplexParameters();
             //set up the default values for the complex search
             param = api.SetUpComplexParameters();
-            
+
             param.query = _currentSearch;
             param.number = _recipesPerPage;
             param.offset = _offset;
             //TODO: Add filters here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            List<string> allergens = new List<string>();
+            foreach (var allegeryItem in SqlServerDataAccess.CurrentUser.Allergies)
+            {
+                allergens.Add(allegeryItem.ToString());
+            }
+            param.intolerances = allergens;
+
 
             //get the results of the search
             SpoonacularAPI.SpoonacularAPI.Recipe_Complex_Results result =
                 api.FindComplexRecipe(param);
             //IEnumerable<ComplexResult> list = result.results;
 
-            
-            List<Recipe_Short> list = new List<Recipe_Short>();
-            //Converting the complex results to short results via constructors
-            //I tries inheritance but it didn't work
-            //these two do however have implicit conversions
-            foreach (ComplexResult res in result.results)
+            if (result != null && result.results != null)
             {
-                list.Add(new Recipe_Short(res));
-            }
+                List<Recipe_Short> list = new List<Recipe_Short>();
+                //Converting the complex results to short results via constructors
+                //I tries inheritance but it didn't work
+                //these two do however have implicit conversions
+                foreach (ComplexResult res in result.results)
+                {
+                    
+                    list.Add(new Recipe_Short(res));
+                }
 
-            for (int i = 0; i < list.Count; i++)
+                for (int i = 0; i < list.Count; i++)
+                {
+                    //cover nulls
+                    if (list[i].image == null)
+                        list[i].image = "";
+                    //list[i].image = "https://spoonacular.com/recipeImages/" + list[i].image;
+                    if (list[i].author == null)
+                        list[i].author = "";
+                    if (list[i].imageUrls == null)
+                        list[i].imageUrls = new List<string>() { "" };
+                    list[i].servings = 0; //using servings for opacity
+                    _list.Add(list[i]);
+                }
+                _state = Search_State.Complex;
+
+            }
+            else
             {
-                //cover nulls
-                if (list[i].image == null)
-                    list[i].image = "";
-                //list[i].image = "https://spoonacular.com/recipeImages/" + list[i].image;
-                if (list[i].author == null)
-                    list[i].author = "";
-                if (list[i].imageUrls == null)
-                    list[i].imageUrls = new List<string>() { "" };
-                _list.Add(list[i]);
-                
+                //clear the last search
+                _list.ListView.Clear();
+                //_state = Search_State.None; //set this so that is shows no results
             }
-
-            _state = Search_State.Complex;
             return _list;
         }
+        #endregion
 
 
+
+        #region Page Navigation Functions
         public void NextPage()
         {
             //if (_list.ListView.Count > 0 && CurrentSearch.Length > 0)
@@ -199,13 +232,13 @@ namespace PantryAid.ViewModels
                 _offset += _recipesPerPage;
                 ComplexSearch(CurrentSearch);
             }
-            
+
 
         }
         public void PrevPage()
         {
             //if (_list.ListView.Count > 0 && CurrentSearch.Length > 0)
-            if(_state == Search_State.Normal
+            if (_state == Search_State.Normal
                && _list.ListView.Count > 0 && CurrentSearch.Length > 0)
             {
                 if (_offset >= 5)
@@ -213,9 +246,9 @@ namespace PantryAid.ViewModels
                     _offset -= _recipesPerPage;
                     SearchByName(CurrentSearch);
                 }
-                    
+
             }
-            else if(_state == Search_State.Complex
+            else if (_state == Search_State.Complex
                     && _list.ListView.Count > 0 && CurrentSearch.Length > 0)
             {
                 if (_offset >= 5)
@@ -228,18 +261,15 @@ namespace PantryAid.ViewModels
 
         public void ItemTapped(int index)
         {
-            navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_list.ListView[index].id)));
+            navigation.PushModalAsync(new RecipeDetailsPage(Convert.ToInt32(_list.ListView[index].id)));
             //AddRecipeToPreferedList(_list.ListView[index].id);
         }
-        
-        public void OnAppear()
-        {
-            if (Preferences.Get("Images", false) == false)
-                BG_Opacity = 0;
-            else
-                BG_Opacity = 100;
-        }
+        #endregion
 
+
+        
+
+        #region Like Disliked FUnctions
         public void AddRecipeToDislikedList(int index)
         {
             _userDatabaseAccess.AddDislikedRecipe(SqlServerDataAccess.CurrentUser, index);
@@ -256,5 +286,6 @@ namespace PantryAid.ViewModels
         {
             _userDatabaseAccess.RemoveFavoriteRecipe(SqlServerDataAccess.CurrentUser, index);
         }
+        #endregion
     }
 }

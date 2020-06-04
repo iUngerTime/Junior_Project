@@ -13,58 +13,67 @@
         <Grid>
             <Image x:Name="BGImage" Source="https://www.thechunkychef.com/wp-content/uploads/2017/09/Chicken-Stroganoff-skillet-680x980.jpg" Aspect="AspectFill" Opacity="{Binding BG_Opacity}"/>
             <StackLayout>
-            <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  
+                <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  
                    Completed="Recipe_Search_OnCompleted" 
                    VerticalOptions="Start" 
                    HorizontalOptions="FillAndExpand" 
-                   AnchorY="0" />
-            <StackLayout Orientation="Horizontal">
-                <CheckBox x:Name="CheckBox_UseComplex"/>
-                <Label Text="Use Complex"></Label>
-            </StackLayout>
-
-            <ListView ItemsSource="{Binding List.ListView}" SeparatorVisibility="None"  
+                   AnchorY="0" 
+                   TextColor="GhostWhite"/>
+                <StackLayout Orientation="Horizontal">
+                    <CheckBox x:Name="CheckBox_UseComplex" VerticalOptions="Center"/>
+                    <Label VerticalOptions="Center" Text="Use Filters" TextColor="GhostWhite" Margin="0,0,0,0" Padding="0"></Label>
+                    <BoxView WidthRequest="200"></BoxView>
+                    <Button x:Name="Button_Filters" Clicked="Button_Filters_Clicked" Text="Filters" 
+                            BackgroundColor="#088da5" TextColor="GhostWhite" HeightRequest="10"/>
+                </StackLayout>
+                <Label x:Name="noResultsLabel" IsVisible="False">Nothing found</Label>
+                <ListView ItemsSource="{Binding List.ListView}" SeparatorVisibility="None"  
                       SelectionMode="None" HasUnevenRows="False" ItemTapped="ListView_OnItemTapped" 
                       RowHeight="60" x:Name="RecipeResultsList">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <!--The Grid holds the image and the title-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <!--The Grid holds the image and the title-->
                                 <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" Margin="5,0,0,5" IsClippedToBounds="True" BackgroundColor="#BF043055">
                                     <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
                                         <ColumnDefinition Width="4*"/>
-                                        </Grid.ColumnDefinitions>
+                                    </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                <Image Source="{Binding image}" Grid.Column="0" x:Name="Recipe_Image" Margin="5,0,0,0"
+                                    <Image Source="{Binding image}" Grid.Column="0" x:Name="Recipe_Image" Margin="0,0,0,0"
                                        VerticalOptions="FillAndExpand" 
-                                       HorizontalOptions="FillAndExpand"/>
-                                <StackLayout Orientation="Vertical" Grid.Column="1"  >
-                                    <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}"   
+                                       HorizontalOptions="FillAndExpand"
+                                           Aspect="AspectFill"/>
+                                    <StackLayout Orientation="Vertical" Grid.Column="1">
+                                        <Label x:Name="NameLabel" Margin="10,0,10,0" Text="{Binding title}" TextColor="GhostWhite"  
                                                    VerticalOptions="Center" MaxLines="1"/>
-                                    <StackLayout Orientation="Horizontal" Margin="15,0,10,0" x:Name="ReadyInMinBox" BindingContext="{Binding }" IsVisible="{ Binding ShowReadyInMin }">
-                                        <Label x:Name="ReadyInMinLabel" Text="Ready in:" StyleClass="readyInMinLabel" IsVisible="{ Binding ShowReadyInMin }"/>
+                                        <StackLayout Orientation="Horizontal" Margin="15,0,10,0" x:Name="ReadyInMinBox" 
+                                                     Opacity="{Binding servings }">
+                                            <Label x:Name="ReadyInMinLabel" Text="Ready in:" StyleClass="readyInMinLabel" 
+                                                   Opacity="{ Binding servings }"/>
+                                            <!--<Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />-->
+                                            <Label VerticalOptions="Center" Text="{Binding readyInMinutes}"/>
+                                            <Label VerticalOptions="Center" Text="min"/>
+                                        </StackLayout>
 
-                                        <!--<Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />-->
-                                            <Label Text="{Binding readyInMinutes}" FontSize="Micro" TextColor="GhostWhite"/>
-                                            <Label Text="min" FontSize="Micro" TextColor="GhostWhite"/>
                                     </StackLayout>
-                                    
-                                </StackLayout>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill">
-                <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" HorizontalOptions="Start" StyleClass="recipePageNavButtons" BackgroundColor="#088da5" TextColor="GhostWhite"/>
-                
-                <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" HorizontalOptions="EndAndExpand" StyleClass="recipePageNavButtons" BackgroundColor="#088da5" TextColor="GhostWhite"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" >
+                    <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" 
+                            HorizontalOptions="Start" StyleClass="recipePageNavButtons" 
+                            BackgroundColor="#088da5" TextColor="GhostWhite"/>
+                    <BoxView WidthRequest="200"></BoxView>
+                    <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" 
+                            HorizontalOptions="End" StyleClass="recipePageNavButtons"
+                            BackgroundColor="#088da5" TextColor="GhostWhite"/>
+                </StackLayout>
             </StackLayout>
-            <Label x:Name="noResultsLabel" IsVisible="False">Nothing found</Label>
-        </StackLayout>
         </Grid>
     </ContentPage.Content>
 </base:BaseNavigationPage>

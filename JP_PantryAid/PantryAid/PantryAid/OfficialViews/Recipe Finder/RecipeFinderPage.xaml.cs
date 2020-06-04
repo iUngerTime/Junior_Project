@@ -1,5 +1,6 @@
 ﻿using CommonServiceLocator;
 using PantryAid.Core.Interfaces;
+using PantryAid.OfficialViews.Profile;
 using PantryAid.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,11 @@ namespace PantryAid.OfficialViews.Recipe_Finder
             {
                 BGImage.Opacity = 0;
             }
+            else
+            {
+                BGImage.Opacity = 100;
+            }
+
         }
 
         protected override void OnAppearing()
@@ -75,6 +81,13 @@ namespace PantryAid.OfficialViews.Recipe_Finder
         private void NextButton_Clicked(object sender, EventArgs e)
         {
             vm.NextPage();
+        }
+
+        
+        private void Button_Filters_Clicked(object sender, EventArgs e)
+        {
+            //push the user page so that the user can change the filters
+            Navigation.PushModalAsync(new ProfilePage());
         }
     }
 }
