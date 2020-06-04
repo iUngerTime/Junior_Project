@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using PantryAid.Core.Interfaces;
+using PantryAid.Core.Models;
 using PantryAid.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -25,6 +26,18 @@ namespace PantryAid.OfficialViews.Recipe_Finder
                 Amount.amount = Math.Round(Amount.amount, 2);
             }
             
+        }
+
+        public RecipeDetailsPage(Recipe_Full recipe)
+        {
+            vm = new RecipeDetailsPageViewModel(Navigation, ServiceLocator.Current.GetInstance<iUserDataRepo>(), recipe);
+            this.BindingContext = vm;
+            InitializeComponent();
+            foreach (var Amount in vm.RecipeFull.extendedIngredients)
+            {
+                Amount.amount = Math.Round(Amount.amount, 2);
+            }
+
         }
 
         private void B_SimilarClicked(object sender, EventArgs e)

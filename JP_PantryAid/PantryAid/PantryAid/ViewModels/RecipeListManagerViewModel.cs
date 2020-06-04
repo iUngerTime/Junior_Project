@@ -1,6 +1,7 @@
 ﻿using Database_Helpers;
 using PantryAid.Core.Interfaces;
 using PantryAid.Core.Models;
+using PantryAid.OfficialViews.Recipe_Finder;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -169,7 +170,7 @@ namespace PantryAid.ViewModels
 
         public void ItemTapped(int index)
         {
-            navigation.PushModalAsync(new RecipePage(Convert.ToInt32(_displayList.ListView[index].id)));
+            navigation.PushModalAsync(new RecipeDetailsPage(_displayList.ListView[index]));
         }
 
         public void AddRecipeToDislikedList(int index)

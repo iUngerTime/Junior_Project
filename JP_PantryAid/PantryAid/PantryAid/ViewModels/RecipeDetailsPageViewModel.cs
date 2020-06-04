@@ -69,6 +69,12 @@ namespace PantryAid.ViewModels
             _userDatabaseAccess = databaseAccess;
         }
 
+        public RecipeDetailsPageViewModel(INavigation nav, iUserDataRepo databaseAccess, Recipe_Full recipe)
+        {
+            navigation = nav;
+            _recipeFull = recipe;
+            _userDatabaseAccess = databaseAccess;
+        }
 
         #region Like/Disliked FUnctions
         public void AddRecipeToDislikedList(int index)
