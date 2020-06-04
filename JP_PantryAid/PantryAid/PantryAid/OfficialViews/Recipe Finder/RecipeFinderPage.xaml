@@ -14,6 +14,7 @@
             <Image x:Name="BGImage" Source="https://www.thechunkychef.com/wp-content/uploads/2017/09/Chicken-Stroganoff-skillet-680x980.jpg" Aspect="AspectFill" Opacity="{Binding BG_Opacity}"/>
             <StackLayout>
                 <Entry x:Name="Recipe_Search" Placeholder="(eg. Cheese Cake)"  
+                       PlaceholderColor="GhostWhite"
                    Completed="Recipe_Search_OnCompleted" 
                    VerticalOptions="Start" 
                    HorizontalOptions="FillAndExpand" 
@@ -22,9 +23,8 @@
                 <StackLayout Orientation="Horizontal">
                     <CheckBox x:Name="CheckBox_UseComplex" VerticalOptions="Center"/>
                     <Label VerticalOptions="Center" Text="Use Filters" TextColor="GhostWhite" Margin="0,0,0,0" Padding="0"></Label>
-                    <BoxView WidthRequest="200"></BoxView>
-                    <Button x:Name="Button_Filters" Clicked="Button_Filters_Clicked" Text="Filters" 
-                            BackgroundColor="#088da5" TextColor="GhostWhite" HeightRequest="10"/>
+                    <Button x:Name="Button_Filters" Clicked="Button_Filters_Clicked" Text="Filters"  HorizontalOptions="EndAndExpand"
+                            BackgroundColor="#088da5" TextColor="GhostWhite"/>
                 </StackLayout>
                 <Label x:Name="noResultsLabel" IsVisible="False">Nothing found</Label>
                 <ListView ItemsSource="{Binding List.ListView}" SeparatorVisibility="None"  
@@ -51,11 +51,11 @@
                                                    VerticalOptions="Center" MaxLines="1"/>
                                         <StackLayout Orientation="Horizontal" Margin="15,0,10,0" x:Name="ReadyInMinBox" 
                                                      Opacity="{Binding servings }">
-                                            <Label x:Name="ReadyInMinLabel" Text="Ready in:" StyleClass="readyInMinLabel" 
+                                            <Label x:Name="ReadyInMinLabel" Text="Ready in:" TextColor="GhostWhite" StyleClass="readyInMinLabel" 
                                                    Opacity="{ Binding servings }"/>
                                             <!--<Label x:Name="AuthorLabel" FontSize="Small" Text="{Binding author}" />-->
-                                            <Label VerticalOptions="Center" Text="{Binding readyInMinutes}"/>
-                                            <Label VerticalOptions="Center" Text="min"/>
+                                            <Label VerticalOptions="Center" Text="{Binding readyInMinutes}" TextColor="GhostWhite"/>
+                                            <Label VerticalOptions="Center" Text="min" TextColor="GhostWhite"/>
                                         </StackLayout>
 
                                     </StackLayout>
@@ -64,13 +64,13 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" >
+                <StackLayout Orientation="Horizontal">
+                    
                     <Button x:Name="PrevButton" Text="Prev" Clicked="PrevButton_Clicked" 
-                            HorizontalOptions="Start" StyleClass="recipePageNavButtons" 
+                            HorizontalOptions="StartAndExpand" StyleClass="recipePageNavButtons" 
                             BackgroundColor="#088da5" TextColor="GhostWhite"/>
-                    <BoxView WidthRequest="200"></BoxView>
                     <Button x:Name="NextButton" Text="Next" Clicked="NextButton_Clicked" 
-                            HorizontalOptions="End" StyleClass="recipePageNavButtons"
+                            HorizontalOptions="EndAndExpand" StyleClass="recipePageNavButtons"
                             BackgroundColor="#088da5" TextColor="GhostWhite"/>
                 </StackLayout>
             </StackLayout>
